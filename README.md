@@ -1,4 +1,4 @@
-<div text-align=center>
+<div style="text-align:center;">
 <img src="periqles-logo.png" alt="logo" width="300"/>
 </div>
 
