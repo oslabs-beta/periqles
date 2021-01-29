@@ -1,5 +1,5 @@
 
-<img src="periqles-logo.png" alt="logo" width="300"/ align=center>
+<img src="periqles-logo.png" alt="logo" width="300" align=center/>
 
 
 # periqles
