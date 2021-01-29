@@ -1,4 +1,5 @@
-![periqles logo](periqles-logo.png =250x)
+
+<img src="periqles-logo.png" alt="logo" width="200"/>
 
 # periqles
 A component library that makes creating forms and GraphQL mutations for React-Relay apps easy, fast, and DRY.
