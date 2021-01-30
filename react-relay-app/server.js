@@ -143,5 +143,5 @@ app.use("/graphql", graphqlHTTP({ schema, rootValue }));
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
-  console.log("GraphQL server at localhost:/", port, "/graphql");
+  console.log("GraphQL server at localhost:/${port}/graphql");
 });

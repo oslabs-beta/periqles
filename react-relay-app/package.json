@@ -2,7 +2,7 @@
   "name": "react-relay-app",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "src/index.js",
   "scripts": {
     "start": "react-scripts start",
     "start-gql": "node server.js",
@@ -20,7 +20,6 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-graphql": "^0.12.0",
-    "graphcool": "^1.1.1",
     "graphql": "^15.5.0",
     "graphql-tag": "^2.11.0",
     "react": "^17.0.1",
