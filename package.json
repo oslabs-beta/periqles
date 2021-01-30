@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "relay-config": "^10.1.3"
+  },
+  "devDependencies": {
+    "babel-plugin-relay": "^10.1.3",
+    "graphql": "^15.5.0"
+  }
+}
