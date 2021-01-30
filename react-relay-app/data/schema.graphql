@@ -1,0 +1,30 @@
+type Query {
+  viewer: User
+  node(id: ID!): Node
+}
+
+type User implements Node {
+  # The ID of an object
+  id: ID!
+  userId: String!
+  # todos(status: String = "any", after: String, first: Int, before: String, last: Int): TodoConnection
+  # totalCount: Int!
+  # completedCount: Int!
+}
+
+interface Node {
+  # The id of the object.
+  id: ID!
+}
+
+# from FB's example repo on Github https://github.com/relayjs/relay-examples/blob/master/todo/data/schema.graphql
+# type Query {
+#   user(id: String): User
+
+#   """Fetches an object given its ID"""
+#   node(
+#     """The ID of an object"""
+#     id: ID!
+#   ): Node
+# }
+
