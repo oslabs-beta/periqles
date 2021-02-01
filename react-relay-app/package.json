@@ -8,6 +8,7 @@
     "start-gql": "nodemon server.js",
     "build": "react-scripts build",
     "relay": "relay-compiler --src ./src --schema ./data/schema.graphql --extensions js jsx --watch",
+    "update-schema": "babel-node ./data/schema/update-script.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
