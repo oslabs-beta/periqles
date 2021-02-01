@@ -9,8 +9,8 @@ This will be the schema imported and used by your GraphQL server file.
 */
 
 import {GraphQLObjectType, GraphQLSchema} from 'graphql';
-import UserQuery from './queries/UserQuery';
-import {nodeField} from './nodes.js';
+import { UserQuery } from './queries/UserQuery';
+import { nodeField } from './nodes.js';
 import { AddTodoMutation } from './mutations/AddTodoMutation';
 import { ChangeTodoStatusMutation } from './mutations/ChangeTodoStatusMutation';
 import { MarkAllTodosMutation } from './mutations/MarkAllTodosMutation';
@@ -26,6 +26,8 @@ const Query = new GraphQLObjectType({
   },
 });
 
+// console.log('change todo', ChangeTodoStatusMutation);
+
 const Mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
@@ -38,9 +40,20 @@ const Mutation = new GraphQLObjectType({
   },
 });
 
-export const schema = new GraphQLSchema({
+/*
+var MyAppSchema = new GraphQLSchema({
+  query: MyAppQueryRootType
+  mutation: MyAppMutationRootType
+});
+*/
+
+// //var schema = new graphql.GraphQLSchema({query: queryType});
+
+const schema = new GraphQLSchema({
   query: Query,
   mutation: Mutation,
 });
+
+module.exports = schema;
 
 // from FB's example repo on Github https://github.com/relayjs/relay-examples/blob/master/todo/data/schema/index.js

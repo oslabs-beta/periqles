@@ -3,15 +3,6 @@ import {GraphQLID, GraphQLList, GraphQLNonNull, GraphQLString} from 'graphql';
 import {GraphQLUser} from '../nodes';
 import {getUser, removeCompletedTodos} from '../../database';
 
-// type Input = {|
-//   +userId: string,
-// |};
-
-// type Payload = {|
-//   +deletedTodoIds: $ReadOnlyArray<string>,
-//   +userId: string,
-// |};
-
 const RemoveCompletedTodosMutation = mutationWithClientMutationId({
   name: 'RemoveCompletedTodos',
   inputFields: {

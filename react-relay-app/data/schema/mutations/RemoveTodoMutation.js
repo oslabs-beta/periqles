@@ -8,12 +8,12 @@ import {
   GraphQLNonNull,
 } from 'graphql';
 
-import {GraphQLUser} from '...nodes.js';
+import {GraphQLUser} from '../nodes.js';
 
 import {
   getUser,
   removeTodo,
-} from '.../database.js';
+} from '../../database.js';
 
 const RemoveTodoMutation = mutationWithClientMutationId({
   name: 'RemoveTodo',
@@ -38,3 +38,5 @@ const RemoveTodoMutation = mutationWithClientMutationId({
     return {id, userId};
   },
 });
+
+export {RemoveTodoMutation};

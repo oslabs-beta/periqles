@@ -16,7 +16,7 @@ import {
 import {
     getTodoById,
     renameTodo,
-    Todo
+   // Todo
 } from '../../database';
 
 const RenameTodoMutation = mutationWithClientMutationId({

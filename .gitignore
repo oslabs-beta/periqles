@@ -104,4 +104,4 @@ dist
 .tern-port
 
 # react-relay-app 
-/react-relay-app/vanilla-gql-example.js
+# /react-relay-app/vanilla-gql-example.js

@@ -11,12 +11,8 @@ export class Todo {
   }
 };
 
-const todos = [];   //array of all todos in db
-todos.push(addTodo('Walk the dog'));
-todos.push(addTodo('Clean the kitchen'));
-
 const todoIdsByUser = {};
-todoIdsByUser[USER_ID] = ['todo0', 'todo1'];
+todoIdsByUser[USER_ID] = [];
 
 export const addTodo =(text, complete = false) =>{
   const id = 'todo' + todos.length;
@@ -26,6 +22,10 @@ export const addTodo =(text, complete = false) =>{
 
   return id;
 }
+
+const todos = [];   //array of all todos in db
+todos.push(addTodo('Walk the dog'));
+todos.push(addTodo('Clean the kitchen'));
 
 // get all the todos of a given status. If no complete parameter passed, get all todos.
 export const getTodos = (complete) => {

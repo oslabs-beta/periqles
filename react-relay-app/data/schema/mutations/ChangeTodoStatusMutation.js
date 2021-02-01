@@ -5,23 +5,10 @@ import {
   changeTodoStatus, 
   getUser, 
   getTodoById,
-  Todo, 
-  User,
 } from '../../database';
 
-// type Input = {|
-//   +complete: boolean,
-//   +id: string,
-//   +userId: string,
-// |};
 
-// type Payload = {|
-//   +todoId: string,
-//   +userId: string,
-// |};
-
-
-const changeTodoStatusMutation = mutationWithClientMutationId({
+const ChangeTodoStatusMutation = mutationWithClientMutationId({
   name: 'ChangeTodoStatus',
   inputFields: {
     complete: {type: new GraphQLNonNull(GraphQLBoolean)},
@@ -33,11 +20,11 @@ const changeTodoStatusMutation = mutationWithClientMutationId({
       type: new GraphQLNonNull(GraphQLTodo),
       resolve: ({todoId}) => getTodoById(todoId),
     },
-  user: {
-    type: new GraphQLNonNull(GraphQLUser),
-    resolve: ({userId}) => getUser(userId),
+    user: {
+      type: new GraphQLNonNull(GraphQLUser),
+      resolve: ({userId}) => getUser(userId),
+    },
   },
-},
   mutateAndGetPayload: ({id, complete, userId}) => {
     const todoId = fromGlobalId(id).id;
     changeTodoStatus(todoId, complete);
@@ -46,4 +33,4 @@ const changeTodoStatusMutation = mutationWithClientMutationId({
   },
 });
 
-export {changeTodoStatusMutation};
+export { ChangeTodoStatusMutation };

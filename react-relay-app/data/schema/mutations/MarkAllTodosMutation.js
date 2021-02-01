@@ -8,15 +8,6 @@ import {
   markAllTodos,
 } from '../../database';
 
-// type Input = {|
-//   +complete: boolean,
-//   +userId: string,
-// |};
-
-// type Payload = {|
-//   +changedTodoIds: $ReadOnlyArray<string>,
-//   +userId: string,
-// |};
 
 const MarkAllTodosMutation = mutationWithClientMutationId({
   name: 'MarkAllTodos',

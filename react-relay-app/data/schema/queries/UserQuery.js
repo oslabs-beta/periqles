@@ -1,4 +1,4 @@
-import { graphql } from 'react-relay';
+// import { graphql } from 'react-relay';
 import {GraphQLString} from 'graphql';
 import {GraphQLUser} from '../nodes';
 import {getUser} from '../../database';
@@ -11,6 +11,7 @@ import {getUser} from '../../database';
 // }`
 
 const UserQuery = {
+  name: 'UserQuery',
   type: GraphQLUser, 
   args: {
     id: {type: GraphQLString},
