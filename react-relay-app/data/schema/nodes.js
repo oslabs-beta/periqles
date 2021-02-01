@@ -4,6 +4,7 @@ import {
   GraphQLNonNull,
   GraphQLString,
   GraphQLInt,
+  GraphQLBoolean,
 } from 'graphql';
 
 import {
@@ -21,6 +22,7 @@ import {
   User,
   USER_ID,
   getTodos,
+  getTodoById,
   getUser
 } from '../database.js';
 
@@ -29,7 +31,7 @@ const { nodeInterface, nodeField } = nodeDefinitions(
     const { type, id } = fromGlobalId(globalId);
 
     if (type === 'Todo') {
-      return getTodo(id);
+      return getTodoById(id);
     }
     else if (type === 'User') {
       return getUser(id);
@@ -79,18 +81,17 @@ const GraphQLUser = new GraphQLObjectType({
       type: new GraphQLNonNull(GraphQLString),
       resolve: () => USER_ID,
     },
-    // GraphQL represents the list of todo objects as a "connection" object that can be queried and rendered in slices (pagination) instead of all at once
+    // GraphQL represents the list of todo objects as a "connection" object that can be paginated
     todos: {
       type: TodosConnection, 
       args: {
-        // including status as an arg of the connection object allows the frontend to filter for and view a list of only " completed" todos, or only "not completed" todos
         status: {
-          type: GraphQLString, 
-          defaultValue: 'any',
+          type: GraphQLBoolean, 
+          defaultValue: false,
         },
         ...connectionArgs,
       },
-      // pass in root (?) and the args defined above for the todos connection object
+      // write a resolver to accept root (?) and the args listed above
       resolve: (root, args) => 
         connectionFromArray([...getTodos(args.status)], {     
           after: args.after,
@@ -99,16 +100,18 @@ const GraphQLUser = new GraphQLObjectType({
           last: args.last,
         }),
         // connectionFromArray(array: [Objects], connectionArguments: {after, before, first, last})
-        // best guess: connectionArguments is an object of variables to use for pagination. "First" is the # of nodes to include in the first slice. "After" takes a cursor type arg (a serialized string) to give you a position to start paginating at (by finding the node in the list with a matching cursor string?). "Before" and "last" let you scroll backwards in the list.
+        // connectionArguments is an object of variables to use for pagination. "First" is the # of nodes to include in the first slice. "After" takes a cursor type arg (a serialized string) to give you a position to start paginating at (by finding the node in the list with a matching cursor string?). "Before" and "last" let you scroll backwards in the list.
     },
     totalCount: {
       type: new GraphQLNonNull(GraphQLInt),
-      resolve: () => getTodos.length,
+      resolve: () => getTodos().length,
     },
     completedCount: {
       type: new GraphQLNonNull(GraphQLInt),
-      resolve: number => getTodos('completed').length
+      resolve: number => getTodos(true).length
     }
   },
   interfaces: [nodeInterface],
 });
+
+export {nodeField, GraphQLTodo, GraphQLTodoEdge, GraphQLUser};
