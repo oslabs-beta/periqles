@@ -1,14 +1,7 @@
 // import { graphql } from 'react-relay';
-import {GraphQLString} from 'graphql';
-import {GraphQLUser} from '../nodes';
-import {getUser} from '../../database';
-
-// export const UserQuery = graphql`
-// query UserQuery($userID: ID!) {
-//   node(id: $userID) {
-//     id
-//   }
-// }`
+const {GraphQLString} = require ('graphql');
+const {GraphQLUser} = require('../nodes');
+const {getUser} = require('../../database');
 
 const UserQuery = {
   name: 'UserQuery',
@@ -19,4 +12,4 @@ const UserQuery = {
   resolve: (root, id) => getUser(id),
 };
 
-export {UserQuery};
+module.exports = {UserQuery};

@@ -10,6 +10,7 @@ This will be the schema imported and used by your GraphQL server file.
 
 // from FB's example repo on Github https://github.com/relayjs/relay-examples/blob/master/todo/data/schema/index.js
 
+/*
 import { GraphQLObjectType, GraphQLSchema } from 'graphql';
 import { UserQuery } from './queries/UserQuery';
 import { nodeField } from './nodes.js';
@@ -19,6 +20,17 @@ import { MarkAllTodosMutation } from './mutations/MarkAllTodosMutation';
 import { RemoveCompletedTodosMutation } from './mutations/RemoveCompletedTodosMutation';
 import { RemoveTodoMutation } from './mutations/RemoveTodoMutation';
 import { RenameTodoMutation } from './mutations/RenameTodoMutation';
+*/
+
+const { GraphQLObjectType, GraphQLSchema } = require('graphql');
+const { UserQuery } = require('./queries/UserQuery');
+const { nodeField } = require('./nodes.js');
+const { AddTodoMutation } = require('./mutations/AddTodoMutation');
+const { ChangeTodoStatusMutation } = require('./mutations/ChangeTodoStatusMutation');
+const { MarkAllTodosMutation } = require('./mutations/MarkAllTodosMutation');
+const { RemoveCompletedTodosMutation } = require ('./mutations/RemoveCompletedTodosMutation');
+const { RemoveTodoMutation } = require('./mutations/RemoveTodoMutation');
+const { RenameTodoMutation } = require('./mutations/RenameTodoMutation');
 
 const Query = new GraphQLObjectType({
   name: 'Query',

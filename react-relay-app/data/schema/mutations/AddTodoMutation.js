@@ -61,7 +61,6 @@ const AddTodoMutation = mutationWithClientMutationId({
 
 // export {AddTodoMutation};
 
-
 const mutation = graphql`
   mutation AddTodoMutation($input: AddTodoInput!) {
     addTodo(input: $input) {

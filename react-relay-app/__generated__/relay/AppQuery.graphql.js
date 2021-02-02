@@ -8,7 +8,7 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-type TodoApp_user$ref = any;
+import type { TodoApp_user$ref } from "./TodoApp_user.graphql";
 export type AppQueryVariables = {|
   userID: string
 |};

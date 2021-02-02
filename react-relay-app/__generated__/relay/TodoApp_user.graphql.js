@@ -8,8 +8,8 @@
 
 /*::
 import type { ReaderFragment } from 'relay-runtime';
-type TodoListFooter_user$ref = any;
-type TodoList_user$ref = any;
+import type { TodoListFooter_user$ref } from "./TodoListFooter_user.graphql";
+import type { TodoList_user$ref } from "./TodoList_user.graphql";
 import type { FragmentReference } from "relay-runtime";
 declare export opaque type TodoApp_user$ref: FragmentReference;
 declare export opaque type TodoApp_user$fragmentType: TodoApp_user$ref;

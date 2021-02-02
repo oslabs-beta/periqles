@@ -47,7 +47,7 @@ const RenameTodoMutation = mutationWithClientMutationId({
 // export {RenameTodoMutation};
 
 const mutation = graphql`
-    mutatuib RenameTodoMutation($input){
+    mutation RenameTodoMutation($input: RenameTodoInput!){
         renameTodo(input: $input){
             todo{
                 id
