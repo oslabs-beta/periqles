@@ -16,6 +16,7 @@ import {graphqlHTTP} from 'express-graphql';
 import path from 'path';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
+import periqles from 'periqles';
 import {schema} from './data/schema';
 
 const APP_PORT: number = 3000;
@@ -48,6 +49,9 @@ const app: WebpackDevServer = new WebpackDevServer(compiler, {
   publicPath: '/js/',
   stats: {colors: true},
 });
+
+// allow periqles to query our schema
+// app.use(periqles());
 
 // Serve static resources
 app.use('/', express.static(path.resolve(__dirname, 'public')));

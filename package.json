@@ -1,9 +1,19 @@
 {
+  "name": "periqles",
+  "version": "0.0.1",
+  "description": "React-Relay component library for fast, easy forms",
+  "main": "index.js",
+  "scripts" {
+    "test": "jest --verbose"
+  },
   "dependencies": {
-    "relay-config": "^10.1.3"
+
   },
   "devDependencies": {
-    "babel-plugin-relay": "^10.1.3",
-    "graphql": "^15.5.0"
+    "jest": "^23.6.0"
+  },
+  "jest": {
+    "globalSetup": "./__tests__/jest-setup.js",
+    "globalTeardown": "./__tests__/jest-teardown.js"
   }
 }
