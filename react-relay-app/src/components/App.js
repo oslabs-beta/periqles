@@ -31,7 +31,7 @@ export const environment = new Environment({
 
 
 const query = graphql`
-query appQuery($userID: String) {
+query AppQuery($userID: ID!) {
   user(id: $userID) {
     ...TodoApp_user
   }
