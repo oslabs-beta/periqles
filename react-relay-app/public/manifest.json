@@ -1,0 +1,14 @@
+{
+  "short_name": "React-Relay App",
+  "name": "React-Relay App",
+  "icons": [
+    {
+      "src": " .../periqles-logo.png",
+      "type": "image"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

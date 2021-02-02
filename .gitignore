@@ -102,3 +102,7 @@ dist
 
 # TernJS port file
 .tern-port
+
+# react-relay-app 
+# /react-relay-app/vanilla-gql-example.js
+react-relay-app/__generated__
