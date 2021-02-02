@@ -1,16 +1,17 @@
-import AddTodoMutation from '../../schema/mutations/AddTodoMutation';
+import path from 'path';
 import TodoList from './TodoList';
 import TodoListFooter from './TodoListFooter';
-import TodoTextInput from '.TodoTextInput';
+import TodoTextInput from './TodoTextInput';
 
 import React from 'react';
 import {createFragmentContainer, graphql} from 'react-relay';
-// import {RelayProp} from 'react-relay';
-// import {TodoApp_user} from 'relay/TodoApp_user.graphql';
+
+// eslint-disable-next-line
+const AddTodo = require(path.join(__dirname, '../../data/schema/mutations/AddTodoMutation'));
 
 const TodoApp = ({relay, user}) => {
   const handleTextInputSave = (text) => {
-    AddTodoMutation.commit(relay.environment, text, user);
+    AddTodo.commit(relay.environment, text, user);
     return;
 }
 

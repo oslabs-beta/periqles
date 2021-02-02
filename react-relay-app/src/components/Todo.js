@@ -1,18 +1,23 @@
-import ChangeTodoStatusMutation from '../../data/schema/mutations/ChangeTodoStatusMutation';
-import RemoveTodoMutation from '../../data/schema/mutations/RemoveTodoMutation';
-import RenameTodoMutation from '../../data/schema/mutations/RenameTodoMutation';
+import path from 'path';
 import TodoTextInput from './TodoTextInput';
 
 import React, {useState} from 'react';
 import {createFragmentContainer, graphql} from 'react-relay';
 import classnames from 'classnames';
 
+// eslint-disable-next-line
+const ChangeTodoStatus = require(path.join(__dirname, '../../data/schema/mutations/ChangeTodoStatusMutation'));
+// eslint-disable-next-line
+const RemoveTodo = require(path.join(__dirname, '../../data/schema/mutations/RemoveTodoMutation'));
+// eslint-disable-next-line
+const RenameTodo = require(path.join(__dirname, '../../data/schema/mutations/RenameTodoMutation'));
+
 const Todo = ({relay, todo, user}) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const handleCompleteChange = (e) => {
     const complete = e.currentTarget.checked;
-    ChangeTodoStatusMutation.commit(relay.environment, complete, todo, user);
+    ChangeTodoStatus.commit(relay.environment, complete, todo, user);
   };
 
   const handleDestroyClick = () => removeTodo();
@@ -26,11 +31,11 @@ const Todo = ({relay, todo, user}) => {
 
   const handleTextInputSave = (text) => {
     setIsEditing(false);
-    RenameTodoMutation.commit(relay.environment, text, todo);
+    RenameTodo.commit(relay.environment, text, todo);
   };
 
   const removeTodo = () =>
-    RemoveTodoMutation.commit(relay.environment, todo, user);
+    RemoveTodo.commit(relay.environment, todo, user);
 
   return (
     <li

@@ -59,7 +59,7 @@ const AddTodoMutation = mutationWithClientMutationId({
   },
 });
 
-export {AddTodoMutation};
+// export {AddTodoMutation};
 
 
 const mutation = graphql`
@@ -137,4 +137,4 @@ function commit(environment, text, user) {
   });
 }
 
-export {commit};
+export default {AddTodoMutation, commit};

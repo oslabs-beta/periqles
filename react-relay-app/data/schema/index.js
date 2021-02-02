@@ -10,7 +10,7 @@ This will be the schema imported and used by your GraphQL server file.
 
 // from FB's example repo on Github https://github.com/relayjs/relay-examples/blob/master/todo/data/schema/index.js
 
-import {GraphQLObjectType, GraphQLSchema} from 'graphql';
+import { GraphQLObjectType, GraphQLSchema } from 'graphql';
 import { UserQuery } from './queries/UserQuery';
 import { nodeField } from './nodes.js';
 import { AddTodoMutation } from './mutations/AddTodoMutation';

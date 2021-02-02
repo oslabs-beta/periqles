@@ -35,7 +35,7 @@ const RemoveCompletedTodosMutation = mutationWithClientMutationId({
   },
 });
 
-export {RemoveCompletedTodosMutation};
+// export {RemoveCompletedTodosMutation};
 
 
 const mutation = graphql`
@@ -87,4 +87,4 @@ function commit(environment, todos, user) {
   });
 }
 
-export {commit};
+export default {commit, RemoveCompletedTodosMutation};

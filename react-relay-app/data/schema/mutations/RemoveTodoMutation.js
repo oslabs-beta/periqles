@@ -44,7 +44,7 @@ const RemoveTodoMutation = mutationWithClientMutationId({
   },
 });
 
-export {RemoveTodoMutation};
+// export {RemoveTodoMutation};
 
 const mutation = graphql`
   mutation RemoveTodoMutation($input: RemoveTodoInput!) {
@@ -93,4 +93,4 @@ function commit(environment, todo, user) {
   });
 }
 
-export {commit};
+export default {commit, RemoveTodoMutation};

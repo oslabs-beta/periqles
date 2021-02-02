@@ -8,7 +8,7 @@ import {
   RecordSource,
   Store,
 } from 'relay-runtime';
-import TodoApp from './components/TodoApp';
+import TodoApp from './TodoApp';
 
 function fetchQuery(operation, variables) {
   return fetch('/graphql', {

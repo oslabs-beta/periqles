@@ -55,7 +55,7 @@ const mutation = graphql`
   }
 
 
-export {commit};
+// export {commit};
 
 
 
@@ -89,4 +89,4 @@ const ChangeTodoStatusMutation = mutationWithClientMutationId({
   },
 });
 
-export { ChangeTodoStatusMutation };
+export { ChangeTodoStatusMutation, commit };

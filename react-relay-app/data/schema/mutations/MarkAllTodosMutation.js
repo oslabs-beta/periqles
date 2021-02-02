@@ -99,5 +99,4 @@ function commit(
   });
 }
 
-export {commit};
-export {MarkAllTodosMutation};
+export default {MarkAllTodosMutation, commit};

@@ -1,8 +1,10 @@
-import MarkAllTodosMutation from '../../data/mutations/MarkAllTodosMutation';
+import path from 'path';
 import Todo from './Todo';
-
 import React from 'react';
 import {createFragmentContainer, graphql} from 'react-relay';
+// eslint-disable-next-line
+const MarkAllTodos = require(path.join(__dirname, '../../data/schema/mutations/MarkAllTodosMutation'));
+
 
 const TodoList = ({
   relay,
@@ -13,7 +15,7 @@ const TodoList = ({
     const complete = e.currentTarget.checked;
 
     if (todos) {
-      MarkAllTodosMutation.commit(relay.environment, complete, todos, user);
+      MarkAllTodos.commit(relay.environment, complete, todos, user);
     }
   };
 

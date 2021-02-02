@@ -44,7 +44,7 @@ const RenameTodoMutation = mutationWithClientMutationId({
     }
 });
 
-export {RenameTodoMutation};
+// export {RenameTodoMutation};
 
 const mutation = graphql`
     mutatuib RenameTodoMutation($input){
@@ -81,6 +81,6 @@ function commit(environment, text, todo){
     });
 }
 
-export {commit};
+export default {commit, RenameTodoMutation};
 
 

@@ -1,7 +1,11 @@
-import RemoveCompletedTodosMutation from '../../data/schema/mutations/RemoveCompletedTodosMutation';
-
+import path from 'path';
 import React from 'react';
 import {graphql, createFragmentContainer} from 'react-relay';
+
+// eslint-disable-next-line
+const RemoveCompletedTodos = require(path.join(__dirname, '../../data/schema/mutations/RemoveCompletedTodosMutation'));
+
+
 
 const TodoListFooter = ({
   relay,
@@ -16,7 +20,7 @@ const TodoListFooter = ({
       : [];
 
   const handleRemoveCompletedTodosClick = () => {
-    RemoveCompletedTodosMutation.commit(
+    RemoveCompletedTodos.commit(
       relay.environment,
       { edges: completedEdges },
       user,
