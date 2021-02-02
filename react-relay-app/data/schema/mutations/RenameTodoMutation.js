@@ -81,6 +81,6 @@ function commit(environment, text, todo){
     });
 }
 
-export default {commit, RenameTodoMutation};
+export {commit, RenameTodoMutation};
 
 

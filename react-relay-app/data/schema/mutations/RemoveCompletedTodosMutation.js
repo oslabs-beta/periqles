@@ -87,4 +87,4 @@ function commit(environment, todos, user) {
   });
 }
 
-export default {commit, RemoveCompletedTodosMutation};
+export {commit, RemoveCompletedTodosMutation};

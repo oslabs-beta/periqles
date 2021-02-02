@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "create-react-app-start": "react-scripts start",
+    "cra-start": "react-scripts start",
     "start": "babel-node ./server.js",
     "start-gql": "nodemon server.js",
     "build": "react-scripts build",

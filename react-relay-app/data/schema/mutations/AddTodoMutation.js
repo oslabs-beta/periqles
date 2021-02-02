@@ -136,4 +136,4 @@ function commit(environment, text, user) {
   });
 }
 
-export default {AddTodoMutation, commit};
+export {AddTodoMutation, commit};

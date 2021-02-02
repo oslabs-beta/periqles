@@ -93,4 +93,4 @@ function commit(environment, todo, user) {
   });
 }
 
-export default {commit, RemoveTodoMutation};
+export {commit, RemoveTodoMutation};
