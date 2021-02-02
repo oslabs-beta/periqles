@@ -7,8 +7,8 @@
     "cra-start": "react-scripts start",
     "start": "babel-node ./server.js",
     "start-gql": "nodemon server.js",
-    "build": "react-scripts build",
-    "relay": "relay-compiler --src ./ --schema ./data/schema.graphql --extensions js jsx --artifactDirectory ./__generated__/relay",
+    "cra-build": "react-scripts build",
+    "build": "relay-compiler --src ./ --schema ./data/schema.graphql --extensions js jsx --artifactDirectory ./__generated__/relay",
     "update-schema": "babel-node ./data/schema/update-script.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

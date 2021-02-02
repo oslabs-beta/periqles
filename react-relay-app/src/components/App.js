@@ -1,4 +1,4 @@
-// import 'todomvc-common';
+import 'todomvc-common';
 
 import '../styles/App.css';
 import { graphql, QueryRenderer } from 'react-relay';

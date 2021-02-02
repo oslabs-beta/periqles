@@ -52,6 +52,10 @@ const Mutation = new GraphQLObjectType({
   },
 });
 
+// console.log(GraphQLObjectType);
+console.log('Query: ', typeof Query);   // --> object
+console.log('Mutation: ', Mutation.fields);   // --> undefined
+
 const schema = new GraphQLSchema({
   query: Query,
   mutation: Mutation,

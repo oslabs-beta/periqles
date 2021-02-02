@@ -37,10 +37,10 @@ return (
       <footer className="info">
         <p>Double-click to edit a todo</p>
 
-        {/* <p>
+        <p>
           Created by the{' '}
           <a href="https://facebook.github.io/relay/">Relay team</a>
-        </p> */}
+        </p>
 
         <p>
           Part of <a href="http://todomvc.com">TodoMVC</a>
