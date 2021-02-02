@@ -19,6 +19,11 @@ import {
    // Todo
 } from '../../database';
 
+import {
+    commitMutation,
+    graphql
+} from 'react-relay';
+
 const RenameTodoMutation = mutationWithClientMutationId({
     name: 'RenameTodo',
     inputFields: {
@@ -40,3 +45,42 @@ const RenameTodoMutation = mutationWithClientMutationId({
 });
 
 export {RenameTodoMutation};
+
+const mutation = graphql`
+    mutatuib RenameTodoMutation($input){
+        renameTodo(input: $input){
+            todo{
+                id
+                text
+            }
+        }
+    }`;
+
+function getOptimisticResponse(text,todo){
+    return {
+        renameTodo: {
+            todo: {
+                id: todo.id,
+                text: text
+            }
+        }
+    }
+};
+
+function commit(environment, text, todo){
+    const input = {
+        text,
+        id: todo.id
+    }
+    return commitMutation(environment, {
+        mutation,
+        variables: {
+            input
+        },
+        optimisticResponse: getOptimisticResponse(text, todo)
+    });
+}
+
+export {commit};
+
+

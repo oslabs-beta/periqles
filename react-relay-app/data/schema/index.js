@@ -8,6 +8,8 @@ Import all defined queries and mutations here. Combine them into one GraphQLSche
 This will be the schema imported and used by your GraphQL server file.
 */
 
+// from FB's example repo on Github https://github.com/relayjs/relay-examples/blob/master/todo/data/schema/index.js
+
 import {GraphQLObjectType, GraphQLSchema} from 'graphql';
 import { UserQuery } from './queries/UserQuery';
 import { nodeField } from './nodes.js';
@@ -26,8 +28,6 @@ const Query = new GraphQLObjectType({
   },
 });
 
-// console.log('change todo', ChangeTodoStatusMutation);
-
 const Mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
@@ -40,20 +40,9 @@ const Mutation = new GraphQLObjectType({
   },
 });
 
-/*
-var MyAppSchema = new GraphQLSchema({
-  query: MyAppQueryRootType
-  mutation: MyAppMutationRootType
-});
-*/
-
-// //var schema = new graphql.GraphQLSchema({query: queryType});
-
 const schema = new GraphQLSchema({
   query: Query,
   mutation: Mutation,
 });
 
 module.exports = schema;
-
-// from FB's example repo on Github https://github.com/relayjs/relay-examples/blob/master/todo/data/schema/index.js
