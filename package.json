@@ -1,8 +1,19 @@
 {
   "name": "periqles",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "React-Relay component library for fast, easy forms",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oslabs-beta/periqles"
+  },
+  "keywords":[
+    "react",
+    "relay",
+    "graphql",
+    "forms",
+    "component"
+  ],
   "scripts" {
     "test": "jest --verbose"
   },
