@@ -1,3 +1,5 @@
+// import 'todomvc-common';
+
 import '../styles/App.css';
 import { graphql, QueryRenderer } from 'react-relay';
 import {
@@ -6,6 +8,7 @@ import {
   RecordSource,
   Store,
 } from 'relay-runtime';
+import TodoApp from './components/TodoApp';
 
 function fetchQuery(operation, variables) {
   return fetch('/graphql', {
@@ -28,13 +31,13 @@ export const environment = new Environment({
 
 
 const query = graphql`
-query UserQuery($userID: ID!) {
-  node(id: $userID) {
-    id
+query appQuery($userID: String) {
+  user(id: $userID) {
+    ...TodoApp_user
   }
-}`
+}`;
 
-const userID = 1;   // hard-coded for now
+const userID = 'me';   // mock authenticated user
 
 
 function App() {
@@ -48,14 +51,15 @@ function App() {
           variables={userID}
           render={({error, props}) => {
             if (error) {
-              return <div>Error!</div>;
+              return <div>{error.message}</div>;
             }
-            if (!props) {
-              return <div>Loading...</div>;
+            else if (props && props.user) {
+              return <TodoApp user={props.user} />;
             }
-            return <div>User ID: {props.node.id}</div>
+
+            return <div>Loading...</div>;
           }}
-        ></QueryRenderer>
+        />
       </header>
     </div>
   );
