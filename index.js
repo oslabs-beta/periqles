@@ -7,6 +7,7 @@
   //   __schema {
   //     types {
   //       name
+        // fields
         // kind
         // ofType {
         //     name
