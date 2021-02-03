@@ -23,15 +23,16 @@
 
 /**
  * Middleware that allows periqles to access this project's GraphQL schema by sending an introspection query to the /graphql endpoint.
+ * @parem {Object} RelayEnvironment
  * @public
  */
-const periqles = function() {
+const periqles = function(RelayEnvironment) {
   // find out server address
   // use to send introspection query and receive back schema
   // make schema available to PeriqlesForm.jsx (export)
 };
 
-/*
+
 // example from cookie-parser of how to provide documentation for each thing we export (e.g., if dev hovers over an imported function name, it will show tips about the parameters and return value). We'd put one of these info blocks ahead of each thing we're exporting (at the point where it's defined)
 /**
  * Parse a signed cookie string, return the decoded value.
@@ -41,7 +42,7 @@ const periqles = function() {
  * @return {String} decoded value
  * @public
  */
-// function signedCookie (str, secret) { //etc }
+function signedCookie (str, secret) { //etc }
 
 
 
@@ -57,6 +58,9 @@ const periqles = function() {
 //      name
 //      fields {
 //          name
+//          type{
+//            name
+//          }
 //      }
 //      kind
 //      ofType {
@@ -84,6 +88,9 @@ const periqles = function() {
 // }
 
 //modules.export = IntrospectionRes;
+
+//query for queries & mutations separately
+//need to get mutation input field types
 
   
 // We need to do this in a way where other projects' schemas can be swapped in easily 
