@@ -6,3 +6,11 @@
   // is there linked data between different graphql objects?
 
 //  
+
+// Wrap React functional component in a closure to give it access to the schema and environment that will be returned out of periqles.introspect() in index.js.
+const generatePeriqlesForm = (schema, environment) => {
+
+  return PeriqlesForm = () => {
+    console.log('I am a React component');
+  }
+}

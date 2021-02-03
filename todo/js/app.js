@@ -55,6 +55,8 @@ const modernEnvironment: Environment = new Environment({
 
 // allow periqles to introspect schema
 periqles.introspect(modernEnvironment);
+console.log('PeriqlesForm: ', periqles.PeriqlesForm); // undefined
+// PeriqlesForm();
 
 const rootElement = document.getElementById('root');
 
