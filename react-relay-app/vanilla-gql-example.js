@@ -8,8 +8,6 @@ const uuid = require("uuid/v4");
 
 app.use(cors());
 
-
-
 const schema = buildASTSchema(ggl`
   type Query {
     hello: String
