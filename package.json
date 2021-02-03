@@ -7,18 +7,18 @@
     "type": "git",
     "url": "git+https://github.com/oslabs-beta/periqles"
   },
-  "keywords":[
+  "keywords": [
     "react",
     "relay",
     "graphql",
     "forms",
     "component"
   ],
-  "scripts" {
+  "scripts": {
     "test": "jest --verbose"
   },
   "dependencies": {
-
+    
   },
   "devDependencies": {
     "jest": "^23.6.0"
