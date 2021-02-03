@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "React-Relay component library for fast, easy forms",
   "main": "index.js",
-  "scripts" {
+  "scripts": {
     "test": "jest --verbose"
   },
   "dependencies": {
