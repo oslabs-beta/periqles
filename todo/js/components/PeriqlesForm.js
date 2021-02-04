@@ -1,30 +1,46 @@
 import React, {useState} from 'react';
 
+function periqlesFormWrapper (schema, environment){
+
 // accepts a Relay mutation and optional specifications as props
 const PeriqlesForm = ({mutations, specifications}) => {  
   // console.log('PeriqlesForm component successfully imported');
-  // console.log('PeriqlesForm is using this schema: ', schema);
+  console.log('PeriqlesForm is using this schema: ', schema);
 
   // STATE
   const formState = {};   //--> { fieldName: { value: valueOfState, set: fnToSetState }};
   // mock fields array
-  const fields = [{name: 'name'}, {name:'age'}, {name:'gender'}];
-    fields.forEach((field) => {
-      // Assign a piece of state and a setter function for each field
-      const [value, set] = useState(null);   // locally scoped to this iteration
-      formState[field.name] = {              // scoped to entire component
-        value,
-        set
-      };
-    });
-  console.log(formState);
+  const fields = [{name: 'name', type: 'string'}, {name:'age', type:'number'}, {name:'gender', type:'string'}, {name:'over18', type:'boolean'}];
+  fields.forEach((field) => {
+    // console.log('field object', field);
+    let initialValue;
+    switch (field.type) {
+      case 'string': 
+        initialValue = '';
+        break;
+      case 'number':
+        initialValue = 0;
+        break;
+      case 'boolean':
+        initialValue = false;
+        break;
+      default:
+        initialValue = null;
+    }
+    // Assign a piece of state and a setter function for each field
+    const [value, set] = useState(null);   
+    formState[field.name] = {              
+      value: initialValue,
+      set
+    };
+  });
   
   // HANDLERS
   /**
    * @param {object} Event
    */
   const handleSubmit = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' || e.type === 'click') {
       e.preventDefault();   // prevent page refesh 
     }
     
@@ -177,4 +193,7 @@ const PeriqlesForm = ({mutations, specifications}) => {
   )
 }
 
-export default PeriqlesForm;
+  return PeriqlesForm;
+}
+
+export default periqlesFormWrapper;

@@ -20,31 +20,50 @@ import React, {useState} from 'react';
   const PeriqlesForm = ({mutations, specifications}) => {  
     // console.log('PeriqlesForm component successfully imported');
     // console.log('PeriqlesForm is using this schema: ', schema);
-
-    // STATE
+    // STATE  
     const formState = {};   //--> { fieldName: { value: valueOfState, set: fnToSetState }};
+
     // mock fields array
-    const fields = [{name: 'name'}, {name:'age'}, {name:'gender'}];
+    const fields = [{name: 'name', type: 'string'}, {name:'age', type:'number'}, {name:'gender', type:'string'}, {name:'over18', type:'boolean'}];
+
     fields.forEach((field) => {
       // console.log('field object', field);
+      let initialValue;
+      switch (field.type) {
+        case 'string': 
+          initialValue = '';
+          break;
+        case 'number':
+          initialValue = 0;
+          break;
+        case 'boolean':
+          initialValue = false;
+          break;
+        default:
+          initialValue = null;
+      }
       // Assign a piece of state and a setter function for each field
-      const [value, set] = useState(null);   // locally scoped to this iteration
-      formState[field.name] = {              // scoped to entire component
-        value,
+      const [value, set] = useState(null);   
+      formState[field.name] = {              
+        value: initialValue,
         set
       };
     });
+    
     
     // HANDLERS
     /**
      * @param {object} Event
      */
     const handleSubmit = (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();   // prevent page refesh 
+      console.log('Submit clicked');
+
+      // prevent page refesh on enter key or submit button click
+      if (e.key === 'Enter' || e.type === 'click') {
+        e.preventDefault();   
       }
       
-      // TODO: replace with formState
+      // TODO: replace with form state
       const input = {hi: 'hello'};
   
       mutation.commit(environment, {
@@ -62,6 +81,7 @@ import React, {useState} from 'react';
       const {name, value} = e.target;
       console.log(`${name} field changed its value to: ${value}`);
       formState[name].set(value);
+      console.log('new state:', formState);
     }
   
     /**
@@ -85,7 +105,7 @@ import React, {useState} from 'react';
                     class = {input.name + '-range periqles-range'} 
                     name = {input.name} 
                     min = {input.min} max ={input.max}
-                    value={formState[input.name.value]} 
+                    value={formState[input.name].value} 
                     onChange={handleChange}
                 />
               </label>
@@ -98,7 +118,7 @@ import React, {useState} from 'react';
                       className = {input.name + '-image periqles-image'}
                       name = {input.name} 
                       src = {input.src} alt = {input.name} 
-                      value={formState[input.name.value]} 
+                      value={formState[input.name].value} 
                       onChange={handleChange}
                   />
               </label>
@@ -158,7 +178,7 @@ import React, {useState} from 'react';
                   className={input.name + '-textarea periqles-textarea'} 
                   name={input.name}
                   placeholder={input.name}
-                  value={formState[input.name.value]} 
+                  value={formState[input.name].value} 
                   onChange={handleChange}
                   />
               </label>; 
@@ -170,7 +190,7 @@ import React, {useState} from 'react';
                   type={input.element || 'text'}
                   className={input.name + '-input periqles-text'} 
                   name={input.name} 
-                  value={formState[input.name.value]} 
+                  value={formState[input.name].value} 
                   placeholder={input.name}
                   onChange={handleChange}>
                 </input>
@@ -197,7 +217,7 @@ import React, {useState} from 'react';
 
 /*
 // mock props
-const schema = [{'name': name, type: 'String'}];
+const schema = [{name: 'name', type: 'String'}];
 const environment = {'networkLayer': 'fake network layer', 'store': 'fake Relay store'};
 const mutation = '';
 const specifications = {
@@ -218,6 +238,30 @@ const specifications = {
   ],
 };
 */
+
+// mock fields array
+    // const fields = [{name: 'name', type: 'string'}, {name:'age', type:'number'}, {name:'gender', type:'string'}, {name:'over18', type:'boolean'}];
+    /*
+    // define an initial state for the form, with the field name as the keys and their initial value as the values
+    const initialState = {};
+    fields.forEach(field => {
+      switch (field.type) {
+        case 'string': 
+          initialState[field.name] = '';
+          break;
+        case 'number':
+          initialState[field.name] = 0;
+          break;
+        case 'boolean':
+          initialState[field.name] = false;
+          break;
+        default:
+          initialState[field.name] = null;
+      }
+    })
+    const [formState, setFormState] = useState(initialState);
+    */
+
 
 //import schema, environment
 
