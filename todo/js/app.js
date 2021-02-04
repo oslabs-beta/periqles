@@ -12,7 +12,7 @@
  */
 
 import 'todomvc-common';
-import periqles, {PeriqlesForm} from '../../index.js';
+import periqles from '../../index.js';
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
@@ -54,7 +54,6 @@ const modernEnvironment: Environment = new Environment({
 });
 
 // allow periqles to introspect schema
-console.log(PeriqlesForm);
 periqles.introspect(modernEnvironment);
 
 // mock props for PeriqlesForm
@@ -98,10 +97,11 @@ if (rootElement) {
       }}
       render={({error, props}: {error: ?Error, props: ?appQueryResponse}) => {
         if (props && props.user) {
+          console.log(periqles.PeriqlesForm);
           return (
             <div>
               <TodoApp user={props.user} />
-              <PeriqlesForm mutation={mutation} specifications={specifications}/>
+              <periqles.PeriqlesForm mutation={mutation} specifications={specifications}/>
             </div>
           );
         } else if (error) {
