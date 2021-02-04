@@ -18,6 +18,9 @@ import React, {useState} from 'react';
   
   // accepts a Relay mutation and optional specifications as props
   const PeriqlesForm = ({mutations, specifications}) => {  
+    console.log('PeriqlesForm component successfully imported');
+    // console.log('PeriqlesForm scoped variables: Schema:', schema, 'Envrionment:', environment);
+
     // STATE
     const formState = {};   //--> { fieldName: { value: valueOfState, set: fnToSetState }};
   

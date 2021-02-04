@@ -12,7 +12,7 @@
  */
 
 import 'todomvc-common';
-import periqles from '../../index.js';
+import periqles, {PeriqlesForm} from '../../index.js';
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
@@ -76,6 +76,7 @@ const specifications = {
       id: 'radioId',
     },
   ],
+  args: [{name: 'userID', value: 'me'}],
 };
 
 const rootElement = document.getElementById('root');
@@ -97,11 +98,10 @@ if (rootElement) {
       }}
       render={({error, props}: {error: ?Error, props: ?appQueryResponse}) => {
         if (props && props.user) {
-          console.log(periqles.PeriqlesForm);
           return (
             <div>
               <TodoApp user={props.user} />
-              <periqles.PeriqlesForm mutation={mutation} specifications={specifications}/>
+              <PeriqlesForm mutation={mutation} specifications={specifications}/>
             </div>
           );
         } else if (error) {
