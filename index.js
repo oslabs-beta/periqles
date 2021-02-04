@@ -19,12 +19,10 @@ import periqlesFormWrapper from './PeriqlesForm.jsx';
  * @public
  */
 
-// placeholder method until the introspection query provides PeriqlesForm with a schema and environment
-const periqles = {
-  PeriqlesForm: () => console.error('ERROR: You must invoke periqles.introspect before you can instantiate a PeriqlesForm.'),
-}
+// PeriqlesForm is a placeholder method until the introspection query provides PeriqlesForm with a schema and environment.
+// let PeriqlesForm = () => console.error('ERROR: Can\'t instantiate PeriqlesForm before introspection query has finished.')
 
-const introspect = function(RelayEnvironment) {
+const introspect = (RelayEnvironment) => {
   let schema;   // array of type objects found in introspection
 
   const introspectionQuery = `{
@@ -72,8 +70,10 @@ const introspect = function(RelayEnvironment) {
       throw new Error('ERROR at periqles.introspect: Schema contains no types');
     }
 
-    // After introspection, make our PeriqlesForm component available as a method on periqles.
+    // Make our PeriqlesForm component available as a method on periqles with access to schema and environment.
     periqles.PeriqlesForm = periqlesFormWrapper(schema, RelayEnvironment);
+    // console.log(periqlesFormWrapper(schema, RelayEnvironment));
+    // console.log('after reassigning:', PeriqlesForm);
     // export const PeriqlesForm  = periqlesFormWrapper(schema, RelayEnvironment);
     // exports.PeriqlesForm = periqlesFormWrapper(schema, RelayEnvironment);
   })  
@@ -86,12 +86,14 @@ const introspect = function(RelayEnvironment) {
  */
 
 // TODO: export in such a way that destructuring PeriqlesForm off of periqles works.
-periqles.introspect = introspect;
+const periqles = {
+  introspect,
+  PeriqlesForm: () => console.error('ERROR: Can\'t instantiate PeriqlesForm before introspection query has finished.'),
+}
 export default periqles;
-// export const periqles = {
-//   introspect,
-//   PeriqlesForm: () => console.error('ERROR: You must invoke periqles.introspect before you can instantiate a PeriqlesForm.'),
-// };
+
+
+
 // module.exports = require('./');
 // exports.introspect = introspect;
 

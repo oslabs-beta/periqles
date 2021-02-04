@@ -16,7 +16,6 @@ import RemoveCompletedTodosMutation from '../mutations/RemoveCompletedTodosMutat
 import React from 'react';
 import {graphql, createFragmentContainer, type RelayProp} from 'react-relay';
 import type {TodoListFooter_user} from 'relay/TodoListFooter_user.graphql';
-import PeriqlesForm from './PeriqlesForm.js';
 type Todos = $NonMaybeType<$ElementType<TodoListFooter_user, 'todos'>>;
 type Edges = $NonMaybeType<$ElementType<Todos, 'edges'>>;
 type Edge = $NonMaybeType<$ElementType<Edges, number>>;
@@ -64,7 +63,6 @@ const TodoListFooter = ({
           Clear completed
         </button>
       )}
-      <PeriqlesForm />
     </footer>
   );
 };

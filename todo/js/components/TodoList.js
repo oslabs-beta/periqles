@@ -13,7 +13,7 @@
 
 import MarkAllTodosMutation from '../mutations/MarkAllTodosMutation';
 import Todo from './Todo';
-import periqles from '../../../index.js';
+// import periqles from '../../../index.js';
 
 import React from 'react';
 import {createFragmentContainer, graphql, type RelayProp} from 'react-relay';
@@ -51,7 +51,7 @@ const TodoList = ({
 
   return (
     <section className="main">
-      <periqles.PeriqlesForm />
+      {/* <periqles.PeriqlesForm /> */}
       <input
         checked={totalCount === completedCount}
         className="toggle-all"

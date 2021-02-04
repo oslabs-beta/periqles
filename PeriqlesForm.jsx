@@ -1,36 +1,7 @@
 import React, {useState} from 'react';
 
-// mock props
-const schema = [{'name': name, type: 'String'}];
-const environment = {'networkLayer': 'fake network layer', 'store': 'fake Relay store'};
-const mutation = '';
-const specifications = {
-  fields: [
-    {
-      name: "name",
-      element: "text",
-      id: "textId",
-    },
-    {
-      name: "gender",
-      element: "radio",
-      options: [
-        {name: "male", value: "m"},
-        {name:"female", value: "f"},
-        {name: "prefer not to say", value: "x"},
-      ],
-      id: "radioId",
-    },
-  ],
-};
-
-// invoke with mock props
-const PeriqlesForm = PeriqlesFormWrapper(schema, environment);
-PeriqlesForm(mutation, specifications);
-  
-//Wrapper function 
 /**
- * Builds a HTML form based on user provided parameters
+ * Wraps the PeriqlesForm component in a closure containing the Relay project's schema and RelayEnvironment.
  * @param {Object} Schema (REQUIRED) The graphQL schema used in this application  
  * @param {Object} Environment (REQUIRED) - The environment variable for this application containing the network layer and store
  * @return {Function} Returns an inner function PeriqlesForm? that generates a Periqles React form component 
@@ -61,7 +32,7 @@ PeriqlesForm(mutation, specifications);
       }
       
       // TODO: replace with formState
-      const input = {'hi': 'hello'};
+      const input = {hi: 'hello'};
   
       mutation.commit(environment, {
         mutation, 
@@ -79,10 +50,6 @@ PeriqlesForm(mutation, specifications);
       console.log('name and value: ', name, value);
       formState[name].set(value);
     }
-  
-   
-  // desconstruct mutation from props
-  // check if specifications were passed in
   
   /**
    * Builds a HTML form based on user provided parameters
@@ -211,16 +178,47 @@ PeriqlesForm(mutation, specifications);
       return formElements;
     }
   
-      return (
-        <form className="PeriqlesForm"
-              onSubmit={handleSubmit}>
-          {formBuilder()}
-          <button onClick={handleSubmit}>Submit</button>
-        </form>
-      )
-    }
-  
+    return (
+      <form className="PeriqlesForm"
+            onSubmit={handleSubmit}>
+        {formBuilder()}
+        <button onClick={handleSubmit}>Submit</button>
+      </form>
+    )
   }
+  
+  return PeriqlesForm;
+}
+
+/*
+// mock props
+const schema = [{'name': name, type: 'String'}];
+const environment = {'networkLayer': 'fake network layer', 'store': 'fake Relay store'};
+const mutation = '';
+const specifications = {
+  fields: [
+    {
+      name: "name",
+      element: "text",
+      id: "textId",
+    },
+    {
+      name: "gender",
+      element: "radio",
+      options: [
+        {name: "male", value: "m"},
+        {name:"female", value: "f"},
+        {name: "prefer not to say", value: "x"},
+      ],
+      id: "radioId",
+    },
+  ],
+};
+
+// invoke with mock props
+const PeriqlesForm = periqlesFormWrapper(schema, environment);
+PeriqlesForm(mutation, specifications);
+*/
 
 
 //import schema, environment
