@@ -7,7 +7,6 @@
     "update-schema": "babel-node ./scripts/updateSchema.js",
     "lint": "eslint ./ --cache",
     "test": "jest --verbose"
-
   },
   "dependencies": {
     "classnames": "2.2.6",

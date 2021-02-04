@@ -12,6 +12,7 @@
  */
 
 import 'todomvc-common';
+import periqles from '../../index.js';
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
@@ -52,6 +53,14 @@ const modernEnvironment: Environment = new Environment({
   store: new Store(new RecordSource()),
 });
 
+// allow periqles to introspect schema
+console.log(periqles);  // should have two methods, PeriqlesForm and introspect
+periqles.introspect(modernEnvironment);
+// window.setTimeout(() => {
+//   console.log('PeriqlesForm after introspect: ', periqles.PeriqlesForm); // should be reassigned to the result of invoking PeriqlesFormWrapper
+//   periqles.PeriqlesForm();  // should console-log 'I am a React component'
+// }, 500);
+
 const rootElement = document.getElementById('root');
 
 if (rootElement) {
@@ -71,7 +80,12 @@ if (rootElement) {
       }}
       render={({error, props}: {error: ?Error, props: ?appQueryResponse}) => {
         if (props && props.user) {
-          return <TodoApp user={props.user} />;
+          const {PeriqlesForm} = periqles;
+          // console.log(PeriqlesForm);
+          return (<div>
+            <TodoApp user={props.user} />
+            <PeriqlesForm />
+          </div>)
         } else if (error) {
           return <div>{error.message}</div>;
         }

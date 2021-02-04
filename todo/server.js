@@ -30,10 +30,13 @@ const compiler: webpack.Compiler = webpack({
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react']
+          }
         },
       },
     ],
@@ -49,9 +52,6 @@ const app: WebpackDevServer = new WebpackDevServer(compiler, {
   publicPath: '/js/',
   stats: {colors: true},
 });
-
-// allow periqles to query our schema
-// app.use(periqles());
 
 // Serve static resources
 app.use('/', express.static(path.resolve(__dirname, 'public')));
