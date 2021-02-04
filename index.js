@@ -11,7 +11,7 @@
 //  * @private
 //  */
 
-import PeriqlesFormWrapper from './PeriqlesForm.jsx';
+import periqlesFormWrapper from './PeriqlesForm.jsx';
 
 /**
  * Gives PeriqlesForm components access to the project's GraphQL schema via an introspection query.
@@ -73,9 +73,9 @@ const introspect = function(RelayEnvironment) {
     }
 
     // After introspection, make our PeriqlesForm component available as a method on periqles.
-    periqles.PeriqlesForm = PeriqlesFormWrapper(schema, RelayEnvironment);
-    // export const PeriqlesForm  = PeriqlesFormWrapper(schema, RelayEnvironment);
-    // exports.PeriqlesForm = PeriqlesFormWrapper(schema, RelayEnvironment);
+    periqles.PeriqlesForm = periqlesFormWrapper(schema, RelayEnvironment);
+    // export const PeriqlesForm  = periqlesFormWrapper(schema, RelayEnvironment);
+    // exports.PeriqlesForm = periqlesFormWrapper(schema, RelayEnvironment);
   })  
   .catch(err => console.error('ERROR at periqles.introspect:', err));
 };
