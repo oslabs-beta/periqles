@@ -3580,12 +3580,7 @@
   dependencies:
     "prettier" "^1.16.0"
 
-"graphql-tag@^2.11.0":
-  "integrity" "sha512-VmsD5pJqWJnQZMUeRwrDhfgoyqcfwEkvtpANqcoUG8/tOLkwNgU9mzub/Mc78OJMhHjx7gfAMTxzdG43VGg3bA=="
-  "resolved" "https://registry.npmjs.org/graphql-tag/-/graphql-tag-2.11.0.tgz"
-  "version" "2.11.0"
-
-"graphql@^0.5.0 || ^0.6.0 || ^0.7.0 || ^0.8.0-b || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0", "graphql@^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0", "graphql@^14.0.0 || ^15.0.0-rc.1", "graphql@^14.7.0 || ^15.3.0", "graphql@^15.0.0", "graphql@^15.4.0":
+"graphql@^0.5.0 || ^0.6.0 || ^0.7.0 || ^0.8.0-b || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0", "graphql@^14.0.0 || ^15.0.0-rc.1", "graphql@^14.7.0 || ^15.3.0", "graphql@^15.0.0", "graphql@^15.4.0":
   "integrity" "sha512-EB3zgGchcabbsU9cFe1j+yxdzKQKAbGUWRb13DsrsMN1yyfmmIq+2+L5MqVWcDCE4V89R5AyUOi7sMOGxdsYtA=="
   "resolved" "https://registry.npmjs.org/graphql/-/graphql-15.4.0.tgz"
   "version" "15.4.0"

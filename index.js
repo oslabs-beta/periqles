@@ -6,18 +6,23 @@
 
 'use strict'    // prevent use of undeclared variables
 
-/**
- * Module dependencies. Marking as private means they can only be used here in the scope of this file, and won't appear in VSCode documentation.
- * @private
- */
+// /**
+//  * Module dependencies. Marking as private means they can only be used here in the scope of this file, and won't appear in VSCode documentation.
+//  * @private
+//  */
 
-import generatePeriqlesForm from './PeriqlesForm.jsx';
+import PeriqlesFormWrapper from './PeriqlesForm.jsx';
 
 /**
  * Gives PeriqlesForm components access to the project's GraphQL schema via an introspection query.
  * @param {Object} RelayEnvironment A RelayEnvironment instance containing a Network Layer and a Store. Used by PeriqlesForm components to commit Relay mutations.
  * @public
  */
+
+// placeholder method until the introspection query provides PeriqlesForm with a schema and environment
+const periqles = {
+  PeriqlesForm: () => console.error('ERROR: You must invoke periqles.introspect before you can instantiate a PeriqlesForm.'),
+}
 
 const introspect = function(RelayEnvironment) {
   let schema;   // array of type objects found in introspection
@@ -50,7 +55,6 @@ const introspect = function(RelayEnvironment) {
     }`;
 
   // Shape of response: { data: { __schema: { types: [{ name, fields, kind, ofType }] } }, __proto }
-  // The types are stored in an array at data.__schema.types.
   fetch('/graphql', {
     method: 'POST',
     headers: {
@@ -68,26 +72,28 @@ const introspect = function(RelayEnvironment) {
       throw new Error('ERROR at periqles.introspect: Schema contains no types');
     }
 
-    // return {schema, RelayEnvironment};
-    // return schema;    
-
-    // After introspection, make our PeriqlesForm available as a method on periqles.
-    const PeriqlesForm = generatePeriqlesForm({schema, RelayEnvironment});
-    periqles.PeriqlesForm = PeriqlesForm;
+    // After introspection, make our PeriqlesForm component available as a method on periqles.
+    periqles.PeriqlesForm = PeriqlesFormWrapper(schema, RelayEnvironment);
+    // export const PeriqlesForm  = PeriqlesFormWrapper(schema, RelayEnvironment);
+    // exports.PeriqlesForm = PeriqlesFormWrapper(schema, RelayEnvironment);
   })  
-  .catch(err => console.error('ERROR at periqles introspection:', err));
+  .catch(err => console.error('ERROR at periqles.introspect:', err));
 };
-
-// const PeriqlesForm = generatePeriqlesForm({schema, environment});
-// const periqles = { introspect, PeriqlesForm };
 
 /**
  * Default module export.
  * @public
  */
 
-const periqles = {introspect};
+// TODO: export in such a way that destructuring PeriqlesForm off of periqles works.
+periqles.introspect = introspect;
 export default periqles;
+// export const periqles = {
+//   introspect,
+//   PeriqlesForm: () => console.error('ERROR: You must invoke periqles.introspect before you can instantiate a PeriqlesForm.'),
+// };
+// module.exports = require('./');
+// exports.introspect = introspect;
 
 // Store introspected schema in a variable
 // Filter array of types received form introspection query for query/mutation name, fields, data types passed into component as props
