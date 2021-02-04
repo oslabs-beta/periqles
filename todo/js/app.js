@@ -101,7 +101,7 @@ if (rootElement) {
           return (
             <div>
               <TodoApp user={props.user} />
-              <PeriqlesForm mutation={mutation} specifications={specifications}/>
+              {/* <PeriqlesForm mutation={mutation} specifications={specifications}/> */}
             </div>
           );
         } else if (error) {
