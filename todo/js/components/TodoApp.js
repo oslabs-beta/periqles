@@ -18,9 +18,9 @@ import TodoTextInput from './TodoTextInput';
 
 import React from 'react';
 import {createFragmentContainer, graphql} from 'react-relay';
-import {PeriqlesForm} from '../../../index.js';
+// import {PeriqlesForm} from '../../../index.js';
 // import PeriqlesForm from './PeriqlesForm.js';
-// import periqlesFormWrapper from './PeriqlesForm.js';
+import periqlesFormWrapper from './PeriqlesForm.js';
 import type {RelayProp} from 'react-relay';
 import type {TodoApp_user} from 'relay/TodoApp_user.graphql';
 
@@ -61,9 +61,9 @@ const TodoApp = ({relay, user}: Props) => {
   };
 
   // mock making closure
-  // const schema = [{name: 'name', type: 'String'}];
-  // const environment = {networkLayer: 'fake network layer', store: 'fake Relay store'};
-  // const PeriqlesForm = periqlesFormWrapper(schema, environment);
+  const schema = [{name: 'name', type: 'String'}];
+  const environment = {networkLayer: 'fake network layer', store: 'fake Relay store'};
+  const PeriqlesForm = periqlesFormWrapper(schema, environment);
 
   return (
     <div>

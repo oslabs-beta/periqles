@@ -81,7 +81,7 @@ import React, {useState} from 'react';
       const {name, value} = e.target;
       console.log(`${name} field changed its value to: ${value}`);
       formState[name].set(value);
-      console.log('new state:', formState);
+      // console.log('new state:', formState);
     }
   
     /**
