@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 function periqlesFormWrapper (schema, environment){
 
 // accepts a Relay mutation and optional specifications as props
-const PeriqlesForm = ({mutations, specifications}) => {  
+const PeriqlesForm = ({mutations, specifications, args}) => {  
   // console.log('PeriqlesForm component successfully imported');
   console.log('PeriqlesForm is using this schema: ', schema);
 
@@ -44,13 +44,28 @@ const PeriqlesForm = ({mutations, specifications}) => {
       e.preventDefault();   // prevent page refesh 
     }
     
-    // TODO: replace with formState
-    const input = {hi: 'hello'};
+    // populate $input for mutation
+    const input = {};
+    Object.keys(formState).forEach(key => {
+      input[key] = formState[key].value;
+    });
+    if (args) {
+      args.forEach(([key, value]) => {
+        input[key] = value;
+      });
+    }
+
+    // Documentation re: shape of mutation.commit's second parameter: https://relay.dev/docs/en/mutations#arguments
+    // TODO: reference shape of input type object. input property must  match that
+    const variables = {
+      input,
+      clientMutationId
+    };
 
     mutation.commit(environment, {
       mutation, 
-      input,
-      onCompleted: (res, errors) => console.log('Server response to mutation:', res, errors),
+      variables,
+      onCompleted: (response, errors) => console.log('Server response to mutation:', response, errors),
       onError: (err) => console.error(err)
     });   
   }
@@ -88,7 +103,7 @@ const PeriqlesForm = ({mutations, specifications}) => {
                   min = {input.min} max ={input.max}
                   value={formState[input.name.value]} 
                   onChange={handleChange}
-              />
+                />
             </label>
           break;
         case 'image':
