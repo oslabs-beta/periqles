@@ -3,7 +3,7 @@
 </p>
 
 # periqles
-A component library that makes creating forms and GraphQL mutations for React-Relay apps easy, fast, and DRY. Periqles abstracts away the UI and API calls associated with collecting user input so that you can be free to focus on the business logic of your application.
+A component library that makes creating forms that commit mutations in a React-Relay codebase easy, fast, and DRY. Periqles abstracts away the UI and API calls associated with collecting user input so that you can be free to focus on the business logic of your application.
 
 >*“Having knowledge but lacking the power to express it clearly is no better than never having any ideas at all.”  
 -- Pericles*
