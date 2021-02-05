@@ -17,14 +17,15 @@
   "scripts": {
     "test": "jest --verbose"
   },
-  "dependencies": {
-    "react": "^17.0.1"
-  },
   "devDependencies": {
-    "@babel/core": "^7.12.9",
-    "@babel/preset-env": "^7.12.7",
-    "@babel/preset-react": "^7.12.7",
+    "eslint": "^7.14.0",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "jest": "^23.6.0"
+  },
+  "peerDependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   },
   "jest": {
     "globalSetup": "./__tests__/jest-setup.js",

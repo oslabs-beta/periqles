@@ -6,10 +6,10 @@
 
 'use strict'    // prevent use of undeclared variables
 
-// /**
-//  * Module dependencies. Marking as private means they can only be used here in the scope of this file, and won't appear in VSCode documentation.
-//  * @private
-//  */
+/**
+ * Module dependencies. Marking as private means they can only be used here in the scope of this file, and won't appear in VSCode documentation.
+ * @private
+ */
 
 import periqlesFormWrapper from './PeriqlesForm.jsx';
 
@@ -19,8 +19,6 @@ import periqlesFormWrapper from './PeriqlesForm.jsx';
  * @public
  */
 
-// PeriqlesForm is a placeholder method until the introspection query provides PeriqlesForm with a schema and environment.
-// let PeriqlesForm = () => console.error('ERROR: Can\'t instantiate PeriqlesForm before introspection query has finished.')
 
 const introspect = (RelayEnvironment) => {
   let schema;   // array of type objects found in introspection
@@ -71,11 +69,7 @@ const introspect = (RelayEnvironment) => {
     }
 
     // Make our PeriqlesForm component available as a method on periqles with access to schema and environment.
-    periqles.PeriqlesForm = periqlesFormWrapper(schema, RelayEnvironment);
-    // console.log(periqlesFormWrapper(schema, RelayEnvironment));
-    // console.log('after reassigning:', PeriqlesForm);
-    // export const PeriqlesForm  = periqlesFormWrapper(schema, RelayEnvironment);
-    // exports.PeriqlesForm = periqlesFormWrapper(schema, RelayEnvironment);
+    PeriqlesForm = periqlesFormWrapper(schema, RelayEnvironment);
   })  
   .catch(err => console.error('ERROR at periqles.introspect:', err));
 };
@@ -85,18 +79,8 @@ const introspect = (RelayEnvironment) => {
  * @public
  */
 
-// TODO: export in such a way that destructuring PeriqlesForm off of periqles works.
-const periqles = {
-  introspect,
-  PeriqlesForm: () => console.error('ERROR: Can\'t instantiate PeriqlesForm before introspection query has finished.'),
-}
+export function PeriqlesForm() { 
+  console.error('ERROR: Can\'t instantiate PeriqlesForm before introspection query has finished.'); 
+};
+const periqles = {introspect};
 export default periqles;
-
-
-
-// module.exports = require('./');
-// exports.introspect = introspect;
-
-// Store introspected schema in a variable
-// Filter array of types received form introspection query for query/mutation name, fields, data types passed into component as props
-// We can use Jest to test whether the data types we read off the schema are what we expect
