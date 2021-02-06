@@ -15,6 +15,7 @@ import {GraphQLObjectType, GraphQLSchema} from 'graphql';
 
 import {nodeField} from './nodes.js';
 import {UserQuery} from './queries/UserQuery';
+import {demoUserQuery} from './queries/demoUserQuery';
 import {AddTodoMutation} from './mutations/AddTodoMutation';
 import {ChangeTodoStatusMutation} from './mutations/ChangeTodoStatusMutation';
 import {MarkAllTodosMutation} from './mutations/MarkAllTodosMutation';
@@ -27,6 +28,7 @@ const Query = new GraphQLObjectType({
   name: 'Query',
   fields: {
     user: UserQuery,
+    demoUser: demoUserQuery,
     node: nodeField,
   },
 });

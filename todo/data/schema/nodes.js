@@ -32,6 +32,7 @@ import {
 import {
   Todo,
   User,
+  DemoUser,
   USER_ID,
   getTodoOrThrow,
   getTodos,
@@ -43,11 +44,12 @@ import {
 const {nodeInterface, nodeField} = nodeDefinitions(
   (globalId: string): ?{} => {
     const {type, id}: {id: string, type: string} = fromGlobalId(globalId);
-
     if (type === 'Todo') {
       return getTodoOrThrow(id);
     } else if (type === 'User') {
       return getUserOrThrow(id);
+    } else if (type === 'DemoUser') {
+      return getDemoUserOrThrow(id);
     }
     return null;
   },
@@ -124,4 +126,40 @@ const GraphQLUser = new GraphQLObjectType({
   interfaces: [nodeInterface],
 });
 
-export {nodeField, GraphQLTodo, GraphQLTodoEdge, GraphQLUser};
+const demoGraphQLUser = new GraphQLObjectType({
+  name: 'DemoUser',
+  fields: {
+    id: globalIdField('DemoUser'),
+    userId: {
+      type: new GraphQLNonNull(GraphQLString),
+      resolve: (demoUser): string => demoUser.userId, // where does this value come from? mutation? methods come from database so maybe adding Demo methods there,
+    },
+    username: {
+      type: new GraphQLNonNull(GraphQLString),
+      resolve: (demoUser): string => demoUser.username, // where does this value come from? mutation? methods come from database so maybe adding Demo methods there,
+    },
+    password: {
+      type: new GraphQLNonNull(GraphQLString),
+      resolve: (demoUser): string => demoUser.password, // where does this value come from? mutation? methods come from database so maybe adding Demo methods there,
+    },
+    email: {
+      type: new GraphQLNonNull(GraphQLString),
+      resolve: (demoUser): string => demoUser.email, // where does this value come from? mutation? methods come from database so maybe adding Demo methods there,
+    },
+    gender: {
+      type: new GraphQLNonNull(GraphQLString),
+      resolve: (demoUser): string => demoUser.gender, // where does this value come from? mutation? methods come from database so maybe adding Demo methods there,
+    },
+    pizzaTopping: {
+      type: new GraphQLNonNull(GraphQLString),
+      resolve: (demoUser): string => demoUser.pizzaTopping, // where does this value come from? mutation? methods come from database so maybe adding Demo methods there,
+    },
+    age: {
+      type: new GraphQLNonNull(GraphQLString),
+      resolve: (demoUser): number => demoUser.age, // where does this value come from? mutation? methods come from database so maybe adding Demo methods there,
+    },
+  },
+  interfaces: [nodeInterface],
+});
+
+export {nodeField, GraphQLTodo, GraphQLTodoEdge, GraphQLUser, demoGraphQLUser};
