@@ -36,6 +36,7 @@ import {
   getTodoOrThrow,
   getTodos,
   getUserOrThrow,
+  getDemoUserOrThrow,
 } from '../database';
 
 // $FlowFixMe graphql-relay types not available in flow-typed, strengthen this typing
