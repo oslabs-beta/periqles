@@ -17,7 +17,12 @@ const mutation = graphql`
     addUser(input: $input) {
       user {
         id
-        # TODO
+        username
+        password
+        email
+        gender
+        pizzaTopping
+        age
       }
     }
   }
@@ -40,14 +45,21 @@ let tempID = 0;
 // can leave this out
 function commit(
   environment: Environment,
-  // TODO: list input values from schema here
-  name,
+  username,
+  password,
+  email,
+  gender,
+  pizzaTopping,
   age,
 ): Disposable {
 
   const input: AddUserInput = {
     // add input values listed above to an input object
-    name,
+    username,
+    password,
+    email,
+    gender,
+    pizzaTopping,
     age,
     clientMutationId: `${tempID++}`,    // why is this unique?
   };
@@ -63,9 +75,13 @@ function commit(
       sharedUpdater(store, user);
     },
     optimisticUpdater: (store: RecordSourceSelectorProxy) => {    // TODO: needed?
-      // const id = 'client:newTodo:' + tempID++;     // TODO: make a new, unique user id
+      // const id = 'client:newTodo:' + tempID++;     // TODO: make a new, unique mutation id
       const user = store.create(id, 'User');    // create(idForNewData, typeNameFromSchema) --> RecordProxy
-      user.setValue(name, 'name');              // setValue(value, fieldName)
+      user.setValue(username, 'username');      // setValue(value, fieldName)
+      user.setValue(password, 'password');
+      user.setValue(email, 'email');
+      user.setValue(gender, 'gender');
+      user.setValue(pizzaTopping, 'pizzaTopping');
       user.setValue(age, 'age');
       sharedUpdater(store, user);
     },

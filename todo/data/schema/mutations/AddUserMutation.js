@@ -7,7 +7,8 @@ import {GraphQLID, GraphQLNonNull, GraphQLString, GraphQLInt} from 'graphql';
 import {GraphQLUser} from '../nodes';   // TODO: should I be using this some way?
 
 import {
-  addUser
+  addUser,
+  getUserOrThrow
 } from '../../database';
 
 // TODO: replace with Typescript
@@ -26,15 +27,25 @@ type Payload = {|
 const AddUserMutation = mutationWithClientMutationId({
   name: 'AddUser',
   inputFields: {   // TODO
-    name: {type: new GraphQLNonNull(GraphQLString)},
+    username: {type: new GraphQLNonNull(GraphQLString)},
+    password: {type: new GraphQLNonNull(GraphQLString)},
+    email: {type: new GraphQLNonNull(GraphQLString)},
+    gender: {type: new GraphQLNonNull(GraphQLString)},    // TODO: enum
+    pizzaTopping: {type: new GraphQLNonNull(GraphQLString)},    // TODO: enum
     age: {type: new GraphQLNonNull(GraphQLInt)},
   },
   outputFields: {
-   // TODO
+   userId: {type: new GraphQLNonNull(GraphQLId)},
+    username: {type: new GraphQLNonNull(GraphQLString)},
+    password: {type: new GraphQLNonNull(GraphQLString)},
+    email: {type: new GraphQLNonNull(GraphQLString)},
+    gender: {type: new GraphQLNonNull(GraphQLString)},    // TODO: enum
+    pizzaTopping: {type: new GraphQLNonNull(GraphQLString)},    // TODO: enum
+    age: {type: new GraphQLNonNull(GraphQLInt)},
   },
   mutateAndGetPayload: (input) => {
     const userId = addUser(input);
-    return userId;
+    return getUserOrThrow(userId);
   },
 });
 
