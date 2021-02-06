@@ -85,6 +85,7 @@ if (rootElement) {
   ReactDOM.render(
     <QueryRenderer
       environment={modernEnvironment}
+      // add demoUser to query and share with AddUser_demoUser?
       query={graphql`
         query appQuery($userId: String) {
           user(id: $userId) {

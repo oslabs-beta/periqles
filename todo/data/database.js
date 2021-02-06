@@ -31,11 +31,15 @@ export class User {
   }
 }
 
+// make DemoUser class?
+
 // Mock authenticated ID
 export const USER_ID = 'me';
 
 // Mock user database table
 const usersById: Map<string, User> = new Map([[USER_ID, new User(USER_ID)]]);
+
+// should we make a mock demoUser table here using the above?
 
 // Mock todo database table
 const todosById: Map<string, Todo> = new Map();
@@ -111,6 +115,9 @@ export function getUserOrThrow(id: string): User {
 
   return user;
 }
+
+// make getDemoUser & getDemoUserOrThrow?
+// add an addUser method?
 
 export function markAllTodos(complete: boolean): $ReadOnlyArray<string> {
   const todosToChange = getTodos().filter(

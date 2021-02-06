@@ -42,7 +42,7 @@ import {
 const {nodeInterface, nodeField} = nodeDefinitions(
   (globalId: string): ?{} => {
     const {type, id}: {id: string, type: string} = fromGlobalId(globalId);
-
+    // do we need to write something here for DemoUser?
     if (type === 'Todo') {
       return getTodoOrThrow(id);
     } else if (type === 'User') {
@@ -118,6 +118,34 @@ const GraphQLUser = new GraphQLObjectType({
     completedCount: {
       type: new GraphQLNonNull(GraphQLInt),
       resolve: (): number => getTodos('completed').length,
+    },
+  },
+  interfaces: [nodeInterface],
+});
+
+const demoGraphQLUser = new GraphQLObjectType({
+  name: 'DemoUser',
+  fields: {
+    id: globalIdField('DemoUser'),
+    username: {
+      type: new GraphQLNonNull(GraphQLString),
+      resolve: (): string => // where does this value come from? mutation? methods come from database so maybe adding Demo methods there,
+    },
+    password: {
+      type: new GraphQLNonNull(GraphQLString),
+      resolve: (): string => // where does this value come from? mutation? methods come from database so maybe adding Demo methods there,
+    },
+    firstName: {
+      type: new GraphQLNonNull(GraphQLString),
+      resolve: (): string => // where does this value come from? mutation? methods come from database so maybe adding Demo methods there,
+    },
+    lastName: {
+      type: new GraphQLNonNull(GraphQLString),
+      resolve: (): string => // where does this value come from? mutation? methods come from database so maybe adding Demo methods there,
+    },
+    email: {
+      type: new GraphQLNonNull(GraphQLString),
+      resolve: (): string => // where does this value come from? mutation? methods come from database so maybe adding Demo methods there,
     },
   },
   interfaces: [nodeInterface],
