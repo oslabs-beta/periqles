@@ -17,6 +17,18 @@ type User implements Node {
   completedCount: Int!
 }
 
+type DemoUser implements Node {
+  """The ID of an object"""
+  id: ID!
+  userId: String!
+  username: String!
+  password: String!
+  email: String!
+  gender: Gender!
+  pizzaTopping: PizzaTopping!
+  age: Int!
+}
+
 """An object with an ID"""
 interface Node {
   """The id of the object."""
@@ -70,6 +82,27 @@ type Mutation {
   removeCompletedTodos(input: RemoveCompletedTodosInput!): RemoveCompletedTodosPayload
   removeTodo(input: RemoveTodoInput!): RemoveTodoPayload
   renameTodo(input: RenameTodoInput!): RenameTodoPayload
+  addUser(input: AddUserInput!): AddUserPayload
+}
+
+input addUser {
+  username: String!
+  password: String!
+  email: String!
+  gender: Gender!
+  pizzaTopping: PizzaTopping!
+  age: Int!
+}
+
+type AddUserPayload {
+  id: ID!
+  userId: String!
+  username: String!
+  password: String!
+  email: String!
+  gender: Gender!
+  pizzaTopping: PizzaTopping!
+  age: Int!
 }
 
 type AddTodoPayload {

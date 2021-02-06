@@ -8,7 +8,7 @@ import {GraphQLUser} from '../nodes';   // TODO: should I be using this some way
 
 import {
   addUser,
-  getUserOrThrow
+  getDemoUserOrThrow
 } from '../../database';
 
 // TODO: replace with Typescript
@@ -35,7 +35,7 @@ const AddUserMutation = mutationWithClientMutationId({
     age: {type: new GraphQLNonNull(GraphQLInt)},
   },
   outputFields: {
-   userId: {type: new GraphQLNonNull(GraphQLId)},
+    userId: {type: new GraphQLNonNull(GraphQLString)},
     username: {type: new GraphQLNonNull(GraphQLString)},
     password: {type: new GraphQLNonNull(GraphQLString)},
     email: {type: new GraphQLNonNull(GraphQLString)},
@@ -45,7 +45,7 @@ const AddUserMutation = mutationWithClientMutationId({
   },
   mutateAndGetPayload: (input) => {
     const userId = addUser(input);
-    return getUserOrThrow(userId);
+    return getDemoUserOrThrow(userId);
   },
 });
 

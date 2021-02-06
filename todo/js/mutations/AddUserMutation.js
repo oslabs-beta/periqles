@@ -9,14 +9,16 @@ import {
 
 import {ConnectionHandler} from 'relay-runtime';
 // import type {TodoApp_user} from 'relay/TodoApp_user.graphql';
-import type {AddUserInput} from 'relay/AddTodoMutation.graphql';  // TODO
+import type {AddUserInput} from 'relay/AddUserMutation.graphql';  // TODO in typescript?
 
 // TODO: consult with Ian and Joe about fields and types to return from AddUser mutation
 const mutation = graphql`
   mutation AddUserMutation($input: AddUserInput!) {
     addUser(input: $input) {
       user {
-        id
+        node {
+          id
+        }
         username
         password
         email
@@ -28,7 +30,8 @@ const mutation = graphql`
   }
 `;
 
-// Everything below is non-essential; at minimum only need to export this mutation query
+export default {mutation: mutationQL};
+// Everything below is non-essential; at minimum only need to export the mutation query
 
 // TODO: What to replace this updater fn with?
 function sharedUpdater(
@@ -88,4 +91,4 @@ function commit(
   });
 }
 
-export default {commit};
+export {commit};
