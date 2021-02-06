@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import commitMutation from 'react-relay'; // importing the mutation commit fn provided by Relay instead of expecting mutation prop to have a commit() method with params of a certain shape
 
 /**
  * Wraps the PeriqlesForm component in a closure containing the Relay project's schema and RelayEnvironment.
@@ -11,13 +12,13 @@ import React, {useState} from 'react';
 
   /**
    * A React functional component with input fields corresponding to a Relay mutation.
-   * @param {Object} mutation (REQUIRED) The name of a mutation on the Relay schema.
-   * @param {Object} specifications Optional parameters to control the composition of the form.
+   * @param {String} mutationName (REQUIRED) The name of a mutation as written on the Relay schema.
+   * @param {String} mutationGQL (REQUIRED) The GraphQL query string representing the mutation.
+   * @param {Object} specifications Optional parameters to specify the form's elements. 
+   * @param {[Object]} args Optional input values for the mutation, represented as objects with the shape {[nameOfInputField]: value}. Input fields represented here will not be represented on the form.
    * @return HTML
    */
-  
-  // accepts a Relay mutation and optional specifications as props
-  const PeriqlesForm = ({mutations, specifications}) => {  
+  const PeriqlesForm = ({mutationName, mutationGQL, specifications, args}) => {  
     // console.log('PeriqlesForm component successfully imported');
     // console.log('PeriqlesForm is using this schema: ', schema);
     // STATE  
@@ -43,9 +44,9 @@ import React, {useState} from 'react';
           initialValue = null;
       }
       // Assign a piece of state and a setter function for each field
-      const [value, set] = useState(null);   
+      const [value, set] = useState(initialValue);   
       formState[field.name] = {              
-        value: initialValue,
+        value,
         set
       };
     });
@@ -56,20 +57,32 @@ import React, {useState} from 'react';
      * @param {object} Event
      */
     const handleSubmit = (e) => {
-      console.log('Submit clicked');
-
-      // prevent page refesh on enter key or submit button click
       if (e.key === 'Enter' || e.type === 'click') {
-        e.preventDefault();   
+        e.preventDefault();   // prevent page refesh 
       }
       
-      // TODO: replace with form state
-      const input = {hi: 'hello'};
+      // populate $input for mutation
+      const input = {
+        clientMutationId,      // TODO: How to get this in scope? Is this needed for every commit?
+      };
+      Object.keys(formState).forEach(key => {
+        input[key] = formState[key].value;
+      });
+      if (args) {
+        args.forEach(([key, value]) => {
+          input[key] = value;
+        });
+      }
   
-      mutation.commit(environment, {
-        mutation, 
+      // Documentation re: shape of commitMutation's second parameter: https://relay.dev/docs/en/mutations#arguments
+      // Referencing use of commitMutation in js/mutations/AddTodoMutation
+      const variables = {
         input,
-        onCompleted: (res, errors) => console.log('Server response to mutation:', res, errors),
+      };
+      commitMutation(environment, {
+        mutationString,       // --> MUST BE A QUERY STRING
+        variables,
+        onCompleted: (response, errors) => console.log('Server response to mutation:', response, errors),
         onError: (err) => console.error(err)
       });   
     }

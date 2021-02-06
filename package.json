@@ -25,7 +25,8 @@
   },
   "peerDependencies": {
     "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react-dom": "^17.0.1",
+    "react-relay": "^10.1.0"
   },
   "jest": {
     "globalSetup": "./__tests__/jest-setup.js",

@@ -63,6 +63,7 @@ const introspect = (RelayEnvironment) => {
   .then(res => res.json())
   .then(({data}) => {
     schema = data.__schema.types || [];
+    console.log('Schema: ', schema);
 
     if (!schema.length) {
       throw new Error('ERROR at periqles.introspect: Schema contains no types');
