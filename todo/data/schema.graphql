@@ -31,9 +31,6 @@ type User implements Node {
 }
 
 type DemoUser implements Node {
-  """
-  The ID of an object
-  """
   id: ID!
   userId: String!
   username: String!
@@ -142,6 +139,27 @@ type Mutation {
   ): RemoveCompletedTodosPayload
   removeTodo(input: RemoveTodoInput!): RemoveTodoPayload
   renameTodo(input: RenameTodoInput!): RenameTodoPayload
+  addUser(input: AddUserInput!): AddUserPayload
+}
+
+input addUser {
+  username: String!
+  password: String!
+  email: String!
+  gender: Gender!
+  pizzaTopping: PizzaTopping!
+  age: Int!
+}
+
+type AddUserPayload {
+  id: ID!
+  userId: String!
+  username: String!
+  password: String!
+  email: String!
+  gender: Gender!
+  pizzaTopping: PizzaTopping!
+  age: Int!
 }
 
 type AddTodoPayload {
