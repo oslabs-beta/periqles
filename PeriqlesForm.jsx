@@ -1,36 +1,7 @@
 import React, {useState} from 'react';
 
-// mock props
-const schema = [{'name': name, type: 'String'}];
-const environment = {'networkLayer': 'fake network layer', 'store': 'fake Relay store'};
-const mutation = '';
-const specifications = {
-  fields: [
-    {
-      name: "name",
-      element: "text",
-      id: "textId",
-    },
-    {
-      name: "gender",
-      element: "radio",
-      options: [
-        {name: "male", value: "m"},
-        {name:"female", value: "f"},
-        {name: "prefer not to say", value: "x"},
-      ],
-      id: "radioId",
-    },
-  ],
-};
-
-// invoke with mock props
-const PeriqlesForm = PeriqlesFormWrapper(schema, environment);
-PeriqlesForm(mutation, specifications);
-  
-//Wrapper function 
 /**
- * Builds a HTML form based on user provided parameters
+ * Wraps the PeriqlesForm component in a closure containing the Relay project's schema and RelayEnvironment.
  * @param {Object} Schema (REQUIRED) The graphQL schema used in this application  
  * @param {Object} Environment (REQUIRED) - The environment variable for this application containing the network layer and store
  * @return {Function} Returns an inner function PeriqlesForm? that generates a Periqles React form component 
@@ -47,21 +18,53 @@ PeriqlesForm(mutation, specifications);
   
   // accepts a Relay mutation and optional specifications as props
   const PeriqlesForm = ({mutations, specifications}) => {  
-    // STATE
+    // console.log('PeriqlesForm component successfully imported');
+    // console.log('PeriqlesForm is using this schema: ', schema);
+    // STATE  
     const formState = {};   //--> { fieldName: { value: valueOfState, set: fnToSetState }};
-  
+
+    // mock fields array
+    const fields = [{name: 'name', type: 'string'}, {name:'age', type:'number'}, {name:'gender', type:'string'}, {name:'over18', type:'boolean'}];
+
+    fields.forEach((field) => {
+      // console.log('field object', field);
+      let initialValue;
+      switch (field.type) {
+        case 'string': 
+          initialValue = '';
+          break;
+        case 'number':
+          initialValue = 0;
+          break;
+        case 'boolean':
+          initialValue = false;
+          break;
+        default:
+          initialValue = null;
+      }
+      // Assign a piece of state and a setter function for each field
+      const [value, set] = useState(null);   
+      formState[field.name] = {              
+        value: initialValue,
+        set
+      };
+    });
+    
+    
     // HANDLERS
     /**
      * @param {object} Event
-     * @param {object} input The form state needed to commit the query or mutation. 
      */
     const handleSubmit = (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();   // prevent page refesh 
+      console.log('Submit clicked');
+
+      // prevent page refesh on enter key or submit button click
+      if (e.key === 'Enter' || e.type === 'click') {
+        e.preventDefault();   
       }
       
-      // TODO: replace with formState
-      const input = {'hi': 'hello'};
+      // TODO: replace with form state
+      const input = {hi: 'hello'};
   
       mutation.commit(environment, {
         mutation, 
@@ -76,33 +79,22 @@ PeriqlesForm(mutation, specifications);
      */
     const handleChange = (e) => {
       const {name, value} = e.target;
-      console.log('name and value: ', name, value);
+      console.log(`${name} field changed its value to: ${value}`);
       formState[name].set(value);
+      // console.log('new state:', formState);
     }
   
-   
-  // desconstruct mutation from props
-  // check if specifications were passed in
-  
-  /**
-   * Builds a HTML form based on user provided parameters
-   * @param {String} mutation (REQUIRED) The name of the graphQL mutation used for the form. Example: 'addTodo'
-   * @param {Object} specifications (OPTIONAL) - an object containing fields to use with the form. Example: {fields: [{name: "name", element: "text", id: "textID"}]}
-   * @return  Returns a React Component with the generated form 
-   * 
-   */
-  
+    /**
+     * Builds a HTML form based on user provided parameters
+     * @param {String} mutation (REQUIRED) The name of the graphQL mutation used for the form. Example: 'addTodo'
+     * @param {Object} specifications (OPTIONAL) - an object containing fields to use with the form. Example: {fields: [{name: "name", element: "text", id: "textID"}]}
+     * @return  Returns a React Component with the generated form 
+     * 
+     */
     const formBuilder = () => {
       const formElements = [];
       // iterate through specifications to get form fields order & mutation inputs
       specifications.fields.forEach((input) => {
-        // Assign a piece of state and a setter function for each field
-        const [statePiece, setStatePiece] = useState(null);   // locally scoped to this iteration
-        formState[input.name] = {    // scoped to entire component
-          value: statePiece,
-          set: (val) => setStatePiece(val)
-        };
-  
         let element;
         switch (input.element) {
           case 'range':
@@ -110,10 +102,10 @@ PeriqlesForm(mutation, specifications);
               <label>
                 {input.name}
                   <input type = {input.element} 
-                    class = {input.name + '-range'} 
+                    class = {input.name + '-range periqles-range'} 
                     name = {input.name} 
                     min = {input.min} max ={input.max}
-                    value={formState[input.name.value]} 
+                    value={formState[input.name].value} 
                     onChange={handleChange}
                 />
               </label>
@@ -123,10 +115,10 @@ PeriqlesForm(mutation, specifications);
               <label>
                 {input.name}
                   <input type = {input.element} 
-                      className = {input.name + '-image'}
+                      className = {input.name + '-image periqles-image'}
                       name = {input.name} 
                       src = {input.src} alt = {input.name} 
-                      value={formState[input.name.value]} 
+                      value={formState[input.name].value} 
                       onChange={handleChange}
                   />
               </label>
@@ -139,14 +131,14 @@ PeriqlesForm(mutation, specifications);
                 <label>
                   <input 
                     type="radio" 
-                    className={input.name + '-radio-option'} 
+                    className={input.name + '-radio-option periqles-radio-option'} 
                     name={input.name} 
                     value={radio.value}/>   
                 </label>;
               radioOptions.push(radioInput);
             })
             element = 
-              <div className={input.name + '-radio'}>
+              <div className={input.name + '-radio periqles-radio'}>
                 {radioOptions}
               </div>
             break;
@@ -156,7 +148,7 @@ PeriqlesForm(mutation, specifications);
             selectOptions.push(
               <option 
                 value={null} 
-                className={input.name + '-select-option'} 
+                className={input.name + '-select-option periqles-select-option'} 
                 selected>
                   {input.name}
               </option>);
@@ -164,14 +156,14 @@ PeriqlesForm(mutation, specifications);
               selectOptions.push(
                 <option 
                   value={option.value} 
-                  className={input.name + '-select-option'}
+                  className={input.name + '-select-option periqles-select-option'}
                   >
                     {option.name}
                 </option>)
             })
             element = 
               <select 
-                className={input.name + '-select'} 
+                className={input.name + '-select periqles-select'} 
                 name={input.name}
                 defaultValue={null} 
                 onChange={handleChange}
@@ -183,10 +175,10 @@ PeriqlesForm(mutation, specifications);
             element = 
               <label>{input.name}
                 <textarea 
-                  className={input.name + '-textarea'} 
+                  className={input.name + '-textarea periqles-textarea'} 
                   name={input.name}
                   placeholder={input.name}
-                  value={formState[input.name.value]} 
+                  value={formState[input.name].value} 
                   onChange={handleChange}
                   />
               </label>; 
@@ -196,9 +188,9 @@ PeriqlesForm(mutation, specifications);
               <label>{input.name}
                 <input 
                   type={input.element || 'text'}
-                  className={input.name + '-input'} 
+                  className={input.name + '-input periqles-text'} 
                   name={input.name} 
-                  value={formState[input.name.value]} 
+                  value={formState[input.name].value} 
                   placeholder={input.name}
                   onChange={handleChange}>
                 </input>
@@ -211,16 +203,64 @@ PeriqlesForm(mutation, specifications);
       return formElements;
     }
   
-      return (
-        <form className="PeriqlesForm"
-              onSubmit={handleSubmit}>
-          {formBuilder()}
-          <button onClick={handleSubmit}>Submit</button>
-        </form>
-      )
-    }
-  
+    return (
+      <form className="PeriqlesForm"
+            onSubmit={handleSubmit}>
+        {formBuilder()}
+        <button onClick={handleSubmit}>Submit</button>
+      </form>
+    )
   }
+  
+  return PeriqlesForm;
+}
+
+/*
+// mock props
+const schema = [{name: 'name', type: 'String'}];
+const environment = {'networkLayer': 'fake network layer', 'store': 'fake Relay store'};
+const mutation = '';
+const specifications = {
+  fields: [
+    {
+      name: "name",
+      element: "text",
+      id: "textId",
+    },
+    {
+      name: "gender",
+      element: "radio",
+      options: [
+        {name: "male", value: "m"},
+        {name:"female", value: "f"},
+        {name: "prefer not to say", value: "x"},
+    }
+  ],
+};
+*/
+
+// mock fields array
+    // const fields = [{name: 'name', type: 'string'}, {name:'age', type:'number'}, {name:'gender', type:'string'}, {name:'over18', type:'boolean'}];
+    /*
+    // define an initial state for the form, with the field name as the keys and their initial value as the values
+    const initialState = {};
+    fields.forEach(field => {
+      switch (field.type) {
+        case 'string': 
+          initialState[field.name] = '';
+          break;
+        case 'number':
+          initialState[field.name] = 0;
+          break;
+        case 'boolean':
+          initialState[field.name] = false;
+          break;
+        default:
+          initialState[field.name] = null;
+      }
+    })
+    const [formState, setFormState] = useState(initialState);
+    */
 
 
 //import schema, environment
@@ -230,120 +270,6 @@ PeriqlesForm(mutation, specifications);
 // store the relevant data (types & inputs) in a variable
 
   // is there linked data between different graphql objects?
-
-
-// possible form types: text box, checkbox, radio, dropdown
-  //Complete list of input types:
-  // {/* <input type="button">
-  // <input type="checkbox">
-  // <input type="color">
-  // <input type="date">
-  // <input type="datetime-local">
-  // <input type="email">
-  // <input type="file">
-  // <input type="hidden">
-  // <input type="image">
-  // <input type="month">
-  // <input type="number">
-  // <input type="password">
-  // <input type="radio">
-  // <input type="range">
-  // <input type="reset">
-  // <input type="search">
-  // <input type="submit">
-  // <input type="tel">
-  // <input type="text">
-  // <input type="time">
-  // <input type="url">
-  // <input type="week"></input>
-
-/*
- if (input.element === 'text'){
-          const textInput = <label>{input.name} <input type ="text" id = {input.id} name ={input.name} onChange={(e) => changeHandler(e, formState[input.name].set)}/> </label>;
-          return pForm.push(textInput);
-        }
-        if (input.element === 'radio'){
-          input.options.forEach((radio) => {
-            const radioInput = <label><input type = "radio" id = {input.id} name = {input.name} value = {radio} />{radio}</label>;
-            return pForm.push(radioInput);
-          })
-        }
-        if (input.element === 'checkbox'){
-          const checkInput = <label><input type="checkbox" id={input.id} name={input.name} />{input.name}</label>;
-          return pForm.push(checkInput);
-        }
-        if (input.element === 'dropdown'){
-          // let dropSelect = <select name={input.name}>;
-          // pForm.push(dropSelect);
-          const options = [];
-          options.push(<option value={null} selected>{input.name}</option>);
-          input.options.forEach((option) => {
-            options.push(<option value={option}>{option}</option>)
-          })
-          // dropSelect = </select>
-          return pForm.push(<select name={input.name}>{options}</select>);
-        }
-        if (input.element === 'password'){
-          const passwordInput = <label>{input.name} <input type = "password" id = {input.id} name ={input.name}/></label>;
-          pForm.push(passwordInput);
-        }
-        if (input.element === 'number'){
-          const numberInput = <label>{input.name} <input type = "number" id = {input.id} name ={input.name} /></label>;
-          pForm.push(numberInput);
-        }
-        if (input.element === 'date'){
-          const dateInput = <label> {input.name}<input type = "date" id = {input.id} name ={input.name} /> </label>;
-          pForm.push(dateInput);
-        }
-        if (input.element === 'email'){
-          const emailInput = <label> {input.name}<input type = "email" id = {input.id} name = {input.name}/></label>;
-          pForm.push(emailInput);
-        }
-        if (input.element === 'textarea'){
-          const textAreaInput = <label>{input.name}<textarea id = {input.id} name = {input.name}></textarea></label>; 
-          pForm.push(textAreaInput);
-        }
-        if (input.element === 'tel'){
-          const telInput = <label>{input.name}<input type ="tel" id = {input.id} name = {input.name}/></label>;
-          pForm.push(telInput)
-        }
-        if (input.element === 'url'){
-          const urlInput = <label>{input.name}<input type="url" id = {input.id} name = {input.name}></input></label>; 
-          pForm.push(urlInput);
-        }
-        if (input.element === 'file'){
-          const fileInput = <label>{input.name}<input type = "file" id = {input.id} name = {input.name}/></label>
-          pForm.push(fileInput)
-        }
-        if (input.element === 'button'){
-          const buttonInput = <label>{input.name}<input type="button" id = {input.id} name = {input.name}></input></label>; 
-          pForm.push(buttonInput);
-        }
-        if (input.element === 'time'){
-          const timeInput = <label>{input.name}<input type = "time" id = {input.id} name = {input.name}/></label>
-          pForm.push(timeInput)
-        }
-        if (input.element === 'color'){
-          const colorInput = <label>{input.name}<input type="color" id = {input.id} name = {input.name}></input></label>; 
-          pForm.push(colorInput);
-        }
-        if (input.element === 'localDateTime'){
-          const localDateTimeInput = <label>{input.name}<input type="localDateTime" id = {input.id} name = {input.name}></input></label>; 
-          pForm.push(localDateTimeInput);
-        }
-*/
-
-
-    // current possible shape of fields props:
-      // fields: [{
-      //   name: "gender",
-      //   element: "radio",
-      //   options: [
-      //     {name: "male", value: "m"},
-      //     {name:"female", value: "f"},
-      //     {name: "prefer not to say", value: "x"}
-      //   ]
-      // }]
 
   // structure form elements in order equal to form structure props, if using custom form
     // each form element must have corresponding event handler to store form values in local state
@@ -358,19 +284,6 @@ PeriqlesForm(mutation, specifications);
   // create event handlers to invoke mutation commit method on user submit
     // handled in a submit button
     // are all mutation commit methods structured the same?
-
-
-
-  // example mutation invocation?
-  /*
-  RenameTodoMutation.commit(relay.environment, text, todo);
-  */
-
-  // introspection schema to get mock data
-  /*
-
-  */
-
   
 
   /*FORM VAILDATION NOTES:

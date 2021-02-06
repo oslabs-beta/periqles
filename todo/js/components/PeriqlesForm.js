@@ -1,42 +1,51 @@
 import React, {useState} from 'react';
 
-const PeriqlesForm = () => {
-  const mutation = '';
-  const specifications = {
-    fields: [
-      {
-        name: "name",
-        element: "text",
-        id: "textId",
-      },
-      {
-        name: "gender",
-        element: "radio",
-        options: [
-          {name: "male", value: "m"},
-          {name:"female", value: "f"},
-          {name: "prefer not to say", value: "x"},
-        ],
-        id: "radioId",
-      },
-    ],
-  };
+function periqlesFormWrapper (schema, environment){
+
+// accepts a Relay mutation and optional specifications as props
+const PeriqlesForm = ({mutations, specifications}) => {  
+  // console.log('PeriqlesForm component successfully imported');
+  console.log('PeriqlesForm is using this schema: ', schema);
 
   // STATE
   const formState = {};   //--> { fieldName: { value: valueOfState, set: fnToSetState }};
-
+  // mock fields array
+  const fields = [{name: 'name', type: 'string'}, {name:'age', type:'number'}, {name:'gender', type:'string'}, {name:'over18', type:'boolean'}];
+  fields.forEach((field) => {
+    // console.log('field object', field);
+    let initialValue;
+    switch (field.type) {
+      case 'string': 
+        initialValue = '';
+        break;
+      case 'number':
+        initialValue = 0;
+        break;
+      case 'boolean':
+        initialValue = false;
+        break;
+      default:
+        initialValue = null;
+    }
+    // Assign a piece of state and a setter function for each field
+    const [value, set] = useState(null);   
+    formState[field.name] = {              
+      value: initialValue,
+      set
+    };
+  });
+  
   // HANDLERS
   /**
    * @param {object} Event
-   * @param {object} input The form state needed to commit the query or mutation. 
    */
   const handleSubmit = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' || e.type === 'click') {
       e.preventDefault();   // prevent page refesh 
     }
     
     // TODO: replace with formState
-    const input = {'hi': 'hello'};
+    const input = {hi: 'hello'};
 
     mutation.commit(environment, {
       mutation, 
@@ -51,33 +60,22 @@ const PeriqlesForm = () => {
    */
   const handleChange = (e) => {
     const {name, value} = e.target;
-    console.log('name and value: ', name, value);
+    console.log(`${name} field changed its value to: ${value}`);
+    console.log(formState);
     formState[name].set(value);
   }
 
- 
-// desconstruct mutation from props
-// check if specifications were passed in
-
-/**
- * Builds a HTML form based on user provided parameters
- * @param {String} mutation (REQUIRED) The name of the graphQL mutation used for the form. Example: 'addTodo'
- * @param {Object} specifications (OPTIONAL) - an object containing fields to use with the form. Example: {fields: [{name: "name", element: "text", id: "textID"}]}
- * @return  Returns a React Component with the generated form 
- * 
- */
-
+  /**
+   * Builds a HTML form based on user provided parameters
+   * @param {String} mutation (REQUIRED) The name of the graphQL mutation used for the form. Example: 'addTodo'
+   * @param {Object} specifications (OPTIONAL) - an object containing fields to use with the form. Example: {fields: [{name: "name", element: "text", id: "textID"}]}
+   * @return  Returns a React Component with the generated form 
+   * 
+   */
   const formBuilder = () => {
     const formElements = [];
     // iterate through specifications to get form fields order & mutation inputs
     specifications.fields.forEach((input) => {
-      // Assign a piece of state and a setter function for each field
-      const [statePiece, setStatePiece] = useState(null);   // locally scoped to this iteration
-      formState[input.name] = {    // scoped to entire component
-        value: statePiece,
-        set: (val) => setStatePiece(val)
-      };
-
       let element;
       switch (input.element) {
         case 'range':
@@ -186,13 +184,16 @@ const PeriqlesForm = () => {
     return formElements;
   }
 
-    return (
-      <form className="PeriqlesForm"
-            onSubmit={handleSubmit}>
-        {formBuilder()}
-        <button onClick={handleSubmit}>Submit</button>
-      </form>
-    )
-  }
+  return (
+    <form className="PeriqlesForm"
+          onSubmit={handleSubmit}>
+      {formBuilder()}
+      <button onClick={handleSubmit}>Submit</button>
+    </form>
+  )
+}
 
-export default PeriqlesForm;
+  return PeriqlesForm;
+}
+
+export default periqlesFormWrapper;
