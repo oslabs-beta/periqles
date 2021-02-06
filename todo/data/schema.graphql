@@ -35,11 +35,28 @@ type DemoUser implements Node {
   The ID of an object
   """
   id: ID!
+  userId: String!
   username: String!
   password: String!
-  firstName: String!
-  lastName: String!
   email: String!
+  gender: Gender!
+  pizzaTopping: PizzaTopping!
+  age: Int!
+}
+
+enum Gender {
+  Non-binary
+  Female
+  Male
+}
+
+enum PizzaTopping {
+  Hawaiian
+  Hawaiian
+  Hawaiian
+  Hawaiian
+  Hawaiian
+  Hawaiian
 }
 
 """

@@ -11,6 +11,95 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import {number, string} from 'prop-types';
+
+//DEMO USER CLASSES, FUNCTIONS AND INFO
+
+// DemoUser class:
+export class DemoUser {
+  +userId: string;
+  +username: string;
+  +password: string;
+  +email: string;
+  +gender: string;
+  +pizzaTopping: string;
+  +age: number;
+
+  constructor(
+    userId: string,
+    username: string,
+    password: string,
+    email: string,
+    gender: string,
+    pizzaTopping: string,
+    age: number,
+  ) {
+    this.userId = userId;
+    this.username = username;
+    this.password = password;
+    this.email = email;
+    this.gender = gender;
+    this.pizzaTopping = pizzaTopping;
+    this.age = age;
+  }
+}
+
+//If we wanted to add an initial user, we can update the values for this object and pass it into the Mock DB on line 59
+export const DEMO_USER_INFO = {
+  userId: string,
+  username: string,
+  password: string,
+  email: string,
+  gender: string,
+  pizzaTopping: string,
+  age: number,
+};
+
+// Mock Databse
+const demoUsersById: Map<string, DemoUser> = new Map();
+
+// Seed initial user
+let nextUserId: number = 0;
+
+//getDemoUser and getDemoUserOrThrow functions
+function getDemoUser(userId: string): ?DemoUser {
+  return demoUsersById.get(userId);
+}
+export function getDemoUserOrThrow(userId: string): DemoUser {
+  const demoUser = getDemoUser(userId);
+
+  if (!demoUser) {
+    throw new Error(`Invariant exception, DemoUser ${userId} not found`);
+  }
+  return demoUser;
+}
+
+// addUser function
+export function addUser(
+  userId: string,
+  username: string,
+  password: string,
+  email: string,
+  gender: string,
+  pizzaTopping: string,
+  age: number,
+) {
+  const newUser = new DemoUser(
+    `${nextUserId++}`,
+    username,
+    password,
+    email,
+    gender,
+    pizzaTopping,
+    age,
+  );
+  demoUsersById.set(newUser.userId, newUser);
+
+  return newUser.userId;
+}
+
+//END OF DEMO USER CLASSES, FUNCTIONS AND INFO
+
 export class Todo {
   +id: string;
   +text: string;
@@ -31,15 +120,11 @@ export class User {
   }
 }
 
-// make DemoUser class?
-
 // Mock authenticated ID
 export const USER_ID = 'me';
 
 // Mock user database table
 const usersById: Map<string, User> = new Map([[USER_ID, new User(USER_ID)]]);
-
-// should we make a mock demoUser table here using the above?
 
 // Mock todo database table
 const todosById: Map<string, Todo> = new Map();
@@ -49,6 +134,7 @@ const todoIdsByUser: Map<string, $ReadOnlyArray<string>> = new Map([
 
 // Seed initial data
 let nextTodoId: number = 0;
+
 addTodo('Taste JavaScript', true);
 addTodo('Buy a unicorn', false);
 
@@ -115,9 +201,6 @@ export function getUserOrThrow(id: string): User {
 
   return user;
 }
-
-// make getDemoUser & getDemoUserOrThrow?
-// add an addUser method?
 
 export function markAllTodos(complete: boolean): $ReadOnlyArray<string> {
   const todosToChange = getTodos().filter(

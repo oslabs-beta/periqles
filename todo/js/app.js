@@ -87,15 +87,19 @@ if (rootElement) {
       environment={modernEnvironment}
       // add demoUser to query and share with AddUser_demoUser?
       query={graphql`
-        query appQuery($userId: String) {
+        query appQuery($userId: String, $demoUserId: String) {
           user(id: $userId) {
             ...TodoApp_user
+          }
+          demoUser(id: $demoUserId) {
+            ...AddUser_demoUser
           }
         }
       `}
       variables={{
         // Mock authenticated ID that matches database
         userId: 'me',
+        demoUserId: pieceofstate,
       }}
       render={({error, props}: {error: ?Error, props: ?appQueryResponse}) => {
         if (props && props.user) {

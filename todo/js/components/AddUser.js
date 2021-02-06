@@ -49,11 +49,13 @@ export default createFragmentContainer(AddUser, {
   user: graphql`
 
     fragment AddUser_userInfo on DemoUser {
-      id
+      userId 
       username 
       password
-      firstName
-      lastName
       email
+      gender
+      pizzaTopping
+      age
     }
 `};
+

@@ -15,7 +15,7 @@
 
 import {GraphQLString} from 'graphql';
 import {demoGraphQLUser} from '../nodes';
-// import {User, getUserOrThrow} from '../../database';
+import {DemoUser, getDemoUserOrThrow} from '../../database';
 
 type Input = {
   +id: string,
@@ -26,7 +26,7 @@ const demoUserQuery = {
   args: {
     id: {type: GraphQLString},
   },
-  resolve: (root: {}, {id}: Input): User => getUserOrThrow(id), // maybe adding getDemoUserOrThrow method to database
+  resolve: (root: {}, {id}: Input): DemoUser => getDemoUserOrThrow(id),
 };
 
 export {demoUserQuery};

@@ -23,12 +23,11 @@ import {RemoveCompletedTodosMutation} from './mutations/RemoveCompletedTodosMuta
 import {RemoveTodoMutation} from './mutations/RemoveTodoMutation';
 import {RenameTodoMutation} from './mutations/RenameTodoMutation';
 
-// do we need to make a new demoQuery here? or reuse existing Query and add demoUserQuery?
-
 const Query = new GraphQLObjectType({
   name: 'Query',
   fields: {
-    user: UserQuery, // add demoUser here?
+    user: UserQuery,
+    demoUser: demoUserQuery,
     node: nodeField,
   },
 });
