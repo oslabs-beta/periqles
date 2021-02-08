@@ -43,13 +43,12 @@ import {commitMutation, graphql} from 'react-relay';
                 if (field.type.ofType.kind === 'SCALAR'){
                     // console.log('This field is a scalar field:', field.name);
 
-                    const fieldObj = {};
-                    fieldObj.name = field.name;
-                    fieldObj.type = field.type.ofType.name;
+                    const fieldObj = {
+                      name: field.name,
+                      type: field.type.ofType.name,
+                    };
                     fieldsArray.push(fieldObj);
                     return;
-                    // inputField.type.name = field.type.ofType.name
-
                 } else if(field.type.kind === 'ENUM') {
                     // console.log('This field is an enumerated field:', field.name);
                     const fieldObj = {
