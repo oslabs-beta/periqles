@@ -1137,6 +1137,4 @@ typesArray.forEach(type => {
   schema[type.name] = type;
 });
 
-export default {schema};
-
-/*------------------------------------------------------------------*/
+export default schema;

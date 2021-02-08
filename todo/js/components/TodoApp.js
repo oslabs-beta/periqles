@@ -16,11 +16,11 @@ import TodoListFooter from './TodoListFooter';
 import TodoTextInput from './TodoTextInput';
 
 import React from 'react';
-import {createFragmentContainer, graphql} from 'react-relay';
+import {createFragmentContainer, commitMutation, graphql} from 'react-relay';
 // import {PeriqlesForm} from '../../../index.js';
 // import PeriqlesForm from './PeriqlesForm.js';
 import periqlesFormWrapper from './PeriqlesForm.js';
-import {schema} from './schema.js';
+import schema from './schema.js';
 import type {RelayProp} from 'react-relay';
 import type {TodoApp_user} from 'relay/TodoApp_user.graphql';
 
@@ -55,11 +55,47 @@ const TodoApp = ({relay, user}: Props) => {
             ],
         }
     },
-};
+  };
+
+  const mutationGQL = graphql`
+  mutation AddTodoMutation($input: AddTodoInput!) {
+    addTodo(input: $input) {
+      todoEdge {
+        __typename
+        cursor
+        node {
+          complete
+          id
+          text
+        }
+      }
+      user {
+        id
+        totalCount
+      }
+    }
+  }`;
+
+  const input = {
+    text: 'Race Usain Bolt',
+    clientMutationId:'0000',
+    userId: 'me',
+  };
+  const variables = {
+    input,
+  };
+
+  // commitMutation(relay.environment, {
+  //   mutationGQL,
+  //   variables,
+  //   onCompleted: (response, errors) => console.log('Server response to mutation:', response, errors),
+  //   onError: (err) => console.error('Problem committing mutation:', err),
+  // });   
 
   // mock making closure
-  console.log('Relay environment:', relay.environment);
-  const environment = {networkLayer: 'fake network layer', store: 'fake Relay store'};
+  // console.log('Relay environment:', relay.environment);
+  // console.log('Relay schema:', schema);
+  // const environment = {networkLayer: 'fake network layer', store: 'fake Relay store'};
   const PeriqlesForm = periqlesFormWrapper(schema, relay.environment);
 
   return (
@@ -78,7 +114,7 @@ const TodoApp = ({relay, user}: Props) => {
         <TodoList user={user} />
         {hasTodos && <TodoListFooter user={user} />}
       </section>
-      <PeriqlesForm mutation={mutation} specifications={specifications} />
+      <PeriqlesForm mutationName={mutation} mutationGQL={mutationGQL} specifications={specifications} args={[{name: 'clientMutationId', value:'0000'}, {name: 'userId', value: 'me'}]} />
       <footer className="info">
         <p>Double-click to edit a todo</p>
 
