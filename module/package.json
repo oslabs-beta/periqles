@@ -2,7 +2,7 @@
   "name": "periqles",
   "version": "0.1.0",
   "description": "React-Relay component library for fast, easy forms",
-  "main": "index.js",
+  "main": "module/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/oslabs-beta/periqles"
@@ -29,7 +29,7 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "jest": "^23.6.0"
   },
-  "peerDependencies": {
+  "dependencies": {
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-relay": "^10.1.0"

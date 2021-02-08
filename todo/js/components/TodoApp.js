@@ -17,7 +17,7 @@ import TodoTextInput from './TodoTextInput';
 
 import React from 'react';
 import {createFragmentContainer, commitMutation, graphql} from 'react-relay';
-import {PeriqlesForm} from '../../../index.js';
+import {PeriqlesForm} from '../../../module/index.js';
 // import PeriqlesForm from './PeriqlesForm.js';
 // import periqlesFormWrapper from './PeriqlesForm.js';
 // import schema from './schema.js';
@@ -95,26 +95,32 @@ const TodoApp = ({relay, user}: Props) => {
         <TodoList user={user} />
         {hasTodos && <TodoListFooter user={user} />}
       </section>
-      <PeriqlesForm mutationName={'AddTodo'} 
-                    mutationGQL={graphql`
-                    mutation AddTodoMutation($input: AddTodoInput!) {
-                      addTodo(input: $input) {
-                        todoEdge {
-                          __typename
-                          cursor
-                          node {
-                            complete
-                            id
-                            text
-                          }
-                        }
-                        user {
-                          id
-                          totalCount
-                        }
-                      }
-                    }`}  
-                    args={[{name: 'clientMutationId', value:'0000'}, {name: 'userId', value: 'me'}]} />
+      <PeriqlesForm
+        mutationName={'AddTodo'}
+        mutationGQL={graphql`
+          mutation TodoApp_AddTodoMutation($input: AddTodoInput!) {
+            addTodo(input: $input) {
+              todoEdge {
+                __typename
+                cursor
+                node {
+                  complete
+                  id
+                  text
+                }
+              }
+              user {
+                id
+                totalCount
+              }
+            }
+          }
+        `}
+        args={[
+          {name: 'clientMutationId', value: '0000'},
+          {name: 'userId', value: 'me'},
+        ]}
+      />
       <footer className="info">
         <p>Double-click to edit a todo</p>
 
