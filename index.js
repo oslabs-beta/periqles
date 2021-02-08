@@ -21,8 +21,6 @@ import periqlesFormWrapper from './PeriqlesForm.jsx';
 
 
 const introspect = (RelayEnvironment) => {
-  let schema;   // array of type objects found in introspection
-
   const introspectionQuery = `{
     __schema {
         types {
@@ -41,6 +39,14 @@ const introspect = (RelayEnvironment) => {
           kind
           inputFields{
             name
+            type {
+              name
+              kind
+              ofType {
+                name
+                kind
+              }
+            }
           }
           ofType {
               name
@@ -60,19 +66,23 @@ const introspect = (RelayEnvironment) => {
       query: introspectionQuery,
     })
   })
-  .then(res => res.json())
-  .then(({data}) => {
-    schema = data.__schema.types || [];
-    console.log('Schema: ', schema);
+    .then(res => res.json())
+    .then(({data}) => {
+      const typesArray = data.__schema.types || [];
+      if (!typesArray.length) {
+        throw new Error('ERROR at periqles.introspect: Schema contains no types');
+      }
 
-    if (!schema.length) {
-      throw new Error('ERROR at periqles.introspect: Schema contains no types');
-    }
+      // convert schema from array to object for faster lookup times within PeriqlesForm
+      const schema = {};
+      typesArray.forEach(type => {
+        schema[type.name] = type;
+      });
 
-    // Make our PeriqlesForm component available as a method on periqles with access to schema and environment.
-    PeriqlesForm = periqlesFormWrapper(schema, RelayEnvironment);
-  })  
-  .catch(err => console.error('ERROR at periqles.introspect:', err));
+      // Make our PeriqlesForm component available as a method on periqles with access to schema and environment.
+      PeriqlesForm = periqlesFormWrapper(schema, RelayEnvironment);
+    })  
+    .catch(err => console.error('ERROR at periqles.introspect:', err));
 };
 
 /**
