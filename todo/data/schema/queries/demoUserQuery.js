@@ -24,9 +24,9 @@ type Input = {
 const demoUserQuery = {
   type: demoGraphQLUser,
   args: {
-    id: {type: GraphQLString},
+    demoUserId: {type: GraphQLString},
   },
-  resolve: (root: {}, {id}: Input): DemoUser => getDemoUserOrThrow(id),
+  resolve: (root: {}, {demoUserId}: Input): DemoUser => getDemoUserOrThrow(demoUserId),
 };
 
 export {demoUserQuery};

@@ -35,13 +35,34 @@ const AddUserMutation = mutationWithClientMutationId({
     age: {type: new GraphQLNonNull(GraphQLInt)},
   },
   outputFields: {
-    userId: {type: new GraphQLNonNull(GraphQLString)},
-    username: {type: new GraphQLNonNull(GraphQLString)},
-    password: {type: new GraphQLNonNull(GraphQLString)},
-    email: {type: new GraphQLNonNull(GraphQLString)},
-    gender: {type: new GraphQLNonNull(GraphQLString)},    // TODO: enum
-    pizzaTopping: {type: new GraphQLNonNull(GraphQLString)},    // TODO: enum
-    age: {type: new GraphQLNonNull(GraphQLInt)},
+    userId: {
+      type: new GraphQLNonNull(GraphQLString),
+      resolve: ({userId}) => userId,
+    },
+    username: {
+      type: new GraphQLNonNull(GraphQLString),
+      resolve: ({username}) => username,
+    },
+    password: {
+      type: new GraphQLNonNull(GraphQLString),
+      resolve: ({password}) => password,
+    },
+    email: {
+      type: new GraphQLNonNull(GraphQLString),
+      resolve: ({email}) => email,
+    },
+    gender: {
+      type: new GraphQLNonNull(GraphQLString),
+      resolve: ({gender}) => gender,
+    },    // TODO: enum
+    pizzaTopping: {
+      type: new GraphQLNonNull(GraphQLString),
+      resolve: ({pizzaTopping}) => pizzaTopping,
+    },    // TODO: enum
+    age: {
+      type: new GraphQLNonNull(GraphQLInt),
+      resolve: ({age}) => age,
+    },
   },
   mutateAndGetPayload: (input) => {
     const userId = addUser(input);

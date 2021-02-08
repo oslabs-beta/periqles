@@ -13,9 +13,10 @@
 
 import React from 'react';
 import {createFragmentContainer, graphql} from 'react-relay';
+import AddUserMutation from '../mutations/AddUserMutation';
 // import {PeriqlesForm} from '../../../index.js';
 // import PeriqlesForm from './PeriqlesForm.js';
-import periqlesFormWrapper from './PeriqlesForm.js';
+// import periqlesFormWrapper from './PeriqlesForm.js';
 import type {RelayProp} from 'react-relay';
 import type {TodoApp_user} from 'relay/TodoApp_user.graphql';
 
@@ -24,7 +25,7 @@ type Props = {|
   +user: TodoApp_user,
 |};
 
-const AddUser = ({relay, user}: Props) => {
+const AddUser = ({relay, demoUser}: Props) => {
   // const handleTextInputSave = (text: string) => {
   //   AddTodoMutation.commit(relay.environment, text, user);
   //   return;
@@ -32,8 +33,8 @@ const AddUser = ({relay, user}: Props) => {
 
 
   // mock props for PeriqlesForm
- 
-
+  AddUserMutation.commit(relay.environment, 'UN1', 'PW1', 'E1', 'Nonbinary', 'Hawaiian', 1);
+  // console.log('demoUser in AddUser component:', demoUser);
   // // mock making closure
   // const schema = [{name: 'name', type: 'String'}];
   // const environment = {networkLayer: 'fake network layer', store: 'fake Relay store'};
@@ -42,13 +43,16 @@ const AddUser = ({relay, user}: Props) => {
 
   //Need to know:
     //1: Prop name
+    return (
+      <div>
+        {demoUser}
+      </div>
+    )
 }
-export default AddUser;
 
 export default createFragmentContainer(AddUser, {
-  user: graphql`
-
-    fragment AddUser_userInfo on DemoUser {
+  demoUser: graphql`
+    fragment AddUser_demoUser on DemoUser {
       userId 
       username 
       password
@@ -57,5 +61,5 @@ export default createFragmentContainer(AddUser, {
       pizzaTopping
       age
     }
-`};
+`});
 

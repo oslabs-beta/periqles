@@ -12,7 +12,7 @@
  */
 
 import 'todomvc-common';
-import periqles, {PeriqlesForm} from '../../index.js';
+// import periqles, {PeriqlesForm} from '../../index.js';
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
@@ -26,9 +26,11 @@ import {
   type RequestNode,
   type Variables,
 } from 'relay-runtime';
-
+import AddUserMutation from './mutations/AddUserMutation';
 import TodoApp from './components/TodoApp';
+import AddUser from './components/AddUser';
 import type {appQueryResponse} from 'relay/appQuery.graphql';
+import { isPropertySignature } from 'typescript';
 
 async function fetchQuery(
   operation: RequestNode,
@@ -54,7 +56,7 @@ const modernEnvironment: Environment = new Environment({
 });
 
 // allow periqles to introspect schema
-periqles.introspect(modernEnvironment);
+// periqles.introspect(modernEnvironment);
 
 // mock props for PeriqlesForm
 const mutation = '';
@@ -81,17 +83,18 @@ const specifications = {
 
 const rootElement = document.getElementById('root');
 
+
 if (rootElement) {
   ReactDOM.render(
     <QueryRenderer
       environment={modernEnvironment}
       // add demoUser to query and share with AddUser_demoUser?
+      // user(id: $userId) {
+      //   ...TodoApp_user
+      // }
       query={graphql`
-        query appQuery($userId: String, $demoUserId: String) {
-          user(id: $userId) {
-            ...TodoApp_user
-          }
-          demoUser(id: $demoUserId) {
+        query appQuery($demoUserId: String) {
+          demoUser(demoUserId: $demoUserId) {
             ...AddUser_demoUser
           }
         }
@@ -99,13 +102,14 @@ if (rootElement) {
       variables={{
         // Mock authenticated ID that matches database
         userId: 'me',
-        demoUserId: pieceofstate,
+        demoUserId: '0',
       }}
       render={({error, props}: {error: ?Error, props: ?appQueryResponse}) => {
-        if (props && props.user) {
+        // console.log('these are the props from App', props)
+        if (props && props.demoUser) {
           return (
             <div>
-              <TodoApp user={props.user} />
+              <AddUser demoUser={props.demoUser}/>
               {/* <PeriqlesForm mutation={mutation} specifications={specifications}/> */}
             </div>
           );

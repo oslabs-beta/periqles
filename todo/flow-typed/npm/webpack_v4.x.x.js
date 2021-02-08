@@ -1,10 +1,10 @@
-// flow-typed signature: a11323c6900f44e506402540d33781c2
-// flow-typed version: 7448070196/webpack_v4.x.x/flow_>=v0.104.x
-
-import * as http from 'http';
-import fs from 'fs';
+// flow-typed signature: d389a5ff07fdd7c2d87c081248b3c93b
+// flow-typed version: ba379f9a63/webpack_v4.x.x/flow_>=v0.104.x
 
 declare module 'webpack' {
+  import typeof { Server } from 'http';
+  import typeof { Stats as FsStats } from 'fs';
+
   declare class $WebpackError extends Error {
     constructor(message: string): WebpackError;
     inspect(): string;
@@ -451,9 +451,9 @@ declare module 'webpack' {
     context?: string,
     dependencies?: Array<string>,
     devServer?: {
-      after?: (app: any, server: http.Server) => void,
+      after?: (app: any, server: Server) => void,
       allowedHosts?: string[],
-      before?: (app: any, server: http.Server) => void,
+      before?: (app: any, server: Server) => void,
       bonjour?: boolean,
       clientLogLevel?: 'none' | 'info' | 'error' | 'warning',
       compress?: boolean,
@@ -515,9 +515,9 @@ declare module 'webpack' {
         maxAge?: number,
         redirect?: boolean,
         setHeaders?: (
-          res: http.OutgoingMessage,
+          res: any,
           path: string,
-          stat: fs.Stat
+          stat: FsStats,
         ) => void,
         ...
       },
@@ -572,6 +572,14 @@ declare module 'webpack' {
       | false,
     entry?: Entry,
     externals?: Externals,
+    infrastructureLogging?: {|
+      level?: 'none' | 'error' | 'warn' | 'info' | 'log' | 'verbose',
+      debug?:
+        | string
+        | RegExp
+        | ((string) => boolean)
+        | Array<string | RegExp | ((string) => boolean)>,
+    |},
     loader?: { [k: string]: any, ... },
     mode?: 'development' | 'production' | 'none',
     module?: ModuleOptions,
