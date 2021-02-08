@@ -13,94 +13,96 @@ import {commitMutation, graphql} from 'react-relay';
 
   // TODO: use the options property added to enumerated fields
   const fieldsArrayGenerator = (mutationName, args) => {
-  const fieldsArray = [];
-  // exclude from the form any inputs accounted for by args
-  const exclude = args.map((arg) => arg.name);
-  const inputName = mutationName + 'Input';
-  // console.log('Generating field objects for this input type:', inputName);
-  let inputObj = schema[inputName];
-
-  inputObj.inputFields.forEach((inputField) => {
-    // console.log('Current input field:', inputField);
-    if (exclude.includes(inputField.name)) return;
-    
-    if(inputField.type.name === null) {
-        // if field type name is null, this field may be a sub-field of another type. Iterate over the types in the schema to find it.
-        Object.keys(schema).forEach(key => {
-          // console.log('Currently checking this type:', key, schema[key]);
-            // At each type, check if it has a fields array including this field's name.
-            if (!schema[key].fields) { 
-              // console.log(`Schema type ${key} has no fields -- returning.`);
-              return; 
-            }
-            // error: inputField.name is a string, but fields is an array of objects
-            // if (!schema[key].fields.includes(inputField.name)) {console.log(`Schema type ${key} has fields, but none matching '${inputField.name}'.`);return;}
-
-            schema[key].fields.forEach((field) => { 
-                // console.log('current field name: ', field.name);
-                if (field.name !== inputField.name) return;
-  
-                if (field.type.ofType.kind === 'SCALAR'){
-                    // console.log('This field is a scalar field:', field.name);
-
-                    const fieldObj = {};
-                    fieldObj.name = field.name;
-                    fieldObj.type = field.type.ofType.name;
-                    fieldsArray.push(fieldObj);
-                    return;
-                    // inputField.type.name = field.type.ofType.name
-
-                } else if(field.type.kind === 'ENUM') {
-                    // console.log('This field is an enumerated field:', field.name);
-                    const fieldObj = {
-                        name: field.name,
-                        type: 'Enum',
-                        options: {}
-                    };
-
-                    // TODO: Populate fieldObj.options. Check out inputFields and other properties of __EnumValue type on schema.
-                    /*
-                    allTypes.forEach((type)=>{
-                        if (field.type.name === type.name) {
-                            fieldObj.options = type.enumValues.name; //expecting this to be an object
-                        }
-                    });
-                    */
-
-                    fieldsArray.push(fieldObj);
-                    return;
-                } else {
-                    console.warn('inputField', inputField.name, 'matches a subfield of the', key, 'schema type, but it is not a scalar or enum type. This field\'s type is:', field.type, '. Defaulting to string.');  
-                    const fieldObj = {
-                      name: field.name,
-                      type: 'String',
-                    };
-                    fieldsArray.push(fieldObj);
-                    return;
-                }
-            });
-        }); 
-    }      
-    /*
-    } else if (inputField.type.kind == 'OBJECT' || inputField.type.name.type !== null) {
-        // TODO: What if input field is not scalar or enum but an object type? E.g., the "todos" field on User is of type TodoConnection. May require a recursive solution because types could be composed of arbitrarily nested objects.
-        console.warn('inputField', inputField.name, 'is an object type:', field.type.name, '. Assigning it a placeholder type for now.');     
-    } 
-    */
-    // input field type is not null, ie, scalar
-    else {
-        // console.log('This field\'s type is not null:', inputField)
-        let fieldObj = {
-          name: inputField.name,
-          type: inputField.type.name,
-        };
-        fieldsArray.push(fieldObj);
-        return; 
+    const fieldsArray = [];
+    // exclude from the form any inputs accounted for by args
+    const exclude = args.map((arg) => arg.name);
+    const inputName = mutationName + 'Input';
+    let inputObj = schema[inputName];
+    // console.log('inputObj', inputObj);
+    if (!inputObj) {
+      throw new Error(`ERROR at PeriqlesForm: ${inputName} is not a type on this schema.`);
     }
-  });
 
-  return fieldsArray;
-}
+    inputObj.inputFields.forEach((inputField) => {
+      // console.log('Current input field:', inputField);
+      if (exclude.includes(inputField.name)) return;
+      
+      if(inputField.type.name === null) {
+          // if field type name is null, this field may be a sub-field of another type. Iterate over the types in the schema to find it.
+          Object.keys(schema).forEach(key => {
+            // console.log('Currently checking this type:', key, schema[key]);
+              // At each type, check if it has a fields array including this field's name.
+              if (!schema[key].fields) { 
+                // console.log(`Schema type ${key} has no fields -- returning.`);
+                return; 
+              }
+              // error: inputField.name is a string, but fields is an array of objects
+              // if (!schema[key].fields.includes(inputField.name)) {console.log(`Schema type ${key} has fields, but none matching '${inputField.name}'.`);return;}
+
+              schema[key].fields.forEach((field) => { 
+                  // console.log('current field name: ', field.name);
+                  if (field.name !== inputField.name) return;
+    
+                  if (field.type.ofType.kind === 'SCALAR'){
+                      // console.log('This field is a scalar field:', field.name);
+
+                      const fieldObj = {
+                        name: field.name,
+                        type: field.type.ofType.name,
+                      };
+                      fieldsArray.push(fieldObj);
+                      return;
+                  } else if(field.type.kind === 'ENUM') {
+                      // console.log('This field is an enumerated field:', field.name);
+                      const fieldObj = {
+                          name: field.name,
+                          type: 'Enum',
+                          options: {}
+                      };
+
+                      // TODO: Populate fieldObj.options. Check out inputFields and other properties of __EnumValue type on schema.
+                      /*
+                      allTypes.forEach((type)=>{
+                          if (field.type.name === type.name) {
+                              fieldObj.options = type.enumValues.name; //expecting this to be an object
+                          }
+                      });
+                      */
+
+                      fieldsArray.push(fieldObj);
+                      return;
+                  } else {
+                      console.warn('inputField', inputField.name, 'matches a subfield of the', key, 'schema type, but it is not a scalar or enum type. This field\'s type is:', field.type, '. Defaulting to string.');  
+                      const fieldObj = {
+                        name: field.name,
+                        type: 'String',
+                      };
+                      fieldsArray.push(fieldObj);
+                      return;
+                  }
+              });
+          }); 
+      }      
+      /*
+      } else if (inputField.type.kind == 'OBJECT' || inputField.type.name.type !== null) {
+          // TODO: What if input field is not scalar or enum but an object type? E.g., the "todos" field on User is of type TodoConnection. May require a recursive solution because types could be composed of arbitrarily nested objects.
+          console.warn('inputField', inputField.name, 'is an object type:', field.type.name, '. Assigning it a placeholder type for now.');     
+      } 
+      */
+      // input field type is not null, ie, scalar
+      else {
+          console.log('This field\'s type is not null:', inputField)
+          let fieldObj = {
+            name: inputField.name,
+            type: inputField.type.name,
+          };
+          fieldsArray.push(fieldObj);
+          return; 
+      }
+    });
+
+    return fieldsArray;
+  }
 
 
   /**
@@ -112,16 +114,16 @@ import {commitMutation, graphql} from 'react-relay';
    * @return HTML
    */
 
-  const PeriqlesForm = ({mutationName, mutationGQL, specifications, args}) => {  
+  const PeriqlesForm = ({mutationName, mutationGQL, specifications = {fields:[]}, args}) => {  
     // console.log('PeriqlesForm is using this schema: ', schema);
-    console.log('PeriqlesForm will exclude these args:', args);
+    // console.log('PeriqlesForm will exclude these args:', args);
 
     // STATE  
     const formState = {};   //--> { fieldName: { value: valueOfState, set: fnToSetState }};
     
     // distill input fields from mutation schema
     const fields = fieldsArrayGenerator(mutationName, args);
-    console.log('Generated input fields array:', fields);   // TODO: why does AddTodoInput generate a field object for the 'text' field that has a label of 'Text'?
+    // console.log('Generated input fields array:', fields);   // TODO: why does AddTodoInput generate a field object for the 'text' field that has a label of 'Text'?
     // assign an initial state for each field that reflects its data type (called 'element')
     fields.forEach((field) => {
       // console.log('field object', field);

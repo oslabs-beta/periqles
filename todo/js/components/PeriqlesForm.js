@@ -113,14 +113,14 @@ import {commitMutation, graphql} from 'react-relay';
 
   const PeriqlesForm = ({mutationName, mutationGQL, specifications, args}) => {  
     // console.log('PeriqlesForm is using this schema: ', schema);
-    console.log('PeriqlesForm will exclude these args:', args);
+    // console.log('PeriqlesForm will exclude these args:', args);
 
     // STATE  
     const formState = {};   //--> { fieldName: { value: valueOfState, set: fnToSetState }};
     
     // distill input fields from mutation schema
     const fields = fieldsArrayGenerator(mutationName, args);
-    console.log('Generated input fields array:', fields);   // TODO: why does AddTodoInput generate a field object for the 'text' field that has a label of 'Text'?
+    // console.log('Generated input fields array:', fields);   // TODO: why does AddTodoInput generate a field object for the 'text' field that has a label of 'Text'?
     // assign an initial state for each field that reflects its data type (called 'element')
     fields.forEach((field) => {
       // console.log('field object', field);
