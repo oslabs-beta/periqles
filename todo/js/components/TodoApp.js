@@ -10,7 +10,6 @@
  * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 import AddTodoMutation from '../mutations/AddTodoMutation';
 import TodoList from './TodoList';
 import TodoListFooter from './TodoListFooter';
@@ -21,6 +20,7 @@ import {createFragmentContainer, graphql} from 'react-relay';
 // import {PeriqlesForm} from '../../../index.js';
 // import PeriqlesForm from './PeriqlesForm.js';
 import periqlesFormWrapper from './PeriqlesForm.js';
+import {schema} from './schema.js';
 import type {RelayProp} from 'react-relay';
 import type {TodoApp_user} from 'relay/TodoApp_user.graphql';
 
@@ -38,32 +38,29 @@ const TodoApp = ({relay, user}: Props) => {
   const hasTodos = user.totalCount > 0;
 
   // mock props for PeriqlesForm
-  const mutation = '';
+  const mutation = 'AddTodo';
   const specifications = {
-    fields: [
-      {
-        name: 'name',
-        element: 'text',
-        id: 'textId',
-      },
-      {
-        name: 'gender',
-        element: 'radio',
-        options: [
-          {name: 'male', value: 'm'},
-          {name: 'female', value: 'f'},
-          {name: 'prefer not to say', value: 'x'},
-        ],
-        id: 'radioId',
-      },
-    ],
-    args: [{name: 'userID', value: 'me'}],
-  };
+    fields: {
+        name: {
+            label: "Name",
+            element: "text",
+        },
+        gender: {
+            label: "Gender",
+            element: "radio",
+            options: [
+              {label: "male", value: "m"},
+              {label:"female", value: "f"},
+              {label: "non-binary", value: "x"},
+            ],
+        }
+    },
+};
 
   // mock making closure
-  const schema = [{name: 'name', type: 'String'}];
+  console.log('Relay environment:', relay.environment);
   const environment = {networkLayer: 'fake network layer', store: 'fake Relay store'};
-  const PeriqlesForm = periqlesFormWrapper(schema, environment);
+  const PeriqlesForm = periqlesFormWrapper(schema, relay.environment);
 
   return (
     <div>
