@@ -12,22 +12,22 @@ const fieldsArrayGenerator = (inputType, args = []) => {
   inputType.inputFields.forEach((field) => {
     if (exclude.includes(field.name)) return;
 
-    const field = {
+    const fieldObj = {
       name: field.name,
     };
 
     // the input field is a scalar, nullable type
     if (field.type.name && field.type.kind === 'SCALAR') {
-      field.type = field.type.name;
+      fieldObj.type = field.type.name;
     }
     // the input field is an enumerated type (whether or not wrapped in a NON_NULL type)
     else if (field.type.kind === 'ENUM' || field.type.ofType.kind === 'ENUM') {
-      field.type = 'Enum';
+      fieldObj.type = 'Enum';
       try {
-        field.options =
+        fieldObj.options =
           field.type.enumValues || field.type.ofType.enumValues || [];
         // provide each option a type property
-        field.options.map((option) => {
+        fieldObj.options.map((option) => {
           let type;
           switch (typeof option.name) {
             case 'number':
@@ -52,7 +52,7 @@ const fieldsArrayGenerator = (inputType, args = []) => {
     }
     // the input field is a scalar wrapped in a NON_NULL type
     else if (field.type.ofType.name && field.type.ofType.kind === 'SCALAR') {
-      field.type = field.type.ofType.name;
+      fieldObj.type = field.type.ofType.name;
     }
     // TODO: the input field is not a scalar or enum type
     else {
@@ -60,10 +60,10 @@ const fieldsArrayGenerator = (inputType, args = []) => {
         `The '${field.name}' input field is of a complex type not currently supported by PeriqlesForm. It will default to a 'String'. Type:`,
         field,
       );
-      field.type = 'String';
+      fieldObj.type = 'String';
     }
 
-    fieldsArray.push(field);
+    fieldsArray.push(fieldObj);
   });
 
   return fieldsArray;
