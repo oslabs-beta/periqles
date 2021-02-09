@@ -12,7 +12,7 @@
  */
 
 import 'todomvc-common';
-import periqles from '../module/index.js';
+// import periqles from '../module/index.js';
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
@@ -28,6 +28,7 @@ import {
 } from 'relay-runtime';
 
 import TodoApp from './components/TodoApp';
+import PeriqlesForm from '../module/PeriqlesForm.jsx';
 import type {appQueryResponse} from 'relay/appQuery.graphql';
 
 async function fetchQuery(
@@ -55,6 +56,92 @@ const modernEnvironment: Environment = new Environment({
 
 // allow periqles to introspect schema
 // periqles.introspect(modernEnvironment);
+
+/*
+const fieldsArrayGenerator = (inputType, args = []) => {
+  const fieldsArray = [];
+  // exclude from the form any inputs accounted for by args
+  const exclude = args.map((arg) => arg.name);
+
+  inputType.inputFields.forEach((field) => {
+    if (exclude.includes(field.name)) return;
+
+    const fieldObj = {
+      name: field.name,
+    };
+
+    // the input field is a scalar, nullable type
+    if (field.type.name && field.type.kind === 'SCALAR') {
+      fieldObj.type = field.type.name;
+    }
+    // the input field is an enumerated type
+    else if (field.type.kind === 'ENUM') {
+      fieldObj.type = 'Enum';
+      fieldObj.options = {};
+
+      // TODO: Populate fieldObj.options. (Object or array?) Check out inputFields and other properties of __EnumValue type on schema.
+    }
+    // the input field is a scalar wrapped in a NON_NULL type
+    else if (field.type.ofType.name && field.type.ofType.kind === 'SCALAR') {
+      fieldObj.type = field.type.ofType.name;
+    }
+    // TODO: the input field is not a scalar or enum type
+    else {
+      console.warn(
+        `The '${field.name}' input field is of a complex type not currently supported by PeriqlesForm. It will default to a 'String'. Type:`,
+        field,
+      );
+      fieldObj.type = 'String';
+    }
+
+    fieldsArray.push(fieldObj);
+  });
+
+  return fieldsArray;
+};
+
+const args = [
+  {name: 'clientMutationId', value: '0000'},
+  {name: 'userId', value: 'me'},
+];
+
+const inputTypeName = 'AddTodoInput';
+
+fetch('/graphql', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    query: `query typeQuery($inputType: String!)
+    {
+        __type(name: $inputType) {
+            name
+            inputFields {
+              name
+              type {
+                name
+                kind
+                ofType {
+                  name
+                  kind
+                }
+              }
+            }
+          }
+        }`,
+    variables: {
+      inputType: inputTypeName,
+    },
+  }),
+})
+  .then(res => res.json())
+  .then(({data}) => {
+    console.log('AddTodoInput:', data);
+    const fields = fieldsArrayGenerator(data.__type);
+    console.log(fields);
+});
+*/
 
 const rootElement = document.getElementById('root');
 
@@ -84,6 +171,28 @@ if (rootElement) {
           return (
             <div>
               <TodoApp user={props.user} />
+              <PeriqlesForm
+                mutationName={'AddTodo'}
+                mutationGQL={graphql`
+                  mutation app_AddTodoMutation($input: AddTodoInput!) {
+                    addTodo(input: $input) {
+                      todoEdge {
+                        __typename
+                        cursor
+                        node {
+                          complete
+                          id
+                          text
+                        }
+                      }
+                      user {
+                        id
+                        totalCount
+                      }
+                    }
+                  }
+                `}
+              />
             </div>
           );
         } else if (error) {

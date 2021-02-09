@@ -13,10 +13,10 @@ export type AddTodoInput = {|
   userId: string,
   clientMutationId?: ?string,
 |};
-export type TodoApp_AddTodoMutationVariables = {|
+export type app_AddTodoMutationVariables = {|
   input: AddTodoInput
 |};
-export type TodoApp_AddTodoMutationResponse = {|
+export type app_AddTodoMutationResponse = {|
   +addTodo: ?{|
     +todoEdge: {|
       +__typename: string,
@@ -33,15 +33,15 @@ export type TodoApp_AddTodoMutationResponse = {|
     |},
   |}
 |};
-export type TodoApp_AddTodoMutation = {|
-  variables: TodoApp_AddTodoMutationVariables,
-  response: TodoApp_AddTodoMutationResponse,
+export type app_AddTodoMutation = {|
+  variables: app_AddTodoMutationVariables,
+  response: app_AddTodoMutationResponse,
 |};
 */
 
 
 /*
-mutation TodoApp_AddTodoMutation(
+mutation app_AddTodoMutation(
   $input: AddTodoInput!
 ) {
   addTodo(input: $input) {
@@ -171,7 +171,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "TodoApp_AddTodoMutation",
+    "name": "app_AddTodoMutation",
     "selections": (v2/*: any*/),
     "type": "Mutation",
     "abstractKey": null
@@ -180,20 +180,20 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "TodoApp_AddTodoMutation",
+    "name": "app_AddTodoMutation",
     "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "f0c1d8b87383b965fd2f0a12003b885c",
+    "cacheID": "ee031540ab3aaec04c47a25e62095ecd",
     "id": null,
     "metadata": {},
-    "name": "TodoApp_AddTodoMutation",
+    "name": "app_AddTodoMutation",
     "operationKind": "mutation",
-    "text": "mutation TodoApp_AddTodoMutation(\n  $input: AddTodoInput!\n) {\n  addTodo(input: $input) {\n    todoEdge {\n      __typename\n      cursor\n      node {\n        complete\n        id\n        text\n      }\n    }\n    user {\n      id\n      totalCount\n    }\n  }\n}\n"
+    "text": "mutation app_AddTodoMutation(\n  $input: AddTodoInput!\n) {\n  addTodo(input: $input) {\n    todoEdge {\n      __typename\n      cursor\n      node {\n        complete\n        id\n        text\n      }\n    }\n    user {\n      id\n      totalCount\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'bf332483f021310822e42d6fddc371ab';
+(node/*: any*/).hash = '4ef8eb222c098b1d455cf19e15c6fef2';
 
 module.exports = node;
