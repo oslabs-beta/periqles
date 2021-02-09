@@ -17,7 +17,7 @@ import TodoTextInput from './TodoTextInput';
 
 import React from 'react';
 import {createFragmentContainer, commitMutation, graphql} from 'react-relay';
-import {PeriqlesForm} from '../../../module/index.js';
+import {PeriqlesForm} from '../../module/index.js';
 // import PeriqlesForm from './PeriqlesForm.js';
 // import periqlesFormWrapper from './PeriqlesForm.js';
 // import schema from './schema.js';
