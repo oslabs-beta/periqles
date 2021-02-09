@@ -1,33 +1,58 @@
 import React, {useState} from 'react';
 import {commitMutation} from 'react-relay';
 
-// TODO: use the options property added to enumerated fields
 const fieldsArrayGenerator = (inputType, args = []) => {
+  if (!inputType || !inputType.inputFields) {
+    console.error('ERROR at PeriqlesForm: mutation input type is undefined.');
+    return [];
+  }
   const fieldsArray = [];
   // exclude from the form any inputs accounted for by args
   const exclude = args.map((arg) => arg.name);
-
   inputType.inputFields.forEach((field) => {
     if (exclude.includes(field.name)) return;
 
-    const fieldObj = {
+    const field = {
       name: field.name,
     };
 
     // the input field is a scalar, nullable type
     if (field.type.name && field.type.kind === 'SCALAR') {
-      fieldObj.type = field.type.name;
+      field.type = field.type.name;
     }
-    // the input field is an enumerated type
-    else if (field.type.kind === 'ENUM') {
-      fieldObj.type = 'Enum';
-      fieldObj.options = {};
-
-      // TODO: Populate fieldObj.options. (Object or array?) Check out inputFields and other properties of __EnumValue type on schema.
+    // the input field is an enumerated type (whether or not wrapped in a NON_NULL type)
+    else if (field.type.kind === 'ENUM' || field.type.ofType.kind === 'ENUM') {
+      field.type = 'Enum';
+      try {
+        field.options =
+          field.type.enumValues || field.type.ofType.enumValues || [];
+        // provide each option a type property
+        field.options.map((option) => {
+          let type;
+          switch (typeof option.name) {
+            case 'number':
+            case 'float':
+              type = 'Int';
+              break;
+            case 'boolean':
+              type = 'Boolean';
+              break;
+            default:
+              type = 'String';
+          }
+          option.type = type;
+          return option;
+        });
+      } catch (err) {
+        console.error(
+          'ERROR at PeriqlesForm: Failure to assign enumerated field.',
+          err,
+        );
+      }
     }
     // the input field is a scalar wrapped in a NON_NULL type
     else if (field.type.ofType.name && field.type.ofType.kind === 'SCALAR') {
-      fieldObj.type = field.type.ofType.name;
+      field.type = field.type.ofType.name;
     }
     // TODO: the input field is not a scalar or enum type
     else {
@@ -35,10 +60,10 @@ const fieldsArrayGenerator = (inputType, args = []) => {
         `The '${field.name}' input field is of a complex type not currently supported by PeriqlesForm. It will default to a 'String'. Type:`,
         field,
       );
-      fieldObj.type = 'String';
+      field.type = 'String';
     }
 
-    fieldsArray.push(fieldObj);
+    fieldsArray.push(field);
   });
 
   return fieldsArray;
@@ -61,9 +86,10 @@ const PeriqlesFormContent = ({
   args = [],
   inputType,
 }) => {
-  // console.log('Rendering PeriqlesFormContent for this inputType...', inputType);
-  console.log('Rendering PeriqlesFormContent with environment...', environment);
-
+  if (!inputType || !inputType.inputFields) {
+    console.error('ERROR at PeriqlesForm: mutation input type is undefined.');
+    return <p>! ERROR !</p>;
+  }
   // STATE
   const formState = {}; //--> { fieldName: { value: valueOfState, set: fnToSetState }};
 
@@ -115,7 +141,7 @@ const PeriqlesFormContent = ({
       });
     }
 
-    console.log(mutationGQL);
+    // console.log(mutationGQL);
 
     // Documentation re: shape of commitMutation's second parameter: https://relay.dev/docs/en/mutations#arguments
     // Referencing use of commitMutation in js/mutations/AddTodoMutation
@@ -144,25 +170,40 @@ const PeriqlesFormContent = ({
   // HELPER FUNCTIONS
   /**
    * Builds an HTML element to collect user input for a GraphQL mutation based on user-provided instructions.
-   * @param {Object} input An object representing an input field for a GraphQL mutation. Example: {name: "name", type: "String"}
+   * @param {Object} field An object representing an input field for a GraphQL mutation. Example: {name: "name", type: "String"}
    * @param {Object} specs An object representing developer-specified information to use for an HTML element representing this field. Example: {label: "Name", element: "textarea", options: []}
    * @return  Returns the specified HTML input element with the specified label and specified sub-options, if any.
    *
    */
-  const generateSpecifiedElement = (input, specs) => {
+  const generateSpecifiedElement = (field, specs) => {
     let element;
     switch (specs.element) {
+      //ADD EMAIL & TEL CASES + VALIDATION
+      case 'password':
+        element = (
+          <label>
+            {specs.label}
+            <input
+              type="password"
+              className={field.name + '-range periqles-password'}
+              name={field.name}
+              value={formState[field.name].value}
+              onChange={handleChange}
+            />
+          </label>
+        );
+        break;
       case 'range':
         element = (
           <label>
             {specs.label}
             <input
               type="range"
-              className={input.name + '-range periqles-range'}
-              name={input.name}
+              className={field.name + '-range periqles-range'}
+              name={field.name}
               min={specs.min || 0}
               max={specs.max || Infinity}
-              value={formState[input.name].value}
+              value={formState[field.name].value}
               onChange={handleChange}
             />
           </label>
@@ -175,11 +216,11 @@ const PeriqlesFormContent = ({
             {specs.label}
             <input
               type="image"
-              className={input.name + '-image periqles-image'}
-              name={input.name}
+              className={field.name + '-image periqles-image'}
+              name={field.name}
               src={specs.src}
               alt={specs.label}
-              value={formState[input.name].value}
+              value={formState[field.name].value}
               onChange={handleChange}
             />
           </label>
@@ -193,8 +234,8 @@ const PeriqlesFormContent = ({
             <label>
               <input
                 type="radio"
-                name={input.name}
-                className={input.name + '-radio-option periqles-radio-option'}
+                name={field.name}
+                className={field.name + '-radio-option periqles-radio-option'}
                 value={radio.value}
               />
               {specs.label}
@@ -204,37 +245,36 @@ const PeriqlesFormContent = ({
         });
         element = (
           <div
-            className={input.name + '-radio periqles-radio'}
-            value={formState[input.name].value}
+            className={field.name + '-radio periqles-radio'}
+            value={formState[field.name].value}
             onChange={handleChange}>
             {radioOptions}
           </div>
         );
         break;
-      // TODO: handle non-null/non-null-default dropdowns
-      case 'dropdown':
+      // TODO: handle non-null/non-null-default selects
+      case 'select':
         const selectOptions = [];
         selectOptions.push(
           <option
             value={''}
-            className={input.name + '-select-option periqles-select-option'}
-            selected>
+            className={field.name + '-select-option periqles-select-option'}>
             {specs.label}
           </option>,
         );
         specs.options.forEach((option) => {
           selectOptions.push(
             <option
-              value={option.value}
-              className={input.name + '-select-option periqles-select-option'}>
+              value={option.name}
+              className={field.name + '-select-option periqles-select-option'}>
               {option.label}
             </option>,
           );
         });
         element = (
           <select
-            className={input.name + '-select periqles-select'}
-            name={input.name}
+            className={field.name + '-select periqles-select'}
+            name={field.name}
             defaultValue={''}
             onChange={handleChange}>
             {selectOptions}
@@ -246,9 +286,9 @@ const PeriqlesFormContent = ({
           <label>
             {specs.label}
             <textarea
-              className={input.name + '-textarea periqles-textarea'}
-              name={input.name}
-              value={formState[input.name].value}
+              className={field.name + '-textarea periqles-textarea'}
+              name={field.name}
+              value={formState[field.name].value}
               onChange={handleChange}
             />
           </label>
@@ -260,9 +300,9 @@ const PeriqlesFormContent = ({
             {specs.label}
             <input
               type="text"
-              className={input.name + '-input periqles-text'}
-              name={input.name}
-              value={formState[input.name].value}
+              className={field.name + '-input periqles-text'}
+              name={field.name}
+              value={formState[field.name].value}
               onChange={handleChange}></input>
           </label>
         );
@@ -271,23 +311,23 @@ const PeriqlesFormContent = ({
     return element;
   };
 
-  const generateDefaultElement = (fieldObj) => {
+  const generateDefaultElement = (field) => {
     // assign a label that matches name but w/ spaces between words and first char uppercased
-    fieldObj.label = fieldObj.name.replace(/([a-z])([A-Z])/g, '$1 $2');
-    fieldObj.label = fieldObj.label[0].toUpperCase() + fieldObj.label.slice(1);
+    field.label = field.name.replace(/([a-z])([A-Z])/g, '$1 $2');
+    field.label = field.label[0].toUpperCase() + field.label.slice(1);
 
     let element;
 
-    switch (fieldObj.type) {
+    switch (field.type) {
       case 'Int':
         element = (
           <label>
-            {fieldObj.label}
+            {field.label}
             <input
               type="number"
-              className={fieldObj.name + '-number periqles-number'}
-              name={fieldObj.name}
-              value={formState[fieldObj.name].value}
+              className={field.name + '-number periqles-number'}
+              name={field.name}
+              value={formState[field.name].value}
               onChange={handleChange}></input>
           </label>
         );
@@ -296,45 +336,44 @@ const PeriqlesFormContent = ({
       case 'Boolean':
         element = (
           <label>
-            {fieldObj.label}
+            {field.label}
             <input
               type="checkbox"
-              className={fieldObj.name + '-checkbox periqles-checkbox'}
-              name={fieldObj.name}
-              value={formState[fieldObj.name].value}
+              className={field.name + '-checkbox periqles-checkbox'}
+              name={field.name}
+              value={formState[field.name].value}
               onChange={handleChange}></input>
           </label>
         );
         break;
 
       case 'Enum':
-        const optionsObj = fieldObj.options;
+        const optionsArr = field.options;
         const selectOptions = [];
         // default value displays label of field
         selectOptions.push(
           <option
             value={''}
-            className={input.name + '-select-option periqles-select-option'}
-            selected>
-            {fieldObj.label}
+            className={field.name + '-select-option periqles-select-option'}>
+            {field.label}
           </option>,
         );
         //iterate through the options for the field & make a tag for each option
-        // TODO: check shape of options collection
-        for (const option in optionsObj) {
+        optionsArr.forEach((option) => {
           selectOptions.push(
-            <option value={option.value} className={option + '-select-option'}>
-              {option}
+            <option
+              value={option.name}
+              className={field.name + '-select-option'}>
+              {option.name}
             </option>,
           );
-        }
-
+        });
         element = (
           <label>
-            {fieldObj.label}
+            {field.label}
             <select
-              className={fieldObj.name + '-select'}
-              name={fieldObj.name}
+              className={field.name + '-select'}
+              name={field.name}
               defaultValue={''}
               onChange={handleChange}>
               {selectOptions}
@@ -343,18 +382,73 @@ const PeriqlesFormContent = ({
         );
         break;
       default:
-        element = (
-          <label>
-            {fieldObj.label}
-            <input
-              type="text"
-              className={fieldObj.name + '-input periqles-text'}
-              name={fieldObj.name}
-              value={formState[fieldObj.name].value}
-              onChange={handleChange}></input>
-          </label>
-        );
-        break;
+        //TODO: Add if cases for password & email
+        if (field.name === 'password') {
+          element = (
+            <label>
+              {field.label}
+              <input
+                type="password"
+                className={field.name + '-input periqles-password'}
+                name={field.name}
+                value={formState[field.name].value}
+                onChange={handleChange}></input>
+            </label>
+          );
+          break;
+        } else if (field.name === 'email') {
+          element = (
+            <label>
+              {field.label}
+              <input
+                type="email"
+                className={field.name + '-input periqles-email'}
+                name={field.name}
+                value={formState[field.name].value}
+                onChange={handleChange}></input>
+            </label>
+          );
+          break;
+        } else if (field.name === 'url') {
+          element = (
+            <label>
+              {field.label}
+              <input
+                type="url"
+                className={field.name + '-input periqles-url'}
+                name={field.name}
+                value={formState[field.name].value}
+                onChange={handleChange}></input>
+            </label>
+          );
+          break;
+        } else if (field.name === 'telephone') {
+          element = (
+            <label>
+              {field.label}
+              <input
+                type="tel"
+                className={field.name + '-input periqles-tel'}
+                name={field.name}
+                value={formState[field.name].value}
+                onChange={handleChange}></input>
+            </label>
+          );
+          break;
+        } else {
+          element = (
+            <label>
+              {field.label}
+              <input
+                type="text"
+                className={field.name + '-input periqles-text'}
+                name={field.name}
+                value={formState[field.name].value}
+                onChange={handleChange}></input>
+            </label>
+          );
+          break;
+        }
     }
 
     return element;
@@ -370,17 +464,17 @@ const PeriqlesFormContent = ({
 
   const formBuilder = (fields) => {
     const formElementsArray = [];
-    fields.forEach((fieldObj) => {
-      if (args[fieldObj.name]) return; // early return
+    fields.forEach((field) => {
+      if (args[field.name]) return; // early return
 
       let element;
-      if (specifications.fields[fieldObj.name]) {
+      if (specifications.fields[field.name]) {
         element = generateSpecifiedElement(
-          fieldObj,
-          specifications.fields[fieldObj.name],
+          field,
+          specifications.fields[field.name],
         );
       } else {
-        element = generateDefaultElement(fieldObj);
+        element = generateDefaultElement(field);
       }
       formElementsArray.push(element);
     });
@@ -399,14 +493,15 @@ const PeriqlesFormContent = ({
       <div className="PeriqlesForm" aria-labelledby="form">
         <h2>{headerText}</h2>
         {formBuilder(fields)}
-        <button onClick={handleSubmit}>Submit</button>
+        <button className="periqles-submit" onClick={handleSubmit}>
+          Submit
+        </button>
       </div>
     </div>
   );
 };
 
 export default PeriqlesFormContent;
-
 
 /*
 // mock props
