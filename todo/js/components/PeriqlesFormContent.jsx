@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {commitMutation} from 'react-relay';
-// importing the mutation commit fn provided by Relay instead of expecting mutation prop to have a commit() method with params of a certain shape
 
 // TODO: use the options property added to enumerated fields
 const fieldsArrayGenerator = (inputType, args = []) => {
@@ -46,8 +45,8 @@ const fieldsArrayGenerator = (inputType, args = []) => {
 };
 
 /**
- * A React functional component with input fields corresponding to a Relay mutation.
- * @param {String} mutationName (REQUIRED) The name of a mutation axactly s written on the Relay schema.
+ * A functional component with input fields corresponding to the input fields of a Relay mutation.
+ * @param {String} mutationName (REQUIRED) The name of a mutation exactly as written on the Relay schema.
  * @param {String} mutationGQL (REQUIRED) The GraphQL query string representing the mutation.
  * @param {Object} specifications Optional parameters to specify the form's elements.
  * @param {[Object]} args Optional input values for the mutation, represented as objects with the shape {[nameOfInputField]: value}. Input fields represented here will not be represented on the form.
@@ -62,7 +61,7 @@ const PeriqlesFormContent = ({
   args = [],
   inputType,
 }) => {
-  console.log('Rendering PeriqlesFormContent for this inputType...', inputType);
+  // console.log('Rendering PeriqlesFormContent for this inputType...', inputType);
 
   // STATE
   const formState = {}; //--> { fieldName: { value: valueOfState, set: fnToSetState }};
@@ -395,8 +394,7 @@ const PeriqlesFormContent = ({
 
   return (
     <div>
-      {/* TODO: Add a handler to div to permit submitting with an "enter" keydown
-      event anywhere inside the div */}
+      {/* TODO: Add a handler to div to permit submitting with an "enter" keydown event anywhere inside the div */}
       <div className="PeriqlesForm" aria-labelledby="form">
         <h2>{headerText}</h2>
         {formBuilder(fields)}
@@ -432,6 +430,11 @@ const specifications = {
         }
     },
 };
+
+const args = [
+  {name: 'clientMutationId', value: '0000'},
+  {name: 'userId', value: 'me'},
+];
 */
 
 /*

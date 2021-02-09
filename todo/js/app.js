@@ -55,6 +55,71 @@ const modernEnvironment: Environment = new Environment({
   store: new Store(new RecordSource()),
 });
 
+
+const rootElement = document.getElementById('root');
+
+if (rootElement) {
+  ReactDOM.render(
+    <QueryRenderer
+      environment={modernEnvironment}
+      // add demoUser to query and share with AddUser_demoUser?
+      query={graphql`
+        # query appQuery($userId: String, $demoUserId: String) {
+        query appQuery($userId: String) {
+          user(id: $userId) {
+            ...TodoApp_user
+          }
+          # demoUser(id: $demoUserId) {
+          #   ...AddUser_demoUser
+          # }
+        }
+      `}
+      variables={{
+        // Mock authenticated ID that matches database
+        userId: 'me',
+        // demoUserId: pieceofstate,
+      }}
+      render={({error, props}: {error: ?Error, props: ?appQueryResponse}) => {
+        if (props && props.user) {
+          return (
+            <div>
+              <TodoApp user={props.user} />
+              <PeriqlesForm
+                mutationName={'AddTodo'}
+                mutationGQL={graphql`
+                  mutation app_AddTodoMutation($input: AddTodoInput!) {
+                    addTodo(input: $input) {
+                      todoEdge {
+                        __typename
+                        cursor
+                        node {
+                          complete
+                          id
+                          text
+                        }
+                      }
+                      user {
+                        id
+                        totalCount
+                      }
+                    }
+                  }
+                `}
+              />
+            </div>
+          );
+        } else if (error) {
+          return <div>{error.message}</div>;
+        }
+
+        return <div>Loading</div>;
+      }}
+    />,
+    rootElement,
+  );
+}
+
+
 // allow periqles to introspect schema
 // periqles.introspect(modernEnvironment);
 
@@ -143,67 +208,3 @@ const args = [
 //     // const fields = fieldsArrayGenerator(data.__type);
 //     // console.log(fields);
 // });
-
-
-const rootElement = document.getElementById('root');
-
-if (rootElement) {
-  ReactDOM.render(
-    <QueryRenderer
-      environment={modernEnvironment}
-      // add demoUser to query and share with AddUser_demoUser?
-      query={graphql`
-        # query appQuery($userId: String, $demoUserId: String) {
-        query appQuery($userId: String) {
-          user(id: $userId) {
-            ...TodoApp_user
-          }
-          # demoUser(id: $demoUserId) {
-          #   ...AddUser_demoUser
-          # }
-        }
-      `}
-      variables={{
-        // Mock authenticated ID that matches database
-        userId: 'me',
-        // demoUserId: pieceofstate,
-      }}
-      render={({error, props}: {error: ?Error, props: ?appQueryResponse}) => {
-        if (props && props.user) {
-          return (
-            <div>
-              <TodoApp user={props.user} />
-              <PeriqlesForm
-                mutationName={'AddTodo'}
-                mutationGQL={graphql`
-                  mutation app_AddTodoMutation($input: AddTodoInput!) {
-                    addTodo(input: $input) {
-                      todoEdge {
-                        __typename
-                        cursor
-                        node {
-                          complete
-                          id
-                          text
-                        }
-                      }
-                      user {
-                        id
-                        totalCount
-                      }
-                    }
-                  }
-                `}
-              />
-            </div>
-          );
-        } else if (error) {
-          return <div>{error.message}</div>;
-        }
-
-        return <div>Loading</div>;
-      }}
-    />,
-    rootElement,
-  );
-}
