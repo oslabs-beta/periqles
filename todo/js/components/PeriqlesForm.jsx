@@ -32,24 +32,25 @@ const PeriqlesForm = ({
       },
       body: JSON.stringify({
         query: `query typeQuery($inputType: String!)
-        {
-            __type(name: $inputType) {
+          {
+        __type(name: $inputType) {
+            name
+            inputFields {
                 name
-                inputFields {
+                type {
                     name
-                    type {
+                    kind
+                    ofType {
                         name
                         kind
-                        ofType {
+                        enumValues {
                             name
-                            kind
-                            enumValues {
-                                name
-                            }
+                            description
                         }
                     }
-                }
-            }
+                  }
+              }
+          }
         }`,
         variables: {
           inputType: inputTypeName,
