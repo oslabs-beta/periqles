@@ -195,11 +195,19 @@ const demoGraphQLUser = new GraphQLObjectType({
       resolve: (demoUser): string => demoUser.pizzaTopping, // where does this value come from? mutation? methods come from database so maybe adding Demo methods there,
     },
     age: {
-      type: new GraphQLNonNull(GraphQLString),
+      type: new GraphQLNonNull(GraphQLInt),
       resolve: (demoUser): number => demoUser.age, // where does this value come from? mutation? methods come from database so maybe adding Demo methods there,
     },
   },
   interfaces: [nodeInterface],
 });
 
-export {nodeField, GraphQLTodo, GraphQLTodoEdge, GraphQLUser, demoGraphQLUser};
+export {
+  nodeField,
+  GraphQLTodo,
+  GraphQLTodoEdge,
+  GraphQLUser,
+  demoGraphQLUser,
+  GenderEnum,
+  PizzaToppingEnum,
+};

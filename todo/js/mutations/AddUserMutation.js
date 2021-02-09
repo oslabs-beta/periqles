@@ -9,7 +9,7 @@ import {
 
 import {ConnectionHandler} from 'relay-runtime';
 // import type {TodoApp_user} from 'relay/TodoApp_user.graphql';
-import type {AddUserInput} from 'relay/AddUserMutation.graphql';  // TODO in typescript?
+import type {AddUserInput} from 'relay/AddUserMutation.graphql'; // TODO in typescript?
 
 // TODO: consult with Ian and Joe about fields and types to return from AddUser mutation
 const mutation = graphql`
@@ -34,7 +34,7 @@ const mutation = graphql`
 //   store: RecordSourceSelectorProxy,
 //   demoUser
 // ) {
-//   const userProxy = store.get(demoUser.userId);  
+//   const userProxy = store.get(demoUser.userId);
 //   // const conn = ConnectionHandler.getConnection(userProxy, 'TodoList_todos');
 //   // ConnectionHandler.insertEdgeAfter(conn, newEdge);
 // }
@@ -60,21 +60,21 @@ function commit(
     gender,
     pizzaTopping,
     age,
-    clientMutationId: `${tempID++}`,    // why is this unique?
+    clientMutationId: `${tempID++}`, // why is this unique?
   };
-
 
   return commitMutation(environment, {
     mutation,
     variables: {
       input,
     },
-    // updater: (store: RecordSourceSelectorProxy) => {      // TODO: needed? is there a default to fall back to if I leave it off?
-    //   const payload = store.getRootField('addUser');      // TODO
-    //   console.log(payload);
-    //   // const newEdge = payload.getLinkedRecord('todoEdge');   // TODO: what should this be?
-    //   sharedUpdater(store, demoUser);
-    // },
+    updater: (store) => {
+      // TODO: needed? is there a default to fall back to if I leave it off?
+      const payload = store.getRootField('addUser'); // TODO
+      console.log('addUser payload:', payload);
+      // const newEdge = payload.getLinkedRecord('todoEdge');   // TODO: what should this be?
+      // sharedUpdater(store, demoUser);
+    },
     // optimisticUpdater: (store: RecordSourceSelectorProxy) => {    // TODO: needed?
     //   const id = 'client:newUser:' + tempID++;     // TODO: make a new, unique mutation id
     //   const user = store.create(id, 'User');    // create(idForNewData, typeNameFromSchema) --> RecordProxy

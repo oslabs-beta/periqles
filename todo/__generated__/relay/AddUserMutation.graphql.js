@@ -8,12 +8,14 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
+export type GenderEnum = "FEMALE" | "MALE" | "NON_BINARY" | "%future added value";
+export type PizzaToppingEnum = "BUFFALO_CHICKEN" | "EGGPLANT_PARM" | "HAWAIIAN" | "MEATLOVERS" | "OLIVES" | "PEPPERONI" | "%future added value";
 export type AddUserInput = {|
   username: string,
   password: string,
   email: string,
-  gender: string,
-  pizzaTopping: string,
+  gender: GenderEnum,
+  pizzaTopping: PizzaToppingEnum,
   age: number,
   clientMutationId?: ?string,
 |};
@@ -26,8 +28,8 @@ export type AddUserMutationResponse = {|
     +username: string,
     +password: string,
     +email: string,
-    +gender: string,
-    +pizzaTopping: string,
+    +gender: GenderEnum,
+    +pizzaTopping: PizzaToppingEnum,
     +age: number,
   |}
 |};

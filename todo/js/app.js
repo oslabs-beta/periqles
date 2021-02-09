@@ -80,14 +80,17 @@ const specifications = {
   ],
   args: [{name: 'userID', value: 'me'}],
 };
-AddUserMutation.commit(
-  modernEnvironment,
-  'UN1',
-  'PW1',
-  'E1',
-  'NON_BINARY',
-  'HAWAIIAN',
-  1,
+console.log(
+  'returned from commit',
+  AddUserMutation.commit(
+    modernEnvironment,
+    'UN1',
+    'PW1',
+    'E1',
+    'NON_BINARY',
+    'HAWAIIAN',
+    1,
+  ),
 );
 const rootElement = document.getElementById('root');
 
