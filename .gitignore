@@ -105,4 +105,8 @@ dist
 
 # react-relay-app 
 # /react-relay-app/vanilla-gql-example.js
-react-relay-app/__generated__
+/react-relay-app/__generated__
+
+#todo
+/todo/flow-typed
+/todo/__generated__
