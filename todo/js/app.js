@@ -30,7 +30,7 @@ import AddUserMutation from './mutations/AddUserMutation';
 import TodoApp from './components/TodoApp';
 import AddUser from './components/AddUser';
 import type {appQueryResponse} from 'relay/appQuery.graphql';
-import { isPropertySignature } from 'typescript';
+import {isPropertySignature} from 'typescript';
 
 async function fetchQuery(
   operation: RequestNode,
@@ -80,9 +80,16 @@ const specifications = {
   ],
   args: [{name: 'userID', value: 'me'}],
 };
-
+AddUserMutation.commit(
+  modernEnvironment,
+  'UN1',
+  'PW1',
+  'E1',
+  'Nonbinary',
+  'Hawaiian',
+  1,
+);
 const rootElement = document.getElementById('root');
-
 
 if (rootElement) {
   ReactDOM.render(
@@ -109,7 +116,10 @@ if (rootElement) {
         if (props && props.demoUser) {
           return (
             <div>
-              <AddUser demoUser={props.demoUser}/>
+              <AddUser
+                demoUser={props.demoUser}
+                environment={props.modernEnvironment}
+              />
               {/* <PeriqlesForm mutation={mutation} specifications={specifications}/> */}
             </div>
           );
