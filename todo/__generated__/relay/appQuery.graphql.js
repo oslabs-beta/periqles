@@ -8,13 +8,13 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-import type { AddUser_demoUser$ref } from "./AddUser_demoUser.graphql";
+import type { UserProfile_demoUser$ref } from "./UserProfile_demoUser.graphql";
 export type appQueryVariables = {|
   demoUserId?: ?string
 |};
 export type appQueryResponse = {|
   +demoUser: ?{|
-    +$fragmentRefs: AddUser_demoUser$ref
+    +$fragmentRefs: UserProfile_demoUser$ref
   |}
 |};
 export type appQuery = {|
@@ -29,12 +29,12 @@ query appQuery(
   $demoUserId: String
 ) {
   demoUser(demoUserId: $demoUserId) {
-    ...AddUser_demoUser
+    ...UserProfile_demoUser
     id
   }
 }
 
-fragment AddUser_demoUser on DemoUser {
+fragment UserProfile_demoUser on DemoUser {
   userId
   username
   password
@@ -78,7 +78,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "AddUser_demoUser"
+            "name": "UserProfile_demoUser"
           }
         ],
         "storageKey": null
@@ -163,16 +163,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "3faafb14c8057faf711239bebabd538d",
+    "cacheID": "d6f40ac2a8c1493b41f6cfab5f2c11f2",
     "id": null,
     "metadata": {},
     "name": "appQuery",
     "operationKind": "query",
-    "text": "query appQuery(\n  $demoUserId: String\n) {\n  demoUser(demoUserId: $demoUserId) {\n    ...AddUser_demoUser\n    id\n  }\n}\n\nfragment AddUser_demoUser on DemoUser {\n  userId\n  username\n  password\n  email\n  gender\n  pizzaTopping\n  age\n}\n"
+    "text": "query appQuery(\n  $demoUserId: String\n) {\n  demoUser(demoUserId: $demoUserId) {\n    ...UserProfile_demoUser\n    id\n  }\n}\n\nfragment UserProfile_demoUser on DemoUser {\n  userId\n  username\n  password\n  email\n  gender\n  pizzaTopping\n  age\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'd685a518d2d741a064a1422bd19f627f';
+(node/*: any*/).hash = 'f967825ec838754c66a19385997516eb';
 
 module.exports = node;

@@ -8,23 +8,25 @@
 
 /*::
 import type { ReaderFragment } from 'relay-runtime';
+export type GenderEnum = "FEMALE" | "MALE" | "NON_BINARY" | "%future added value";
+export type PizzaToppingEnum = "BUFFALO_CHICKEN" | "EGGPLANT_PARM" | "HAWAIIAN" | "MEATLOVERS" | "OLIVES" | "PEPPERONI" | "%future added value";
 import type { FragmentReference } from "relay-runtime";
-declare export opaque type AddUser_demoUser$ref: FragmentReference;
-declare export opaque type AddUser_demoUser$fragmentType: AddUser_demoUser$ref;
-export type AddUser_demoUser = {|
+declare export opaque type UserProfile_demoUser$ref: FragmentReference;
+declare export opaque type UserProfile_demoUser$fragmentType: UserProfile_demoUser$ref;
+export type UserProfile_demoUser = {|
   +userId: string,
   +username: string,
   +password: string,
   +email: string,
-  +gender: string,
-  +pizzaTopping: string,
+  +gender: GenderEnum,
+  +pizzaTopping: PizzaToppingEnum,
   +age: string,
-  +$refType: AddUser_demoUser$ref,
+  +$refType: UserProfile_demoUser$ref,
 |};
-export type AddUser_demoUser$data = AddUser_demoUser;
-export type AddUser_demoUser$key = {
-  +$data?: AddUser_demoUser$data,
-  +$fragmentRefs: AddUser_demoUser$ref,
+export type UserProfile_demoUser$data = UserProfile_demoUser;
+export type UserProfile_demoUser$key = {
+  +$data?: UserProfile_demoUser$data,
+  +$fragmentRefs: UserProfile_demoUser$ref,
   ...
 };
 */
@@ -34,7 +36,7 @@ const node/*: ReaderFragment*/ = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "AddUser_demoUser",
+  "name": "UserProfile_demoUser",
   "selections": [
     {
       "alias": null,
@@ -90,6 +92,6 @@ const node/*: ReaderFragment*/ = {
   "abstractKey": null
 };
 // prettier-ignore
-(node/*: any*/).hash = '668e65f64e97b0342c877e9e30f0aad8';
+(node/*: any*/).hash = 'c87a25eb45d4af2bf59d24f759fec51c';
 
 module.exports = node;

@@ -26,10 +26,10 @@ type Props = {|
   +user: TodoApp_user,
 |};
 
-const AddUser = ({relay, demoUser, environment}: Props) => {
+const UserProfile = ({relay, demoUser, environment}: Props) => {
   // mock props for PeriqlesForm
   // AddUserMutation.commit(relay.environment, 'UN1', 'PW1', 'E1', 'Nonbinary', 'Hawaiian', 1);
-  // console.log('demoUser in AddUser component:', demoUser);
+  console.log('demoUser in AddUser component:', demoUser);
   // // mock making closure
 
   // const environment = {
@@ -53,28 +53,28 @@ const AddUser = ({relay, demoUser, environment}: Props) => {
       <ul>{userDisplayItems}</ul>
       <PeriqlesForm
         mutationName={'AddUser'}
-        mutationGQL={graphql`
-          mutation AddUserMutation($input: AddUserInput!) {
-            addUser(input: $input) {
-              userId
-              username
-              password
-              email
-              gender
-              pizzaTopping
-              age
-            }
-          }
-        `}
+        // mutationGQL={graphql`
+        //   mutation UserProfileMutation($input: AddUserInput!) {
+        //     addUser(input: $input) {
+        //       userId
+        //       username
+        //       password
+        //       email
+        //       gender
+        //       pizzaTopping
+        //       age
+        //     }
+        //   }
+        // `}
         args={[{name: 'clientMutationId', value: '0000'}]}
       />
     </div>
   );
 };
 
-export default createFragmentContainer(AddUser, {
+export default createFragmentContainer(UserProfile, {
   demoUser: graphql`
-    fragment AddUser_demoUser on DemoUser {
+    fragment UserProfile_demoUser on DemoUser {
       userId
       username
       password

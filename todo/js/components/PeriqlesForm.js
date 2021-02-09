@@ -96,6 +96,7 @@ export default function periqlesFormWrapper(schema, environment) {
       // input field type is not null, ie, scalar
       else {
         // console.log('This field\'s type is not null:', inputField)
+        console.log('inputfield was not null');
         let fieldObj = {
           name: inputField.name,
           type: inputField.type.name,
@@ -435,13 +436,14 @@ export default function periqlesFormWrapper(schema, environment) {
 
     /**
      * By referencing the name of a mutation on a GraphQL schema, generates an HTML element for each field where user input is required. Assumes that if the mutation name takes the form of "<description>Mutation", its corresponding input type will be named "<description>Input".
-     * @param {Array} fieldsArray An array of objects representing the names and data types of input fields, deduced from an input type on the GraphQL schema.
+     * @param {Array} fields An array of objects representing the names and data types of input fields, deduced from an input type on the GraphQL schema.
      * @param {string} mutationName The name of a GraphQL mutation exactly as it appears on the schema.
      * @param {object} specifications
      * @param {object} args An object whose keys represent the names of mutation input fields to exclude from the form, and whose values provide the value to be used for each variable when the mutation is committed.
      */
 
     const formBuilder = (fields) => {
+      console.log('fields array: ', fields);
       const formElementsArray = [];
       //const fieldsArray = fieldsArrayGenerator(mutationName, schema);
       fields.forEach((fieldObj) => {
@@ -449,11 +451,13 @@ export default function periqlesFormWrapper(schema, environment) {
 
         let element;
         if (specifications.fields[fieldObj.name]) {
+          console.log('generating a specific element');
           element = generateSpecifiedElement(
             fieldObj,
             specifications.fields[fieldObj.name],
           );
         } else {
+          console.log('generating a default element');
           element = generateDefaultElement(fieldObj);
         }
         formElementsArray.push(element);
@@ -472,7 +476,9 @@ export default function periqlesFormWrapper(schema, environment) {
       <div className="PeriqlesForm" aria-labelledby="form">
         <h2>{headerText}</h2>
         {formBuilder(fields)}
-        <button onClick={handleSubmit}>Submit</button>
+        <button className="periqles-submit" onClick={handleSubmit}>
+          Submit
+        </button>
       </div>
     );
   };

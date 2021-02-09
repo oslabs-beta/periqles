@@ -66,11 +66,13 @@ function getDemoUser(userId: string): ?DemoUser {
   return demoUsersById.get(userId);
 }
 export function getDemoUserOrThrow(userId: string): DemoUser {
+  // console.log('hello from getDemoUserOrThrow');
   const demoUser = getDemoUser(userId);
 
   if (!demoUser) {
     throw new Error(`Invariant exception, DemoUser ${userId} not found`);
   }
+  console.log('returning from getDemoUserOrThrow:', demoUser);
   return demoUser;
 }
 
@@ -94,7 +96,7 @@ export function addUser({
     age,
   );
   demoUsersById.set(newUser.userId, newUser);
-  console.log('newUser is',newUser);
+  console.log('newUser is', newUser);
   return newUser.userId;
 }
 

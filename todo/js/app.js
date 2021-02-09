@@ -28,7 +28,7 @@ import {
 } from 'relay-runtime';
 import AddUserMutation from './mutations/AddUserMutation';
 import TodoApp from './components/TodoApp';
-import AddUser from './components/AddUser';
+import UserProfile from './components/UserProfile';
 import type {appQueryResponse} from 'relay/appQuery.graphql';
 import {isPropertySignature} from 'typescript';
 
@@ -85,8 +85,8 @@ AddUserMutation.commit(
   'UN1',
   'PW1',
   'E1',
-  'Nonbinary',
-  'Hawaiian',
+  'NON_BINARY',
+  'HAWAIIAN',
   1,
 );
 const rootElement = document.getElementById('root');
@@ -102,7 +102,7 @@ if (rootElement) {
       query={graphql`
         query appQuery($demoUserId: String) {
           demoUser(demoUserId: $demoUserId) {
-            ...AddUser_demoUser
+            ...UserProfile_demoUser
           }
         }
       `}
@@ -112,11 +112,11 @@ if (rootElement) {
         demoUserId: '0',
       }}
       render={({error, props}: {error: ?Error, props: ?appQueryResponse}) => {
-        // console.log('these are the props from App', props)
+        console.log('these are the props from App', props);
         if (props && props.demoUser) {
           return (
             <div>
-              <AddUser
+              <UserProfile
                 demoUser={props.demoUser}
                 environment={props.modernEnvironment}
               />

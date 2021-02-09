@@ -18,6 +18,7 @@ import {
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString,
+  GraphQLEnumType,
 } from 'graphql';
 
 import {
@@ -126,6 +127,45 @@ const GraphQLUser = new GraphQLObjectType({
   interfaces: [nodeInterface],
 });
 
+const GenderEnum = new GraphQLEnumType({
+  name: 'GenderEnum',
+  values: {
+    NON_BINARY: {
+      value: 'NON_BINARY',
+    },
+    FEMALE: {
+      value: 'FEMALE',
+    },
+    MALE: {
+      value: 'MALE',
+    },
+  },
+});
+
+const PizzaToppingEnum = new GraphQLEnumType({
+  name: 'PizzaToppingEnum',
+  values: {
+    BUFFALO_CHICKEN: {
+      value: 'BUFFALO_CHICKEN',
+    },
+    PEPPERONI: {
+      value: 'PEPPERONI',
+    },
+    MEATLOVERS: {
+      value: 'MEATLOVERS',
+    },
+    EGGPLANT_PARM: {
+      value: 'EGGPLANT_PARM',
+    },
+    OLIVES: {
+      value: 'OLIVES',
+    },
+    HAWAIIAN: {
+      value: 'HAWAIIAN',
+    },
+  },
+});
+
 const demoGraphQLUser = new GraphQLObjectType({
   name: 'DemoUser',
   fields: {
@@ -147,11 +187,11 @@ const demoGraphQLUser = new GraphQLObjectType({
       resolve: (demoUser): string => demoUser.email, // where does this value come from? mutation? methods come from database so maybe adding Demo methods there,
     },
     gender: {
-      type: new GraphQLNonNull(GraphQLString),
+      type: new GraphQLNonNull(GenderEnum),
       resolve: (demoUser): string => demoUser.gender, // where does this value come from? mutation? methods come from database so maybe adding Demo methods there,
     },
     pizzaTopping: {
-      type: new GraphQLNonNull(GraphQLString),
+      type: new GraphQLNonNull(PizzaToppingEnum),
       resolve: (demoUser): string => demoUser.pizzaTopping, // where does this value come from? mutation? methods come from database so maybe adding Demo methods there,
     },
     age: {

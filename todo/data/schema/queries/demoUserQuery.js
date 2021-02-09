@@ -26,7 +26,10 @@ const demoUserQuery = {
   args: {
     demoUserId: {type: GraphQLString},
   },
-  resolve: (root: {}, {demoUserId}: Input): DemoUser => getDemoUserOrThrow(demoUserId),
+  resolve: (root: {}, {demoUserId}: Input): DemoUser => {
+    console.log('this is the demoUserId from resolver ', demoUserId);
+    return getDemoUserOrThrow(demoUserId);
+  },
 };
 
 export {demoUserQuery};
