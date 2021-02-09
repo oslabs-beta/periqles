@@ -12,7 +12,7 @@
  */
 
 import 'todomvc-common';
-import periqles from '../../module/index.js';
+import periqles from '../module/index.js';
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
@@ -54,7 +54,7 @@ const modernEnvironment: Environment = new Environment({
 });
 
 // allow periqles to introspect schema
-periqles.introspect(modernEnvironment);
+// periqles.introspect(modernEnvironment);
 
 const rootElement = document.getElementById('root');
 
