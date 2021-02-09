@@ -62,6 +62,7 @@ const PeriqlesFormContent = ({
   inputType,
 }) => {
   // console.log('Rendering PeriqlesFormContent for this inputType...', inputType);
+  console.log('Rendering PeriqlesFormContent with environment...', environment);
 
   // STATE
   const formState = {}; //--> { fieldName: { value: valueOfState, set: fnToSetState }};
