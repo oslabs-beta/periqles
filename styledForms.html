@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./formStyles.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <center><h1>Pericles Form Styles</h1></center>
+
+
+   
+      <form class="periclesForm">
+        <div class="periclesForm">
+        <label>
+          Text Form
+          <input
+            type="text"
+            id= "Text Form"
+            class = "periqles-text"
+            name={input.name}
+          />
+        </label>
+      
+          <label>
+            Radio
+            <input type="radio" id="radio" class = "periqles-radio" name={input.name} value={radio} />
+           
+          </label>
+
+ 
+        <label>
+          Checkbox
+          <input type="checkbox" id="checkbox" class = "periqles-checkbox" name={input.name} />
+          
+        </label>
+      <label>
+      Select 
+      <select class = "periqles-select" name={input.name}>;
+        DropdownItem
+        <option value={null} selected>
+          "test"
+        </option>
+    
+       <option class = "periqles-option" value={option}>testOption</option>);
+     </select>
+    </label>
+        <label>
+          Password <input type="password" class = "periqles-password" id={input.id} name={input.name} />
+        </label>
+     
+        <label>
+          Number <input type="number" class = "periqles-number" id={input.id} name={input.name} />
+        </label>
+     
+        <label>
+      
+          Date
+          <input type="date" id={input.id} class = "periqles-date" name={input.name} />
+        </label>
+    
+        <label>
+          Email
+          <input type="email" id={input.id}  class = "periqles-email" name={input.name} />
+        </label>
+     
+        <label>
+          Textarea
+          <textarea id={input.id} class = "periqles-textarea"  name={input.name}></textarea>
+        </label>
+     
+        <label>
+          Tel
+          <input type="tel" id={input.id} class = "periqles-tel"  name={input.name} />
+        </label>
+
+        <label>
+          Submit
+          <input type="submit" id={input.id} class = "periqles-submit"  name={input.name} />
+        </label>
+    
+        <label>
+          URL
+          <input type="url" id={input.id} class = "periqles-url"  name={input.name}></input>
+        </label>
+        <label>
+          Upload file
+          <input type="file" id={input.id} class = "periqles-file" name={input.name} />
+        </label>
+     
+        <label>
+          Button
+          <input type="button" id={input.id} class = "periqles-button" name={input.name}></input>
+        </label>
+    
+        <label>
+          Time
+          <input type="time" id={input.id} class = "periqles-time" name={input.name} />
+        </label>
+  
+        <label>
+          Color
+          <input type="color" id={input.id} class = "periqles-color" name={input.name}></input>
+        </label>
+
+        <label>
+          Range
+          <input type="range" id={input.id} class = "periqles-range" name={input.name} min ={input.min} max = {input.max}></input>
+        </label>
+    
+        <label>
+          Local Date Time
+          <input type="datetime-local" id={input.id} class = "periqles-datetime-local" name={input.name}></input>
+        </label>
+      </div>
+      </form>
+  
+    
+    
+    
+  
+  </body>
+</html>
+
+

@@ -18,6 +18,9 @@ import TodoTextInput from './TodoTextInput';
 
 import React from 'react';
 import {createFragmentContainer, graphql} from 'react-relay';
+// import {PeriqlesForm} from '../../../index.js';
+import PeriqlesForm from './PeriqlesForm.js';
+import periqlesFormWrapper from './PeriqlesForm.js';
 import type {RelayProp} from 'react-relay';
 import type {TodoApp_user} from 'relay/TodoApp_user.graphql';
 
@@ -33,6 +36,37 @@ const TodoApp = ({relay, user}: Props) => {
   };
 
   const hasTodos = user.totalCount > 0;
+
+  // mock props for PeriqlesForm
+  const mutation = '';
+  const specifications = {
+    fields: [
+      {
+        name: 'name',
+        element: 'text',
+        id: 'textId',
+      },
+      {
+        name: 'gender',
+        element: 'radio',
+        options: [
+          {name: 'male', value: 'm'},
+          {name: 'female', value: 'f'},
+          {name: 'prefer not to say', value: 'x'},
+        ],
+        id: 'radioId',
+      },
+    ],
+    args: [{name: 'userID', value: 'me'}],
+  };
+
+  // mock making closure
+  const schema = [{name: 'name', type: 'String'}];
+  const environment = {
+    networkLayer: 'fake network layer',
+    store: 'fake Relay store',
+  };
+  const PeriqlesForm = periqlesFormWrapper(schema, environment);
 
   return (
     <div>
@@ -50,7 +84,7 @@ const TodoApp = ({relay, user}: Props) => {
         <TodoList user={user} />
         {hasTodos && <TodoListFooter user={user} />}
       </section>
-
+      <PeriqlesForm mutation={mutation} specifications={specifications} />
       <footer className="info">
         <p>Double-click to edit a todo</p>
 

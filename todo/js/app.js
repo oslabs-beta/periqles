@@ -12,7 +12,7 @@
  */
 
 import 'todomvc-common';
-import periqles from '../../index.js';
+// import periqles, {PeriqlesForm} from '../../index.js';
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
@@ -26,9 +26,11 @@ import {
   type RequestNode,
   type Variables,
 } from 'relay-runtime';
-
+import AddUserMutation from './mutations/AddUserMutation';
 import TodoApp from './components/TodoApp';
+import UserProfile from './components/UserProfile';
 import type {appQueryResponse} from 'relay/appQuery.graphql';
+import {isPropertySignature} from 'typescript';
 
 async function fetchQuery(
   operation: RequestNode,
@@ -54,38 +56,76 @@ const modernEnvironment: Environment = new Environment({
 });
 
 // allow periqles to introspect schema
-console.log(periqles);  // should have two methods, PeriqlesForm and introspect
-periqles.introspect(modernEnvironment);
-// window.setTimeout(() => {
-//   console.log('PeriqlesForm after introspect: ', periqles.PeriqlesForm); // should be reassigned to the result of invoking PeriqlesFormWrapper
-//   periqles.PeriqlesForm();  // should console-log 'I am a React component'
-// }, 500);
+// periqles.introspect(modernEnvironment);
 
+// mock props for PeriqlesForm
+const mutation = '';
+const specifications = {
+  fields: [
+    {
+      name: 'name',
+      element: 'text',
+      id: 'textId',
+    },
+    {
+      name: 'gender',
+      element: 'radio',
+      options: [
+        {name: 'male', value: 'm'},
+        {name: 'female', value: 'f'},
+        {name: 'prefer not to say', value: 'x'},
+      ],
+      id: 'radioId',
+    },
+  ],
+  args: [{name: 'userID', value: 'me'}],
+};
+console.log(
+  'returned from commit',
+  AddUserMutation.commit(
+    modernEnvironment,
+    'UN1',
+    'PW1',
+    'E1',
+    'NON_BINARY',
+    'HAWAIIAN',
+    1,
+  ),
+);
 const rootElement = document.getElementById('root');
 
 if (rootElement) {
   ReactDOM.render(
     <QueryRenderer
       environment={modernEnvironment}
+      // add demoUser to query and share with AddUser_demoUser?
+      // user(id: $userId) {
+      //   ...TodoApp_user
+      // }
       query={graphql`
-        query appQuery($userId: String) {
-          user(id: $userId) {
-            ...TodoApp_user
+        query appQuery($demoUserId: String) {
+          demoUser(demoUserId: $demoUserId) {
+            ...UserProfile_demoUser
           }
         }
       `}
       variables={{
         // Mock authenticated ID that matches database
         userId: 'me',
+        demoUserId: '0',
       }}
       render={({error, props}: {error: ?Error, props: ?appQueryResponse}) => {
-        if (props && props.user) {
-          const {PeriqlesForm} = periqles;
-          // console.log(PeriqlesForm);
-          return (<div>
-            <TodoApp user={props.user} />
-            <PeriqlesForm />
-          </div>)
+        console.log('these are the props from App', props);
+        if (props && props.demoUser) {
+          return (
+            <div>
+              <UserProfile
+                demoUser={props.demoUser}
+                environment={props.modernEnvironment}
+              />
+              {/* <PeriqlesForm mutation={mutation} specifications={specifications}/> */}
+            </div>
+          );
         } else if (error) {
           return <div>{error.message}</div>;
         }

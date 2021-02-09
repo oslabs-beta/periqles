@@ -1,5 +1,6 @@
 type Query {
   user(id: String): User
+  demoUser(demoUserId: String): DemoUser
 
   """Fetches an object given its ID"""
   node(
@@ -63,6 +64,33 @@ type Todo implements Node {
   complete: Boolean!
 }
 
+type DemoUser implements Node {
+  """The ID of an object"""
+  id: ID!
+  userId: String!
+  username: String!
+  password: String!
+  email: String!
+  gender: GenderEnum!
+  pizzaTopping: PizzaToppingEnum!
+  age: String!
+}
+
+enum GenderEnum {
+  NON_BINARY
+  FEMALE
+  MALE
+}
+
+enum PizzaToppingEnum {
+  BUFFALO_CHICKEN
+  PEPPERONI
+  MEATLOVERS
+  EGGPLANT_PARM
+  OLIVES
+  HAWAIIAN
+}
+
 type Mutation {
   addTodo(input: AddTodoInput!): AddTodoPayload
   changeTodoStatus(input: ChangeTodoStatusInput!): ChangeTodoStatusPayload
@@ -70,6 +98,7 @@ type Mutation {
   removeCompletedTodos(input: RemoveCompletedTodosInput!): RemoveCompletedTodosPayload
   removeTodo(input: RemoveTodoInput!): RemoveTodoPayload
   renameTodo(input: RenameTodoInput!): RenameTodoPayload
+  addUser(input: AddUserInput!): AddUserPayload
 }
 
 type AddTodoPayload {
@@ -140,5 +169,26 @@ type RenameTodoPayload {
 input RenameTodoInput {
   id: ID!
   text: String!
+  clientMutationId: String
+}
+
+type AddUserPayload {
+  userId: String!
+  username: String!
+  password: String!
+  email: String!
+  gender: GenderEnum!
+  pizzaTopping: PizzaToppingEnum!
+  age: Int!
+  clientMutationId: String
+}
+
+input AddUserInput {
+  username: String!
+  password: String!
+  email: String!
+  gender: GenderEnum!
+  pizzaTopping: PizzaToppingEnum!
+  age: Int!
   clientMutationId: String
 }
