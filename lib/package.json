@@ -15,6 +15,7 @@
     "component"
   ],
   "scripts": {
+    "build": "",
     "test": "jest --verbose"
   },
   "devDependencies": {

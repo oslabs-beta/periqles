@@ -28,7 +28,8 @@ import {
 } from 'relay-runtime';
 
 import TodoApp from './components/TodoApp';
-import PeriqlesForm from '../module/PeriqlesForm.jsx';
+// import PeriqlesForm from '../module/PeriqlesForm.jsx';
+import PeriqlesForm from './components/PeriqlesForm.jsx';
 import type {appQueryResponse} from 'relay/appQuery.graphql';
 
 async function fetchQuery(
@@ -104,44 +105,45 @@ const args = [
   {name: 'clientMutationId', value: '0000'},
   {name: 'userId', value: 'me'},
 ];
-
-const inputTypeName = 'AddTodoInput';
-
-fetch('/graphql', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    query: `query typeQuery($inputType: String!)
-    {
-        __type(name: $inputType) {
-            name
-            inputFields {
-              name
-              type {
-                name
-                kind
-                ofType {
-                  name
-                  kind
-                }
-              }
-            }
-          }
-        }`,
-    variables: {
-      inputType: inputTypeName,
-    },
-  }),
-})
-  .then(res => res.json())
-  .then(({data}) => {
-    console.log('AddTodoInput:', data);
-    const fields = fieldsArrayGenerator(data.__type);
-    console.log(fields);
-});
 */
+
+// const inputTypeName = 'AddTodoInput';
+
+// fetch('/graphql', {
+//   method: 'POST',
+//   headers: {
+//     'Content-Type': 'application/json',
+//   },
+//   body: JSON.stringify({
+//     query: `query typeQuery($inputType: String!)
+//     {
+//         __type(name: $inputType) {
+//             name
+//             inputFields {
+//               name
+//               type {
+//                 name
+//                 kind
+//                 ofType {
+//                   name
+//                   kind
+//                 }
+//               }
+//             }
+//           }
+//         }`,
+//     variables: {
+//       inputType: inputTypeName,
+//     },
+//   }),
+// })
+//   .then(res => res.json())
+//   .then(({data}) => {
+//     console.log('AddTodoInput:', data);
+//     // const fields = fieldsArrayGenerator(data.__type);
+//     // console.log(fields);
+// });
+
 
 const rootElement = document.getElementById('root');
 

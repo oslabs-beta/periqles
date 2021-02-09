@@ -1,7 +1,7 @@
 // TODO: Babel compiler isn't finding the graphql tag here. Need to check its config.
 
-import React from 'react';
-import {QueryRenderer, graphql} from 'react-relay';
+import React, {useState} from 'react';
+// import {QueryRenderer, graphql} from 'react-relay';
 import PeriqlesFormContent from './PeriqlesFormContent.jsx';
 
 /**
@@ -19,8 +19,83 @@ const PeriqlesForm = ({
   specifications,
   args,
 }) => {
-  const inputTypeName = mutationName + 'Input';
+  // const [introspectionFinished, setIntrospectionFinished] = useState(false);
+  const [typeSchema, setTypeSchema] = useState(undefined);
+  // let display = <p>Loading form...</p>;
 
+  const introspect = () => {
+    const inputTypeName = mutationName + 'Input';
+
+    fetch('/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: `query typeQuery($inputType: String!)
+      {
+          __type(name: $inputType) {
+              name
+              inputFields {
+                name
+                type {
+                  name
+                  kind
+                  ofType {
+                    name
+                    kind
+                  }
+                }
+              }
+            }
+          }`,
+        variables: {
+          inputType: inputTypeName,
+        },
+      }),
+    })
+      .then((res) => res.json())
+      .then(({data}) => {
+        console.log('Input type fetched by PF:', data.__type);
+        setTypeSchema(data.__type);
+        // setIntrospectionFinished(true);
+      });
+  };
+
+  introspect();
+
+  // useEffect(() => {
+  //   if (typeSchema) {
+  //     display = (
+  //       <PeriqlesFormContent
+  //         environment={environment}
+  //         inputType={typeSchema}
+  //         mutationName={mutationName}
+  //         mutation={mutationGQL}
+  //         specifications={specifications}
+  //         args={args}
+  //       />
+  //     );
+  //   }
+  // });
+
+  return ( 
+    <div className="PF"> 
+      {typeSchema ? (
+        <PeriqlesFormContent
+          environment={environment}
+          inputType={typeSchema}
+          mutationName={mutationName}
+          mutation={mutationGQL}
+          specifications={specifications}
+          args={args}
+        />
+      ) : (
+        <p>Loading form...</p>
+      )}
+    </div>);
+
+  /*  
   return (
     <QueryRenderer
       environment={environment}
@@ -69,13 +144,10 @@ const PeriqlesForm = ({
         return <div>Loading</div>;
       }}
     />
-  );
+  ); */
 };
 
 export default PeriqlesForm;
-
-//   return PeriqlesForm;
-// }
 
 /*
 // mock props
