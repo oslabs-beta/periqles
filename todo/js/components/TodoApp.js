@@ -16,11 +16,7 @@ import TodoListFooter from './TodoListFooter';
 import TodoTextInput from './TodoTextInput';
 
 import React from 'react';
-import {createFragmentContainer, commitMutation, graphql} from 'react-relay';
-import {PeriqlesForm} from '../../../index.js';
-// import PeriqlesForm from './PeriqlesForm.js';
-// import periqlesFormWrapper from './PeriqlesForm.js';
-// import schema from './schema.js';
+import {createFragmentContainer, graphql} from 'react-relay';
 import type {RelayProp} from 'react-relay';
 import type {TodoApp_user} from 'relay/TodoApp_user.graphql';
 
@@ -36,48 +32,6 @@ const TodoApp = ({relay, user}: Props) => {
   };
 
   const hasTodos = user.totalCount > 0;
-
-  // mock props for PeriqlesForm
-  // const mutation = 'AddTodo';
-  // const specifications = {
-  //   fields: {
-  //       name: {
-  //           label: "Name",
-  //           element: "text",
-  //       },
-  //       gender: {
-  //           label: "Gender",
-  //           element: "radio",
-  //           options: [
-  //             {label: "male", value: "m"},
-  //             {label:"female", value: "f"},
-  //             {label: "non-binary", value: "x"},
-  //           ],
-  //       }
-  //   },
-  // };
-
-  // const mutationGQL = graphql`
-  // mutation AddTodoMutation($input: AddTodoInput!) {
-  //   addTodo(input: $input) {
-  //     todoEdge {
-  //       __typename
-  //       cursor
-  //       node {
-  //         complete
-  //         id
-  //         text
-  //       }
-  //     }
-  //     user {
-  //       id
-  //       totalCount
-  //     }
-  //   }
-  // }`;
-
-  // mock making closure
-  // const PeriqlesForm = periqlesFormWrapper(schema, relay.environment);
 
   return (
     <div>
@@ -95,26 +49,6 @@ const TodoApp = ({relay, user}: Props) => {
         <TodoList user={user} />
         {hasTodos && <TodoListFooter user={user} />}
       </section>
-      <PeriqlesForm mutationName={'AddTodo'} 
-                    mutationGQL={graphql`
-                    mutation AddTodoMutation($input: AddTodoInput!) {
-                      addTodo(input: $input) {
-                        todoEdge {
-                          __typename
-                          cursor
-                          node {
-                            complete
-                            id
-                            text
-                          }
-                        }
-                        user {
-                          id
-                          totalCount
-                        }
-                      }
-                    }`}  
-                    args={[{name: 'clientMutationId', value:'0000'}, {name: 'userId', value: 'me'}]} />
       <footer className="info">
         <p>Double-click to edit a todo</p>
 
