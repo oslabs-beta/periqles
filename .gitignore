@@ -110,3 +110,5 @@ dist
 #todo
 /todo/flow-typed
 /todo/__generated__
+react-relay-app/__generated__
+./draft.js

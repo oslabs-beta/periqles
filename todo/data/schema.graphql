@@ -73,7 +73,7 @@ type DemoUser implements Node {
   email: String!
   gender: GenderEnum!
   pizzaTopping: PizzaToppingEnum!
-  age: String!
+  age: Int!
 }
 
 enum GenderEnum {

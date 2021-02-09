@@ -8,18 +8,18 @@ import {GraphQLUser, GenderEnum, PizzaToppingEnum} from '../nodes'; // TODO: sho
 
 import {addUser, getDemoUserOrThrow} from '../../database';
 
-// TODO: replace with Typescript
-/*
-type Input = {|
-  +text: string,
-  +userId: string,
-|};
+// // TODO: replace with Typescript
+// /*
+// type Input = {|
+//   +text: string,
+//   +userId: string,
+// |};
 
-type Payload = {|
-  +todoId: string,
-  +userId: string,
-|};
-*/
+// type Payload = {|
+//   +todoId: string,
+//   +userId: string,
+// |};
+// */
 
 const AddUserMutation = mutationWithClientMutationId({
   name: 'AddUser',

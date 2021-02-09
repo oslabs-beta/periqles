@@ -20,7 +20,7 @@ export type UserProfile_demoUser = {|
   +email: string,
   +gender: GenderEnum,
   +pizzaTopping: PizzaToppingEnum,
-  +age: string,
+  +age: number,
   +$refType: UserProfile_demoUser$ref,
 |};
 export type UserProfile_demoUser$data = UserProfile_demoUser;

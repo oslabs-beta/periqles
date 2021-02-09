@@ -9,9 +9,8 @@ import {
 
 import {ConnectionHandler} from 'relay-runtime';
 // import type {TodoApp_user} from 'relay/TodoApp_user.graphql';
-import type {AddUserInput} from 'relay/AddUserMutation.graphql'; // TODO in typescript?
+import type {AddUserInput} from 'relay/AddUserMutation.graphql';
 
-// TODO: consult with Ian and Joe about fields and types to return from AddUser mutation
 const mutation = graphql`
   mutation AddUserMutation($input: AddUserInput!) {
     addUser(input: $input) {
