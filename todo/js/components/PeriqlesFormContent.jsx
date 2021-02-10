@@ -177,15 +177,58 @@ const PeriqlesFormContent = ({
    */
   const generateSpecifiedElement = (field, specs) => {
     let element;
+    
     switch (specs.element) {
-      //ADD EMAIL & TEL CASES + VALIDATION
+      //ADDED EMAIL & TEL CASES
+      case 'url':
+        element = (
+          <label>
+            {specs.label}
+            <input
+              type="url"
+              className={field.name + '-url periqles-url'}
+              name={field.name}
+              value={formState[field.name].value}
+              onChange={handleChange}
+            />
+          </label>
+        );
+        break;
+      case 'tel':
+        element = (
+          <label>
+            {specs.label}
+            <input
+              type="tel"
+              className={field.name + '-tel periqles-tel'}
+              name={field.name}
+              value={formState[field.name].value}
+              onChange={handleChange}
+            />
+          </label>
+        );
+        break;
+      case 'email':
+        element = (
+          <label>
+            {specs.label}
+            <input
+              type="email"
+              className={field.name + '-email periqles-email'}
+              name={field.name}
+              value={formState[field.name].value}
+              onChange={handleChange}
+            />
+          </label>
+        );
+        break;
       case 'password':
         element = (
           <label>
             {specs.label}
             <input
               type="password"
-              className={field.name + '-range periqles-password'}
+              className={field.name + '-password periqles-password'}
               name={field.name}
               value={formState[field.name].value}
               onChange={handleChange}

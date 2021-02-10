@@ -27,15 +27,14 @@ const UserProfile = ({relay, demoUser}: Props) => {
   // console.log('demoUser in UserProfile component:', demoUser);
   // console.log('environment in UserProfile component:', relay.environment);
 
-  //iterate over the properties of the user & create a list item for each
+  //Create an array for all the user profile info list items
   const userDisplayItems = [];
-  for (const info in demoUser) {
-    let listItem = <li className="userDisplayItem">{info}: demoUser[info]</li>;
-    userDisplayItems.push(listItem);
-  }
-
-  //Need to know:
-  //1: Prop name
+  userDisplay.push(<li className="userDisplayItem">Username: ${demoUser[username]}</li>);
+  userDisplay.push(<li className="userDisplayItem">Email: ${demoUser[email]}</li>);
+  userDisplay.push(<li className="userDisplayItem">Gender: ${demoUser[gender]}</li>);
+  userDisplay.push(<li className="userDisplayItem">Pizza Topping: ${demoUser[pizzaTopping]}</li>);
+  userDisplay.push(<li className="userDisplayItem">Age: ${demoUser[age]}</li>);
+  
   return (
     <div>
       <ul>{userDisplayItems}</ul>
