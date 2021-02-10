@@ -18,6 +18,12 @@ button {
   appearance: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: royalblue;
+  color: white;
+}
+
+button:hover {
+  background-color: darkblue;
 }
 
 body {
@@ -53,13 +59,8 @@ body * {
   width: 500px;
 }
 
-.periqles-submit {
-  background-color: royalblue;
-  color: white;
-}
-
-.periqles-submit:hover {
-  background-color: darkblue;
+.PeriqlesForm, .PeriqlesForm * {
+  border-radius: 10px;
 }
 
 .UserProfile-main {
