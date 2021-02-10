@@ -26,6 +26,11 @@
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   border: none;
 }
+
+.PeriqlesForm input:hover, .periqles-select:hover, .periqles-textarea:hover, .periqles-submit:hover {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 8px;
+}
+
 .periqles-textarea {
   height: 100px;
   font-family: inherit;
@@ -85,14 +90,9 @@
   align-self:flex-end;
 }
 
-/* border-radius: 10px;
-  margin: 2% 0;
-  padding: .5em 1em .5em 1em;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-  border: none; */
-
 .periqles-submit:hover {
   background-color: darkblue;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 8px;
 }
 
 
