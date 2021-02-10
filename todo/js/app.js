@@ -26,8 +26,6 @@ import {
   type Variables,
 } from 'relay-runtime';
 import AddUserMutation from './mutations/AddUserMutation';
-import TodoApp from './components/TodoApp';
-import PeriqlesForm from './components/PeriqlesForm.jsx';
 import UserProfile from './components/UserProfile';
 import type {appQueryResponse} from 'relay/appQuery.graphql';
 import {isPropertySignature} from 'typescript';
