@@ -1,5 +1,5 @@
 <p style="text-align:center;">
-<img src="periqles-logo.png" alt="logo" width="300"/>
+<img src="/lib/periqles-logo.png" alt="logo" width="300"/>
 </p>
 
 # periqles

@@ -75,7 +75,7 @@ const PeriqlesForm = ({
           environment={environment}
           inputType={typeSchema}
           mutationName={mutationName}
-          mutation={mutationGQL}
+          mutationGQL={mutationGQL}
           specifications={specifications}
           args={args}
         />
