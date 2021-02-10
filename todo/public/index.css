@@ -18,20 +18,63 @@ button {
   appearance: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: royalblue;
+  color: white;
+}
+
+button:hover {
+  background-color: darkblue;
 }
 
 body {
-  font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font: 18px 'Helvetica Neue', Helvetica, Arial, sans-serif;
   line-height: 1.4em;
   background: #f5f5f5;
   color: #4d4d4d;
-  min-width: 230px;
-  max-width: 550px;
-  margin: 0 auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 300;
 }
+
+body * {
+  box-sizing: border-box;
+}
+
+.UserProfile {
+  width: 90%;
+  margin: 0 auto;
+  padding: 30px;
+  text-align: center;
+}
+
+.UserProfile-flex {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.PeriqlesForm {
+  border: 1px solid black;
+  width: 500px;
+}
+
+.PeriqlesForm, .PeriqlesForm * {
+  border-radius: 10px;
+}
+
+.UserProfile-main {
+  text-align:left;
+}
+
+h1 {
+  font-size: 36px;
+}
+
+h2 {
+  font-size: 28px;
+}
+
 
 :focus {
   outline: 0;
