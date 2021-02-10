@@ -177,9 +177,43 @@ const PeriqlesFormContent = ({
    */
   const generateSpecifiedElement = (field, specs) => {
     let element;
+
+    //If label isn't given, set it as field.name w/ spaces & 1st letter capitalized
+    if(!specs.label) {
+      specs.label = field.name.replace(/([a-z])([A-Z])/g, '$1 $2');
+      specs.label = specs.label[0].toUpperCase() + specs.label.slice(1);
+    }
     
     switch (specs.element) {
-      //ADDED EMAIL & TEL CASES
+      //ADDED EMAIL, TEL, COLOR & TIME CASES
+      case 'time':
+        element = (
+          <label>
+            {specs.label}
+            <input
+              type="time"
+              className={field.name + '-time periqles-time'}
+              name={field.name}
+              value={formState[field.name].value}
+              onChange={handleChange}
+            />
+          </label>
+        );
+        break;
+      case 'color':
+        element = (
+          <label>
+            {specs.label}
+            <input
+              type="color"
+              className={field.name + '-color periqles-color'}
+              name={field.name}
+              value={formState[field.name].value}
+              onChange={handleChange}
+            />
+          </label>
+        );
+        break;
       case 'url':
         element = (
           <label>
@@ -305,7 +339,9 @@ const PeriqlesFormContent = ({
             {specs.label}
           </option>,
         );
-        specs.options.forEach((option) => {
+        //if options aren't given, use field.options
+        let optionsArr = specs.options || field.options;
+        optionsArr.forEach((option) => {
           selectOptions.push(
             <option
               value={option.name}
@@ -472,6 +508,32 @@ const PeriqlesFormContent = ({
               <input
                 type="tel"
                 className={field.name + '-input periqles-tel'}
+                name={field.name}
+                value={formState[field.name].value}
+                onChange={handleChange}></input>
+            </label>
+          );
+          break;
+        }else if (field.name === 'color') {
+          element = (
+            <label>
+              {field.label}
+              <input
+                type="color"
+                className={field.name + '-input periqles-color'}
+                name={field.name}
+                value={formState[field.name].value}
+                onChange={handleChange}></input>
+            </label>
+          );
+          break;
+        } else if (field.name === 'time') {
+          element = (
+            <label>
+              {field.label}
+              <input
+                type="time"
+                className={field.name + '-input periqles-time'}
                 name={field.name}
                 value={formState[field.name].value}
                 onChange={handleChange}></input>

@@ -29,11 +29,11 @@ const UserProfile = ({relay, demoUser}: Props) => {
 
   //Create an array for all the user profile info list items
   const userDisplayItems = [];
-  userDisplay.push(<li className="userDisplayItem">Username: ${demoUser[username]}</li>);
-  userDisplay.push(<li className="userDisplayItem">Email: ${demoUser[email]}</li>);
-  userDisplay.push(<li className="userDisplayItem">Gender: ${demoUser[gender]}</li>);
-  userDisplay.push(<li className="userDisplayItem">Pizza Topping: ${demoUser[pizzaTopping]}</li>);
-  userDisplay.push(<li className="userDisplayItem">Age: ${demoUser[age]}</li>);
+  userDisplayItems.push(<li className="userDisplayItem">Username: {demoUser.username}</li>);
+  userDisplayItems.push(<li className="userDisplayItem">Email: {demoUser.email}</li>);
+  userDisplayItems.push(<li className="userDisplayItem">Gender: {demoUser.gender}</li>);
+  userDisplayItems.push(<li className="userDisplayItem">Pizza Topping: {demoUser.pizzaTopping}</li>);
+  userDisplayItems.push(<li className="userDisplayItem">Age: {demoUser.age}</li>);
   
   return (
     <div>
@@ -51,9 +51,18 @@ const UserProfile = ({relay, demoUser}: Props) => {
               gender
               pizzaTopping
               age
+              
             }
           }
         `}
+        specifications={{
+          fields: {
+            pizzaTopping: {
+              label:'Pizza Topping',
+              element:'select'
+            }
+          }
+        }}
         args={[{name: 'clientMutationId', value: '0000'}]}
       />
     </div>
