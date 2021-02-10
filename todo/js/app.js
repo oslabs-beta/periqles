@@ -11,7 +11,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'todomvc-common';
+// import 'todomvc-common';   // injects an <aside> element that prints the contents of learn.json
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
