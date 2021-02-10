@@ -1,16 +1,3 @@
-// @flow
-/**
- * This file provided by Facebook is for non-commercial testing and evaluation
- * purposes only.  Facebook reserves all rights not expressly granted.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
- * FACEBOOK BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-
 import React from 'react';
 import {createFragmentContainer, graphql} from 'react-relay';
 import AddUserMutation from '../mutations/AddUserMutation';
@@ -30,34 +17,76 @@ const UserProfile = ({relay, demoUser}: Props) => {
   //iterate over the properties of the user & create a list item for each
   const userDisplayItems = [];
   for (const info in demoUser) {
-    let listItem = <li className="userDisplayItem">{info}: demoUser[info]</li>;
+    let listItem = (
+      <li className="userDisplayItem">{`${info}: ${demoUser[info]}`}</li>
+    );
     userDisplayItems.push(listItem);
   }
 
-  //Need to know:
-  //1: Prop name
+
+  const mutationGQL = graphql`
+    mutation UserProfile_AddUserMutation($input: AddUserInput!) {
+      addUser(input: $input) {
+        userId
+        username
+        password
+        email
+        gender
+        pizzaTopping
+        age
+      }
+    }
+  `;
+
+  const specifications = {
+    fields: {
+      email: {
+        element: 'textarea',
+        label: 'Email',
+      },
+      gender: {
+        element: 'radio',
+        label: 'Gender',
+        options: [
+          {label: 'male', value: 'MALE'},
+          {label: 'female', value: 'FEMALE'},
+          {label: 'nonbinary', value: 'NON_BINARY'},
+        ],
+      },
+      pizzaTopping: {
+        label: 'Favorite pizza topping:',
+        element: 'select',
+        options: [
+          {label: 'buffalo chicken', value: 'BUFFALO_CHICKEN'},
+          {label: 'pepperoni', value: 'PEPPERONI'},
+          {label: "meat lovers'", value: 'MEATLOVERS'},
+          {label: 'eggplant parmesan', value: 'EGGPLANT_PARM'},
+          {label: 'olives', value: 'OLIVES'},
+          {label: 'hawaiian', value: 'HAWAIIAN'},
+        ],
+      },
+    },
+  };
+
+  const args = [{name: 'clientMutationId', value: '0000'}];
+
   return (
-    <div>
-      <ul>{userDisplayItems}</ul>
-      <PeriqlesForm
-        environment={relay.environment}
-        mutationName={'AddUser'}
-        mutationGQL={graphql`
-          mutation UserProfile_AddUserMutation($input: AddUserInput!) {
-            addUser(input: $input) {
-              userId
-              username
-              password
-              email
-              gender
-              pizzaTopping
-              age
-            }
-          }
-        `}
-        args={[{name: 'clientMutationId', value: '0000'}]}
-      />
-    </div>
+    <section className="UserProfile">
+      <h1>Periqles Demo</h1>
+      <section className="UserProfile-flex">
+        <PeriqlesForm
+          environment={relay.environment}
+          mutationName={'AddUser'}
+          mutationGQL={mutationGQL}
+          specifications={specifications}
+          args={args}
+        />
+        <main className="UserProfile-main">
+          <h2>Most Recently Added User</h2>
+          <ul>{userDisplayItems}</ul>
+        </main>
+      </section>
+    </section>
   );
 };
 
