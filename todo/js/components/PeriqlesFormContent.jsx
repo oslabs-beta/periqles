@@ -461,46 +461,30 @@ const PeriqlesFormContent = ({
         );
         break;
       default:
-        //TODO: Add if cases for password & email
-        if (field.name === 'password') {
-          element = (
-            <label>
-              {field.label}
-              <input
-                type="password"
-                className={field.name + '-input periqles-password'}
-                name={field.name}
-                value={formState[field.name].value}
-                onChange={handleChange}></input>
-            </label>
-          );
-          break;
-        } else if (field.name === 'email') {
-          element = (
-            <label>
-              {field.label}
-              <input
-                type="email"
-                className={field.name + '-input periqles-email'}
-                name={field.name}
-                value={formState[field.name].value}
-                onChange={handleChange}></input>
-            </label>
-          );
-          break;
-        } else if (field.name === 'url') {
-          element = (
-            <label>
-              {field.label}
-              <input
-                type="url"
-                className={field.name + '-input periqles-url'}
-                name={field.name}
-                value={formState[field.name].value}
-                onChange={handleChange}></input>
-            </label>
-          );
-          break;
+        const otherFieldNames =
+          {
+            time: true,
+            color: true,
+            date: true,
+            file: true,
+            password: true,
+            email: true,
+            url: true,
+            tel: true,
+          };
+          if (otherFieldNames[field.name]) {
+            element = (
+              <label>
+                {field.label}
+                <input
+                  type={field.name}
+                  className={field.name + '-input periqles-'+field.name}
+                  name={field.name}
+                  value={formState[field.name].value}
+                  onChange={handleChange}></input>
+              </label>
+            );
+            break;
         } else if (field.name === 'telephone') {
           element = (
             <label>
