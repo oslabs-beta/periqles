@@ -40,10 +40,6 @@ const UserProfile = ({relay, demoUser}: Props) => {
 
   const specifications = {
     fields: {
-      email: {
-        element: 'textarea',
-        label: 'Email',
-      },
       gender: {
         element: 'radio',
         label: 'Gender',
