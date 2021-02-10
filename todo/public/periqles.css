@@ -20,7 +20,6 @@
 }
 
 .PeriqlesForm input, .periqles-select, .periqles-textarea, .periqles-submit {
-  border-radius: 10px;
   margin: 10px 0;
   padding: .5em 1em .5em 1em;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
@@ -94,7 +93,6 @@
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 8px;
 }
 
-
 .periqles-file::-webkit-file-upload-button {
   visibility: hidden;
 }
@@ -103,8 +101,8 @@
   display: inline-block;
   background: linear-gradient(top, #f9f9f9, #e3e3e3);
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-  border-radius: 1em;
-  border: 1px solid black;
+  /* border-radius: 1em;
+  border: 1px solid black; */
   padding: 5px 8px;
   outline: none;
   white-space: nowrap;
