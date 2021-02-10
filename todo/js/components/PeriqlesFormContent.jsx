@@ -226,19 +226,18 @@ const PeriqlesFormContent = ({
           </label>
         );
         break;
-      // TODO: how to handle state and value of radio buttons?
       case 'radio':
         const radioOptions = [];
         specs.options.forEach((radio) => {
           const radioInput = (
-            <label>
+            <label className="periqles-radio-option-label">
               <input
                 type="radio"
                 name={field.name}
                 className={field.name + '-radio-option periqles-radio-option'}
                 value={radio.value}
               />
-              {specs.label}
+              {radio.label}
             </label>
           );
           radioOptions.push(radioInput);
@@ -248,6 +247,7 @@ const PeriqlesFormContent = ({
             className={field.name + '-radio periqles-radio'}
             value={formState[field.name].value}
             onChange={handleChange}>
+            <label className="periqles-radio-div-label">{specs.label}</label>
             {radioOptions}
           </div>
         );
@@ -255,30 +255,26 @@ const PeriqlesFormContent = ({
       // TODO: handle non-null/non-null-default selects
       case 'select':
         const selectOptions = [];
-        selectOptions.push(
-          <option
-            value={''}
-            className={field.name + '-select-option periqles-select-option'}>
-            {specs.label}
-          </option>,
-        );
         specs.options.forEach((option) => {
           selectOptions.push(
             <option
-              value={option.name}
+              value={option.value}
               className={field.name + '-select-option periqles-select-option'}>
               {option.label}
             </option>,
           );
         });
         element = (
-          <select
-            className={field.name + '-select periqles-select'}
-            name={field.name}
-            defaultValue={''}
-            onChange={handleChange}>
-            {selectOptions}
-          </select>
+          <label>
+            {specs.label}
+            <select
+              className={field.name + '-select periqles-select'}
+              name={field.name}
+              defaultValue={specs.options[0].value}
+              onChange={handleChange}>
+              {selectOptions}
+            </select>
+          </label>
         );
         break;
       case 'textarea':
@@ -350,20 +346,11 @@ const PeriqlesFormContent = ({
       case 'Enum':
         const optionsArr = field.options;
         const selectOptions = [];
-        // default value displays label of field
-        selectOptions.push(
-          <option
-            value={''}
-            className={field.name + '-select-option periqles-select-option'}>
-            {field.label}
-          </option>,
-        );
-        //iterate through the options for the field & make a tag for each option
         optionsArr.forEach((option) => {
           selectOptions.push(
             <option
               value={option.name}
-              className={field.name + '-select-option'}>
+              className={field.name + '-select-option periqles-select-option'}>
               {option.name}
             </option>,
           );
@@ -372,9 +359,9 @@ const PeriqlesFormContent = ({
           <label>
             {field.label}
             <select
-              className={field.name + '-select'}
+              className={field.name + '-select periqles-select'}
               name={field.name}
-              defaultValue={''}
+              defaultValue={optionsArr[0].name}
               onChange={handleChange}>
               {selectOptions}
             </select>
@@ -382,8 +369,8 @@ const PeriqlesFormContent = ({
         );
         break;
       default:
-        //TODO: Add if cases for password & email
-        if (field.name === 'password') {
+        const textFieldName = field.name.toLowerCase();
+        if (textFieldName === 'password' || textFieldName === 'pass') {
           element = (
             <label>
               {field.label}
@@ -396,7 +383,7 @@ const PeriqlesFormContent = ({
             </label>
           );
           break;
-        } else if (field.name === 'email') {
+        } else if (textFieldName === 'email') {
           element = (
             <label>
               {field.label}
@@ -409,7 +396,7 @@ const PeriqlesFormContent = ({
             </label>
           );
           break;
-        } else if (field.name === 'url') {
+        } else if (textFieldName === 'url' || textFieldName === 'link') {
           element = (
             <label>
               {field.label}
@@ -422,7 +409,11 @@ const PeriqlesFormContent = ({
             </label>
           );
           break;
-        } else if (field.name === 'telephone') {
+        } else if (
+          textFieldName === 'telephone' ||
+          textFieldName === 'phone' ||
+          textFieldName === 'phonenumber'
+        ) {
           element = (
             <label>
               {field.label}

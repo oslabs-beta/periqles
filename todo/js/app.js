@@ -54,15 +54,15 @@ const modernEnvironment: Environment = new Environment({
 });
 
 // seed QueryRenderer with a DemoUser to start with
-// AddUserMutation.commit(
-//   modernEnvironment,
-//   'UN1',
-//   'PW1',
-//   'E1',
-//   'NON_BINARY',
-//   'HAWAIIAN',
-//   1,
-// );
+AddUserMutation.commit(
+  modernEnvironment,
+  'UN1',
+  'PW1',
+  'E1',
+  'NON_BINARY',
+  'HAWAIIAN',
+  '1',
+);
 
 const rootElement = document.getElementById('root');
 

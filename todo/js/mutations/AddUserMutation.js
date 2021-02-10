@@ -69,9 +69,16 @@ function commit(
     },
     updater: (store) => {
       // get addUser payload
-      // const payload = store.getRootField('addUser'); // TODO
+      const payload = store.getRootField('addUser'); // TODO
       // get userId from addUser payload
-      // const newUserId = payload.getValue('userId');
+      console.log('payload:', payload);
+      const newUserId = payload.getValue('userId');
+      const newUsername = payload.getValue('username');
+      const newPassword = payload.getValue('password');
+      const newEmail = payload.getValue('email');
+      const newGender = payload.getValue('gender');
+      const newPizzaTopping = payload.getValue('pizzaTopping');
+      const newAge = payload.getValue('age');
       // console.log('newUserId', newUserId);
       // return newUserId;
       // sharedUpdater(store, demoUser);
