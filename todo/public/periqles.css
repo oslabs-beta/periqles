@@ -1,0 +1,160 @@
+.PeriqlesForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 4%;
+  text-align: left;
+}
+
+.PeriqlesForm, .PeriqlesForm * {
+  box-sizing: border-box;
+}
+
+.PeriqlesForm label, .periqles-radio {
+  font-weight: bold;
+  font-family: inherit;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.PeriqlesForm input, .periqles-select, .periqles-textarea, .periqles-submit {
+  border-radius: 10px;
+  margin: 10px 0;
+  padding: .5em 1em .5em 1em;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  border: none;
+}
+.periqles-textarea {
+  height: 100px;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+.periqles-select {
+  font-family: inherit;
+  display: inline-block;
+  width: 100%;
+}
+
+.periqles-select-option, .periqles-radio-option {
+  /* TODO: research ways to style options (if desired) */
+}
+
+
+.periqles-radio:hover, .periqles-select:hover {
+  cursor: pointer;
+}
+
+.periqles-radio-option {
+  margin: 0 5px 0 0 !important;
+  box-shadow: none !important;
+  cursor: pointer;
+}
+
+.periqles-radio-option-label {
+  display: inline-block !important;
+  margin: 5px 0 5px 2% !important;
+}
+
+.periqles-radio-div-label {
+  margin: 0px 0 5px 0 !important;
+}
+
+.periqles-checkbox {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.periqles-date {
+  font-family: inherit;
+}
+
+.periqles-submit {
+  display:inline-block;
+  width: 30%;
+  background-color: royalblue;
+  box-sizing: border-box;
+  text-decoration:none;
+  font-family: inherit;
+  font-weight: bold;
+  color: white;
+  text-align:center;
+  cursor: pointer;
+  align-self:flex-end;
+}
+
+/* border-radius: 10px;
+  margin: 2% 0;
+  padding: .5em 1em .5em 1em;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  border: none; */
+
+.periqles-submit:hover {
+  background-color: darkblue;
+}
+
+
+.periqles-file::-webkit-file-upload-button {
+  visibility: hidden;
+}
+.periqles-file::before {
+  content: "Upload file";
+  display: inline-block;
+  background: linear-gradient(top, #f9f9f9, #e3e3e3);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  border-radius: 1em;
+  border: 1px solid black;
+  padding: 5px 8px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  font-family: inherit;
+  cursor: pointer;
+  text-shadow: 1px 1px #fff;
+  font-weight: 700;
+  font-size: 10pt;
+}
+
+.periqles-file:hover::before {
+  border-color: black;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.periqles-file:active::before {
+  background: whitesmoke;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.periqles-color {
+  background-color: transparent;
+}
+
+.periqles-color::before {
+  content: "Pick a color";
+  display: inline-block;
+  background: linear-gradient(top, #f9f9f9, #e3e3e3);
+  border: 1px solid #999;
+  padding: 5px 8px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
+  text-shadow: 1px 1px #fff;
+  font-weight: 700;
+  font-size: 10pt;
+  font-family: inherit;
+}
+
+.periqles-datetime-local{
+  border: .5px solid black;
+  font-family: inherit;
+  font-weight: bold;
+  padding: .12em;
+  overflow: visible;
+}
+
+.periqles-range {
+  color: gray;
+}
