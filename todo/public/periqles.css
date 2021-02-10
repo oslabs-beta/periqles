@@ -79,19 +79,18 @@
 .periqles-submit {
   display:inline-block;
   width: 30%;
-  background-color: royalblue;
+  
   box-sizing: border-box;
   text-decoration:none;
   font-family: inherit;
   font-weight: bold;
-  color: white;
+  
   text-align:center;
   cursor: pointer;
   align-self:flex-end;
 }
 
 .periqles-submit:hover {
-  background-color: darkblue;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 8px;
 }
 
