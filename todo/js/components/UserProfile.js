@@ -14,10 +14,7 @@
 import React from 'react';
 import {createFragmentContainer, graphql} from 'react-relay';
 import AddUserMutation from '../mutations/AddUserMutation';
-// import {PeriqlesForm} from '../../../index.js';
-import schema from './schema';
-// import PeriqlesForm from './PeriqlesForm.js';
-import periqlesFormWrapper from './PeriqlesForm.js';
+import PeriqlesForm from './PeriqlesForm.jsx';
 import type {RelayProp} from 'react-relay';
 import type {TodoApp_user} from 'relay/TodoApp_user.graphql';
 
@@ -26,18 +23,9 @@ type Props = {|
   +user: TodoApp_user,
 |};
 
-const UserProfile = ({relay, demoUser, environment}: Props) => {
-  // mock props for PeriqlesForm
-  // AddUserMutation.commit(relay.environment, 'UN1', 'PW1', 'E1', 'Nonbinary', 'Hawaiian', 1);
-  console.log('demoUser in AddUser component:', demoUser);
-  // // mock making closure
-
-  // const environment = {
-  //   networkLayer: 'fake network layer',
-  //   store: 'fake Relay store',
-  // };
-  console.log('this is the schema: ', schema);
-  const PeriqlesForm = periqlesFormWrapper(schema, environment);
+const UserProfile = ({relay, demoUser}: Props) => {
+  // console.log('demoUser in UserProfile component:', demoUser);
+  // console.log('environment in UserProfile component:', relay.environment);
 
   //iterate over the properties of the user & create a list item for each
   const userDisplayItems = [];
@@ -52,20 +40,21 @@ const UserProfile = ({relay, demoUser, environment}: Props) => {
     <div>
       <ul>{userDisplayItems}</ul>
       <PeriqlesForm
+        environment={relay.environment}
         mutationName={'AddUser'}
-        // mutationGQL={graphql`
-        //   mutation UserProfileMutation($input: AddUserInput!) {
-        //     addUser(input: $input) {
-        //       userId
-        //       username
-        //       password
-        //       email
-        //       gender
-        //       pizzaTopping
-        //       age
-        //     }
-        //   }
-        // `}
+        mutationGQL={graphql`
+          mutation UserProfile_AddUserMutation($input: AddUserInput!) {
+            addUser(input: $input) {
+              userId
+              username
+              password
+              email
+              gender
+              pizzaTopping
+              age
+            }
+          }
+        `}
         args={[{name: 'clientMutationId', value: '0000'}]}
       />
     </div>

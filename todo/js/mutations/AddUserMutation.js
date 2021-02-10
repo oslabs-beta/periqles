@@ -50,7 +50,7 @@ function commit(
   pizzaTopping,
   age,
 ): Disposable {
-  console.log('commit called');
+  // console.log('commit called');
   const input: AddUserInput = {
     // add input values listed above to an input object
     username,
@@ -70,7 +70,7 @@ function commit(
     updater: (store) => {
       // TODO: needed? is there a default to fall back to if I leave it off?
       const payload = store.getRootField('addUser'); // TODO
-      console.log('addUser payload:', payload);
+      // console.log('addUser payload:', payload);
       // const newEdge = payload.getLinkedRecord('todoEdge');   // TODO: what should this be?
       // sharedUpdater(store, demoUser);
     },

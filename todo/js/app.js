@@ -11,8 +11,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'todomvc-common';
-// import periqles, {PeriqlesForm} from '../../index.js';
+// import 'todomvc-common';   // injects an <aside> element that prints the contents of learn.json
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
@@ -27,7 +26,6 @@ import {
   type Variables,
 } from 'relay-runtime';
 import AddUserMutation from './mutations/AddUserMutation';
-import TodoApp from './components/TodoApp';
 import UserProfile from './components/UserProfile';
 import type {appQueryResponse} from 'relay/appQuery.graphql';
 import {isPropertySignature} from 'typescript';
@@ -55,43 +53,18 @@ const modernEnvironment: Environment = new Environment({
   store: new Store(new RecordSource()),
 });
 
-// allow periqles to introspect schema
-// periqles.introspect(modernEnvironment);
-
-// mock props for PeriqlesForm
-const mutation = '';
-const specifications = {
-  fields: [
-    {
-      name: 'name',
-      element: 'text',
-      id: 'textId',
-    },
-    {
-      name: 'gender',
-      element: 'radio',
-      options: [
-        {name: 'male', value: 'm'},
-        {name: 'female', value: 'f'},
-        {name: 'prefer not to say', value: 'x'},
-      ],
-      id: 'radioId',
-    },
-  ],
-  args: [{name: 'userID', value: 'me'}],
-};
-console.log(
-  'returned from commit',
-  AddUserMutation.commit(
-    modernEnvironment,
-    'UN1',
-    'PW1',
-    'E1',
-    'NON_BINARY',
-    'HAWAIIAN',
-    1,
-  ),
+// seed QueryRenderer with a DemoUser to start with
+AddUserMutation.commit(
+  modernEnvironment,
+  'UN1',
+  'PW1',
+  'E1',
+  'NON_BINARY',
+  'HAWAIIAN',
+  1,
 );
+
+
 const rootElement = document.getElementById('root');
 
 if (rootElement) {
@@ -111,19 +84,17 @@ if (rootElement) {
       `}
       variables={{
         // Mock authenticated ID that matches database
-        userId: 'me',
+        // userId: 'me',
         demoUserId: '0',
       }}
       render={({error, props}: {error: ?Error, props: ?appQueryResponse}) => {
-        console.log('these are the props from App', props);
+        // console.log('these are the props from App', props);
         if (props && props.demoUser) {
           return (
             <div>
               <UserProfile
                 demoUser={props.demoUser}
-                environment={props.modernEnvironment}
               />
-              {/* <PeriqlesForm mutation={mutation} specifications={specifications}/> */}
             </div>
           );
         } else if (error) {

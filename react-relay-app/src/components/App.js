@@ -44,7 +44,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>React-Relay Toy App</h1>
+        <h1>React-Relay Demo App</h1>
         <QueryRenderer
           environment={environment}
           query={query}

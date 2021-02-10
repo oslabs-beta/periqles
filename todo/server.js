@@ -36,7 +36,7 @@ const compiler: webpack.Compiler = webpack({
           loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-env', '@babel/preset-react']
-          }
+          },
         },
       },
     ],
