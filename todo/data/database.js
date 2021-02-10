@@ -76,6 +76,32 @@ export function getDemoUserOrThrow(userId: string): DemoUser {
   return demoUser;
 }
 
+export function getLastDemoUserOrThrow(): DemoUser {
+  // console.log('hello from getDemoUserOrThrow');
+  let lastDemoUser;
+  const demoUsersIterator = demoUsersById[Symbol.iterator]();
+
+  for (const userItem of demoUsersIterator) {
+    lastDemoUser = userItem[1];
+  }
+
+  console.log('lastDemoUser', lastDemoUser);
+  return lastDemoUser;
+}
+
+export function getAllUsers(): DemoUser {
+  // console.log('hello from getDemoUserOrThrow');
+  let demoUserList = [];
+  const demoUsersIterator = demoUsersById[Symbol.iterator]();
+
+  for (const userItem of demoUsersIterator) {
+    demoUserList.push(userItem[1]);
+  }
+
+  console.log('demoUserList', demoUserList);
+  return demoUserList;
+}
+
 // addUser function
 export function addUser({
   userId,

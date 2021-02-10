@@ -81,7 +81,7 @@ const fieldsArrayGenerator = (inputType, args = []) => {
 const PeriqlesFormContent = ({
   environment,
   mutationName,
-  mutationGQL,
+  mutation,
   specifications = {fields: []},
   args = [],
   inputType,
@@ -149,7 +149,7 @@ const PeriqlesFormContent = ({
       input,
     };
     commitMutation(environment, {
-      mutation: mutationGQL,
+      mutation,
       variables,
       onCompleted: (response, errors) =>
         console.log('Server response to mutation:', response, errors),

@@ -54,16 +54,15 @@ const modernEnvironment: Environment = new Environment({
 });
 
 // seed QueryRenderer with a DemoUser to start with
-AddUserMutation.commit(
-  modernEnvironment,
-  'UN1',
-  'PW1',
-  'E1',
-  'NON_BINARY',
-  'HAWAIIAN',
-  1,
-);
-
+// AddUserMutation.commit(
+//   modernEnvironment,
+//   'UN1',
+//   'PW1',
+//   'E1',
+//   'NON_BINARY',
+//   'HAWAIIAN',
+//   1,
+// );
 
 const rootElement = document.getElementById('root');
 
@@ -76,17 +75,17 @@ if (rootElement) {
       //   ...TodoApp_user
       // }
       query={graphql`
-        query appQuery($demoUserId: String) {
-          demoUser(demoUserId: $demoUserId) {
+        query appQuery {
+          demoUser {
             ...UserProfile_demoUser
           }
         }
       `}
-      variables={{
-        // Mock authenticated ID that matches database
-        // userId: 'me',
-        demoUserId: '0',
-      }}
+      // variables={{
+      //   // Mock authenticated ID that matches database
+      //   // userId: 'me',
+      //   // demoUserId: '0',
+      // }}
       render={({error, props}: {error: ?Error, props: ?appQueryResponse}) => {
         // console.log('these are the props from App', props);
         if (props && props.demoUser) {
@@ -101,7 +100,11 @@ if (rootElement) {
           return <div>{error.message}</div>;
         }
 
-        return <div>Loading</div>;
+        return (
+          <div>
+          <UserProfile demoUser={null}/>
+        </div>
+          )
       }}
     />,
     rootElement,

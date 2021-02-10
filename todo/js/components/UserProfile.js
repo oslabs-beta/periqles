@@ -30,7 +30,7 @@ const UserProfile = ({relay, demoUser}: Props) => {
   //iterate over the properties of the user & create a list item for each
   const userDisplayItems = [];
   for (const info in demoUser) {
-    let listItem = <li className="userDisplayItem">{info}: demoUser[info]</li>;
+    let listItem = <li className="userDisplayItem">{info}: {demoUser[info]}</li>;
     userDisplayItems.push(listItem);
   }
 

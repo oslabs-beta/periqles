@@ -15,7 +15,7 @@
 
 import {GraphQLString} from 'graphql';
 import {demoGraphQLUser} from '../nodes';
-import {DemoUser, getDemoUserOrThrow} from '../../database';
+import {DemoUser, getLastDemoUserOrThrow, getAllUsers} from '../../database';
 
 type Input = {
   +id: string,
@@ -23,12 +23,13 @@ type Input = {
 
 const demoUserQuery = {
   type: demoGraphQLUser,
-  args: {
-    demoUserId: {type: GraphQLString},
-  },
-  resolve: (root: {}, {demoUserId}: Input): DemoUser => {
-    console.log('this is the demoUserId from resolver ', demoUserId);
-    return getDemoUserOrThrow(demoUserId);
+  // args: {
+  //   demoUserId: {type: GraphQLString},
+  // },
+  resolve: (root: {}): DemoUser => {
+    // console.log('this is the demoUserId from resolver ', demoUserId);
+    getAllUsers();
+    return getLastDemoUserOrThrow();
   },
 };
 

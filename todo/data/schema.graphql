@@ -1,6 +1,6 @@
 type Query {
   user(id: String): User
-  demoUser(demoUserId: String): DemoUser
+  demoUser: DemoUser
 
   """Fetches an object given its ID"""
   node(
@@ -179,7 +179,7 @@ type AddUserPayload {
   email: String!
   gender: GenderEnum!
   pizzaTopping: PizzaToppingEnum!
-  age: Int!
+  age: String!
   clientMutationId: String
 }
 
@@ -189,6 +189,6 @@ input AddUserInput {
   email: String!
   gender: GenderEnum!
   pizzaTopping: PizzaToppingEnum!
-  age: Int!
+  age: String!
   clientMutationId: String
 }
