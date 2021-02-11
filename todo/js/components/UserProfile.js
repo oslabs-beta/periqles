@@ -46,15 +46,15 @@ const UserProfile = () => {
   });
 
   // seed a DemoUser to start with
-  AddUserMutation.commit(
-    modernEnvironment,
-    'user',
-    'pw1',
-    'user@email.com',
-    'NON_BINARY',
-    'HAWAIIAN',
-    1,
-  );
+  // AddUserMutation.commit(
+  //   modernEnvironment,
+  //   'user',
+  //   'pw1',
+  //   'user@email.com',
+  //   'NON_BINARY',
+  //   'HAWAIIAN',
+  //   1,
+  // );
 
   const mutationGQL = graphql`
     mutation UserProfile_AddUserMutation($input: AddUserInput!) {
@@ -108,8 +108,8 @@ const UserProfile = () => {
         <PeriqlesForm
           mutationName={'AddUser'}
           mutationGQL={mutationGQL}
-          args={args}
           specifications={specifications}
+          args={args}
           setUpdate={setUpdate}
           environment={modernEnvironment}
         /> 
@@ -169,6 +169,9 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
+
+
+
 
 
 // const select = document.querySelector('.pizzaTopping-select');
