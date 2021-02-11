@@ -10,7 +10,7 @@ A component library that makes creating forms to commit mutations in a React-Rel
 
 ## Status
 
-periqles is not yet ready for deployment. Stay tuned!
+🚧 periqles is not yet ready for deployment. Stay tuned! 🚧
 
 ## Maintained by:
 
