@@ -179,7 +179,7 @@ type AddUserPayload {
   email: String!
   gender: GenderEnum!
   pizzaTopping: PizzaToppingEnum!
-  age: String!
+  age: Int!
   clientMutationId: String
 }
 
@@ -189,6 +189,6 @@ input AddUserInput {
   email: String!
   gender: GenderEnum!
   pizzaTopping: PizzaToppingEnum!
-  age: String!
+  age: Int!
   clientMutationId: String
 }

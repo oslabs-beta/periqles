@@ -79,6 +79,7 @@ const fieldsArrayGenerator = (inputType, args = []) => {
  */
 
 const PeriqlesFormContent = ({
+  setUpdate,
   environment,
   mutationName,
   mutationGQL,
@@ -151,8 +152,10 @@ const PeriqlesFormContent = ({
     commitMutation(environment, {
       mutation: mutationGQL,
       variables,
-      onCompleted: (response, errors) =>
-        console.log('Server response to mutation:', response, errors),
+      onCompleted: (response, errors) => {
+        setUpdate(true);
+        console.log('Server response to mutation:', response, errors);
+      },
       onError: (err) => console.error('Problem committing mutation:', err),
     });
   };
@@ -161,9 +164,16 @@ const PeriqlesFormContent = ({
    * @param {object} Event
    */
   const handleChange = (e) => {
-    const {name, value} = e.target;
-    console.log(`${name} field changed its value to: ${value}`);
-    formState[name].set(value);
+    const {name, value, type} = e.target;
+    let useValue = value;
+    // type-coerce values from number input elements before storing in state
+    // this step necessary to commit mutations involving integer fields
+    if (type === 'number') {
+      // console.log(`Type-coercing ${name} field`);
+      useValue = useValue - 0;
+    }
+    console.log(`${name} field changed its value to: ${useValue}`);
+    formState[name].set(useValue);
   };
 
   // HELPER FUNCTIONS
@@ -248,14 +258,13 @@ const PeriqlesFormContent = ({
       case 'select':
         //if options aren't given, use field.options
         const selectOptions = specs.options || field.options;
-        console.log(selectOptions);
         element = (
           <label>
             {specs.label}
             <select
               className={field.name + '-select periqles-select'}
               name={field.name}
-              defaultValue={specs.options[0].value}
+              defaultValue={selectOptions[0].value}
               onChange={handleChange}>
               {selectOptions.map((option) => {
                 return (<option
@@ -318,7 +327,7 @@ const PeriqlesFormContent = ({
               type="number"
               className={field.name + '-number periqles-number'}
               name={field.name}
-              value={formState[field.name].valueAsNumber}
+              value={formState[field.name].value}
               onChange={handleChange}></input>
           </label>
         );
@@ -339,14 +348,14 @@ const PeriqlesFormContent = ({
         break;
 
       case 'Enum':
-        const selectOptions = field.options
+        const selectOptions = field.options;
         element = (
           <label>
             {field.label}
             <select
               className={field.name + '-select periqles-select'}
               name={field.name}
-              defaultValue={optionsArr[0].name}
+              defaultValue={selectOptions[0].name}
               onChange={handleChange}>
               {selectOptions.map((option) => {
                 return (

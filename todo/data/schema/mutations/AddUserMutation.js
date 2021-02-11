@@ -30,7 +30,7 @@ const AddUserMutation = mutationWithClientMutationId({
     email: {type: new GraphQLNonNull(GraphQLString)},
     gender: {type: new GraphQLNonNull(GenderEnum)}, // TODO: enum
     pizzaTopping: {type: new GraphQLNonNull(PizzaToppingEnum)}, // TODO: enum
-    age: {type: new GraphQLNonNull(GraphQLString)},
+    age: {type: new GraphQLNonNull(GraphQLInt)},
   },
   outputFields: {
     userId: {
@@ -58,7 +58,7 @@ const AddUserMutation = mutationWithClientMutationId({
       resolve: ({pizzaTopping}) => pizzaTopping,
     }, // TODO: enum
     age: {
-      type: new GraphQLNonNull(GraphQLString),
+      type: new GraphQLNonNull(GraphQLInt),
       resolve: ({age}) => age,
     },
   },
