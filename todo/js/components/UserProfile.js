@@ -13,15 +13,6 @@ type Props = {|
 const UserProfile = ({relay, demoUser}: Props) => {
   // console.log('demoUser in UserProfile component:', demoUser);
 
-  //Create an array for all the user profile info list items
-  const userDisplayItems = [];
-  userDisplayItems.push(<li className="userDisplayItem">Username: {demoUser.username}</li>);
-  userDisplayItems.push(<li className="userDisplayItem">Email: {demoUser.email}</li>);
-  userDisplayItems.push(<li className="userDisplayItem">Gender: {demoUser.gender}</li>);
-  userDisplayItems.push(<li className="userDisplayItem">Favorite Pizza Topping: {demoUser.pizzaTopping}</li>);
-  userDisplayItems.push(<li className="userDisplayItem">Age: {demoUser.age}</li>);
-
-
   const mutationGQL = graphql`
     mutation UserProfile_AddUserMutation($input: AddUserInput!) {
       addUser(input: $input) {
@@ -76,8 +67,35 @@ const UserProfile = ({relay, demoUser}: Props) => {
           args={args}
         />
         <main className="UserProfile-main">
-          <h2>Most Recently Added User</h2>
-          <ul>{userDisplayItems}</ul>
+            <h2>Most Recently Added User</h2>
+            <QueryRenderer
+              environment={relay.environment}
+              query={graphql`
+                query appQuery {
+                  demoUser {
+                    ...UserProfile_demoUser
+                  }
+                }
+              `}
+              render={({error, props}: {error: ?Error, props: ?appQueryResponse}) => {
+                // console.log('these are the props from App', props);
+                if (props && props.demoUser) {
+                  return (
+                    <ul>
+                      <li className="userDisplayItem">Username: {demoUser.username}</li>
+                      <li className="userDisplayItem">Email: {demoUser.email}</li>
+                      <li className="userDisplayItem">Gender: {demoUser.gender}</li>
+                      <li className="userDisplayItem">Favorite Pizza Topping: {demoUser.pizzaTopping}</li>
+                      <li className="userDisplayItem">Age: {demoUser.age}</li>
+                    </ul>
+                  );
+                } else if (error) {
+                  return <p>{error.message}</p>;
+                }
+
+                <p>Loading...</p>
+              }}
+          />
         </main>
       </section>
     </section>

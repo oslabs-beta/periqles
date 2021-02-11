@@ -68,10 +68,19 @@ function commit(
       input,
     },
     updater: (store) => {
-      // TODO: needed? is there a default to fall back to if I leave it off?
+      // get addUser payload
       const payload = store.getRootField('addUser'); // TODO
-      // console.log('addUser payload:', payload);
-      // const newEdge = payload.getLinkedRecord('todoEdge');   // TODO: what should this be?
+      // get userId from addUser payload
+      console.log('payload:', payload);
+      const newUserId = payload.getValue('userId');
+      const newUsername = payload.getValue('username');
+      const newPassword = payload.getValue('password');
+      const newEmail = payload.getValue('email');
+      const newGender = payload.getValue('gender');
+      const newPizzaTopping = payload.getValue('pizzaTopping');
+      const newAge = payload.getValue('age');
+      // console.log('newUserId', newUserId);
+      // return newUserId;
       // sharedUpdater(store, demoUser);
     },
     // optimisticUpdater: (store: RecordSourceSelectorProxy) => {    // TODO: needed?
