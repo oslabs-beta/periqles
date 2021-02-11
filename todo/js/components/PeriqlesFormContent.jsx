@@ -79,6 +79,7 @@ const fieldsArrayGenerator = (inputType, args = []) => {
  */
 
 const PeriqlesFormContent = ({
+  setUpdate,
   environment,
   mutationName,
   mutationGQL,
@@ -151,8 +152,10 @@ const PeriqlesFormContent = ({
     commitMutation(environment, {
       mutation: mutationGQL,
       variables,
-      onCompleted: (response, errors) =>
-        console.log('Server response to mutation:', response, errors),
+      onCompleted: (response, errors) => {
+        setUpdate(true);
+        console.log('Server response to mutation:', response, errors);
+      },
       onError: (err) => console.error('Problem committing mutation:', err),
     });
   };
@@ -161,10 +164,16 @@ const PeriqlesFormContent = ({
    * @param {object} Event
    */
   const handleChange = (e) => {
-    const {name, value} = e.target;
-    console.log(`${name} field changed its value to: ${value}`);
-    formState[name].set(value);
-    // console.log('new state:', formState);
+    const {name, value, type} = e.target;
+    let useValue = value;
+    // type-coerce values from number input elements before storing in state
+    // this step necessary to commit mutations involving integer fields
+    if (type === 'number') {
+      // console.log(`Type-coercing ${name} field`);
+      useValue = useValue - 0;
+    }
+    console.log(`${name} field changed its value to: ${useValue}`);
+    formState[name].set(useValue);
   };
 
   // HELPER FUNCTIONS
@@ -173,26 +182,17 @@ const PeriqlesFormContent = ({
    * @param {Object} field An object representing an input field for a GraphQL mutation. Example: {name: "name", type: "String"}
    * @param {Object} specs An object representing developer-specified information to use for an HTML element representing this field. Example: {label: "Name", element: "textarea", options: []}
    * @return  Returns the specified HTML input element with the specified label and specified sub-options, if any.
-   *
    */
   const generateSpecifiedElement = (field, specs) => {
     let element;
+
+    //If label isn't given, set it as field.name w/ spaces & 1st letter capitalized
+    if(!specs.label) {
+      specs.label = field.name.replace(/([a-z])([A-Z])/g, '$1 $2');
+      specs.label = specs.label[0].toUpperCase() + specs.label.slice(1);
+    }
+    
     switch (specs.element) {
-      //ADD EMAIL & TEL CASES + VALIDATION
-      case 'password':
-        element = (
-          <label>
-            {specs.label}
-            <input
-              type="password"
-              className={field.name + '-range periqles-password'}
-              name={field.name}
-              value={formState[field.name].value}
-              onChange={handleChange}
-            />
-          </label>
-        );
-        break;
       case 'range':
         element = (
           <label>
@@ -208,8 +208,8 @@ const PeriqlesFormContent = ({
             />
           </label>
         );
-        // note: dev may or may not include min and max values in specs; need fallback values to prevent throwing an error
         break;
+        
       case 'image':
         element = (
           <label>
@@ -226,57 +226,58 @@ const PeriqlesFormContent = ({
           </label>
         );
         break;
+        
       case 'radio':
-        const radioOptions = [];
-        specs.options.forEach((radio) => {
-          const radioInput = (
-            <label className="periqles-radio-option-label">
-              <input
-                type="radio"
-                name={field.name}
-                className={field.name + '-radio-option periqles-radio-option'}
-                value={radio.value}
-              />
-              {radio.label}
-            </label>
-          );
-          radioOptions.push(radioInput);
-        });
+        //if options aren't given, use field.options
+        const radioOptions = specs.options || field.options;
         element = (
           <div
             className={field.name + '-radio periqles-radio'}
             value={formState[field.name].value}
             onChange={handleChange}>
             <label className="periqles-radio-div-label">{specs.label}</label>
-            {radioOptions}
+            {radioOptions.map((option) => {
+              return (
+                <label className="periqles-radio-option-label">
+                  <input
+                    type="radio"
+                    name={field.name}
+                    className={field.name + '-radio-option periqles-radio-option'}
+                    value={option.value}
+                  />
+                  {option.label}
+                </label>
+              );
+              })
+            }
           </div>
         );
         break;
+        
       // TODO: handle non-null/non-null-default selects
       case 'select':
-        const selectOptions = [];
-        specs.options.forEach((option) => {
-          selectOptions.push(
-            <option
-              value={option.value}
-              className={field.name + '-select-option periqles-select-option'}>
-              {option.label}
-            </option>,
-          );
-        });
+        //if options aren't given, use field.options
+        const selectOptions = specs.options || field.options;
         element = (
           <label>
             {specs.label}
             <select
               className={field.name + '-select periqles-select'}
               name={field.name}
-              defaultValue={specs.options[0].value}
+              defaultValue={selectOptions[0].value}
               onChange={handleChange}>
-              {selectOptions}
+              {selectOptions.map((option) => {
+                return (<option
+                  value={option.value}
+                  className={field.name + '-select-option periqles-select-option'}>
+                  {option.label}
+                </option>)
+              })}
             </select>
           </label>
         );
         break;
+
       case 'textarea':
         element = (
           <label>
@@ -290,18 +291,21 @@ const PeriqlesFormContent = ({
           </label>
         );
         break;
+
       default:
+        const elementType = specs.element || 'text';
+
         element = (
           <label>
             {specs.label}
             <input
-              type="text"
-              className={field.name + '-input periqles-text'}
+              type={elementType}
+              className={`${field.name}-${elementType} periqles-${elementType}`}
               name={field.name}
               value={formState[field.name].value}
               onChange={handleChange}></input>
           </label>
-        );
+        ); 
     }
 
     return element;
@@ -344,102 +348,62 @@ const PeriqlesFormContent = ({
         break;
 
       case 'Enum':
-        const optionsArr = field.options;
-        const selectOptions = [];
-        optionsArr.forEach((option) => {
-          selectOptions.push(
-            <option
-              value={option.name}
-              className={field.name + '-select-option periqles-select-option'}>
-              {option.name}
-            </option>,
-          );
-        });
+        const selectOptions = field.options;
         element = (
           <label>
             {field.label}
             <select
               className={field.name + '-select periqles-select'}
               name={field.name}
-              defaultValue={optionsArr[0].name}
+              defaultValue={selectOptions[0].name}
               onChange={handleChange}>
-              {selectOptions}
+              {selectOptions.map((option) => {
+                return (
+                  <option
+                    value={option.name}
+                    className={field.name + '-select-option periqles-select-option'}>
+                    {option.name}
+                  </option>
+                );
+              })}
             </select>
           </label>
         );
         break;
+
       default:
-        const textFieldName = field.name.toLowerCase();
-        if (textFieldName === 'password' || textFieldName === 'pass') {
-          element = (
-            <label>
-              {field.label}
-              <input
-                type="password"
-                className={field.name + '-input periqles-password'}
-                name={field.name}
-                value={formState[field.name].value}
-                onChange={handleChange}></input>
-            </label>
-          );
-          break;
-        } else if (textFieldName === 'email') {
-          element = (
-            <label>
-              {field.label}
-              <input
-                type="email"
-                className={field.name + '-input periqles-email'}
-                name={field.name}
-                value={formState[field.name].value}
-                onChange={handleChange}></input>
-            </label>
-          );
-          break;
-        } else if (textFieldName === 'url' || textFieldName === 'link') {
-          element = (
-            <label>
-              {field.label}
-              <input
-                type="url"
-                className={field.name + '-input periqles-url'}
-                name={field.name}
-                value={formState[field.name].value}
-                onChange={handleChange}></input>
-            </label>
-          );
-          break;
-        } else if (
-          textFieldName === 'telephone' ||
-          textFieldName === 'phone' ||
-          textFieldName === 'phonenumber'
-        ) {
-          element = (
-            <label>
-              {field.label}
-              <input
-                type="tel"
-                className={field.name + '-input periqles-tel'}
-                name={field.name}
-                value={formState[field.name].value}
-                onChange={handleChange}></input>
-            </label>
-          );
-          break;
-        } else {
-          element = (
-            <label>
-              {field.label}
-              <input
-                type="text"
-                className={field.name + '-input periqles-text'}
-                name={field.name}
-                value={formState[field.name].value}
-                onChange={handleChange}></input>
-            </label>
-          );
-          break;
+        const elementLookup = {
+          pass: 'password',
+          password: 'password',
+          color: 'color',
+          colour: 'color',
+          url: 'url',
+          link: 'url',
+          date: 'date',
+          time: 'time',
+          file: 'file',
+          datetime: 'datetime',
+          timestamp: 'datetime',
+          telephone: 'tel',
+          phone: 'tel',
+          mobile: 'tel',
+          phonenumber: 'tel',
+          cell: 'tel',
         }
+        const textFieldName = field.name.toLowerCase();
+        const elementType = elementLookup[textFieldName] || 'text';
+        
+        element = (
+          <label>
+            {field.label}
+            <input
+              type={elementType}
+              className={`${field.name}-${elementType} periqles-${elementType}`}
+              name={field.name}
+              value={formState[field.name].value}
+              onChange={handleChange}></input>
+          </label>
+        ); 
     }
 
     return element;
@@ -524,34 +488,100 @@ const args = [
 ];
 */
 
-/*
-    // EXAMPLE SHAPE: inputType.inputFields
-    [
-      {
-        name: 'text',       // a non-null, scalar field
-        type: {
-          kind: 'NON_NULL',
-          name: null,
-          ofType: {
-            name: 'String',
-            kind: 'SCALAR',
-          },
-        },
-      },
-      {
-        name: 'clientMutationId',   // a nullable scalar field
-        type: {
-          kind: 'SCALAR',
-          name: 'String',
-          ofType: null
-        }
-      },
-    ];
-    */
-
 /*FORM VAILDATION NOTES:
       https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation#what_is_form_validation
       -input type tags generally have built-in validation
       -required tag: eg. <input type="text" id="username" name="username" required></input>
       -input type tell can specify a pattern: <input type="tel" id="phone" name="phone" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required></input>
         */
+
+
+        // case 'time':
+      //   element = (
+      //     <label>
+      //       {specs.label}
+      //       <input
+      //         type="time"
+      //         className={field.name + '-time periqles-time'}
+      //         name={field.name}
+      //         value={formState[field.name].value}
+      //         onChange={handleChange}
+      //       />
+      //     </label>
+      //   );
+      //   break;
+
+      // case 'color':
+      //   element = (
+      //     <label>
+      //       {specs.label}
+      //       <input
+      //         type="color"
+      //         className={field.name + '-color periqles-color'}
+      //         name={field.name}
+      //         value={formState[field.name].value}
+      //         onChange={handleChange}
+      //       />
+      //     </label>
+      //   );
+      //   break;
+
+      // case 'url':
+      //   element = (
+      //     <label>
+      //       {specs.label}
+      //       <input
+      //         type="url"
+      //         className={field.name + '-url periqles-url'}
+      //         name={field.name}
+      //         value={formState[field.name].value}
+      //         onChange={handleChange}
+      //       />
+      //     </label>
+      //   );
+      //   break;
+
+      // case 'tel':
+      //   element = (
+      //     <label>
+      //       {specs.label}
+      //       <input
+      //         type="tel"
+      //         className={field.name + '-tel periqles-tel'}
+      //         name={field.name}
+      //         value={formState[field.name].value}
+      //         onChange={handleChange}
+      //       />
+      //     </label>
+      //   );
+      //   break;
+
+      // case 'email':
+      //   element = (
+      //     <label>
+      //       {specs.label}
+      //       <input
+      //         type="email"
+      //         className={field.name + '-email periqles-email'}
+      //         name={field.name}
+      //         value={formState[field.name].value}
+      //         onChange={handleChange}
+      //       />
+      //     </label>
+      //   );
+      //   break;
+
+      // case 'password':
+      //   element = (
+      //     <label>
+      //       {specs.label}
+      //       <input
+      //         type="password"
+      //         className={field.name + '-password periqles-password'}
+      //         name={field.name}
+      //         value={formState[field.name].value}
+      //         onChange={handleChange}
+      //       />
+      //     </label>
+      //   );
+      //   break;
