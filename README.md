@@ -8,6 +8,10 @@ A component library that makes creating forms to commit mutations in a React-Rel
 >*“Having knowledge but lacking the power to express it clearly is no better than never having any ideas at all.”  
 -- Pericles*
 
+## Status
+
+periqles is not yet ready for deployment. Stay tuned!
+
 ## Maintained by:
 
 - [Cameron Baumgartner](https://github.com/kporter101)
