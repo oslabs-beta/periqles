@@ -10,7 +10,7 @@ import {
   type Variables,
 } from 'relay-runtime';
 
-
+import AddUserMutation from '../mutations/AddUserMutation';
 
 
 
@@ -20,7 +20,7 @@ import {
 import PeriqlesForm from './PeriqlesForm.jsx';
 
 const UserProfile = () => {
-
+  const [updated, setUpdate] = useState(false);
 
   async function fetchQuery(
     operation: RequestNode,
@@ -40,12 +40,21 @@ const UserProfile = () => {
     return response.json();
   }
 
-  const [updated, setUpdate] = useState(false);
-
-  const modernEnvironment: Environment = new Environment({
+    const modernEnvironment: Environment = new Environment({
     network: Network.create(fetchQuery),
     store: new Store(new RecordSource()),
   });
+
+  // seed a DemoUser to start with
+  AddUserMutation.commit(
+    modernEnvironment,
+    'user',
+    'pw1',
+    'user@email.com',
+    'NON_BINARY',
+    'HAWAIIAN',
+    1,
+  );
 
   const mutationGQL = graphql`
     mutation UserProfile_AddUserMutation($input: AddUserInput!) {
@@ -161,23 +170,6 @@ const UserProfile = () => {
 
 export default UserProfile;
 
-
-
-
-
-
-
-// seed QueryRenderer with a DemoUser to start with
-// AddUserMutation.commit(
-//   // relay.environment,
-//   modernEnvironment,
-//   'UN1',
-//   'PW1',
-//   'E1',
-//   'NON_BINARY',
-//   'HAWAIIAN',
-//   1,
-// );
 
 // const select = document.querySelector('.pizzaTopping-select');
 // if (select) console.log('select\'s default value:', select.getAttribute('defaultValue'));
