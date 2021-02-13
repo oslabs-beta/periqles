@@ -19,7 +19,8 @@ const PeriqlesForm = ({
   mutationGQL,
   specifications,
   args,
-  setUpdate
+  callbacks,
+  relay
 }) => {
   const [typeSchema, setTypeSchema] = useState(undefined);
 
@@ -73,13 +74,13 @@ const PeriqlesForm = ({
     <div className="PF">
       {typeSchema ? (
         <PeriqlesFormContent
-          setUpdate={setUpdate}
           environment={environment}
           inputType={typeSchema}
           mutationName={mutationName}
           mutationGQL={mutationGQL}
           specifications={specifications}
           args={args}
+          callbacks={callbacks}
         />
       ) : (
         <p>Loading form...</p>
