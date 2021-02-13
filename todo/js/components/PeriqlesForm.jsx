@@ -19,7 +19,6 @@ const PeriqlesForm = ({
   mutationGQL,
   specifications,
   args,
-  setUpdate,
   callbacks,
   relay
 }) => {
