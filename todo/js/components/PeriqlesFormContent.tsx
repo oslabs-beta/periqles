@@ -1,24 +1,42 @@
+import {any} from 'prop-types';
 import React, {useState} from 'react';
 import {commitMutation} from 'react-relay';
 
-const fieldsArrayGenerator = (inputType, args = []) => {
+interface Option {
+  name: string;
+  type: string;
+}
+
+interface Field {
+  name: string;
+  type?: string;
+  options?: [
+    {
+      name: string;
+      type: string;
+    },
+  ];
+  required?: boolean;
+}
+
+const fieldsArrayGenerator = (inputType, args = {}): Field[] => {
   if (!inputType || !inputType.inputFields) {
     console.error('ERROR at PeriqlesForm: mutation input type is undefined.');
     return [];
   }
-  const fieldsArray = [];
+  const fieldsArray: Field[] = [];
   // exclude from the form any inputs accounted for by args
   const exclude = Object.keys(args);
   inputType.inputFields.forEach((field) => {
     if (exclude.includes(field.name)) return;
 
-    const fieldObj = {
+    let fieldObj: Field = {
       name: field.name,
     };
 
     //check the field.type.kind to see if the field is NON_NULL (required)
     //if so, set fieldObj.required to true
-    if (field.type.kind === "NON_NULL" ){
+    if (field.type.kind === 'NON_NULL') {
       fieldObj.required = true;
     } else field.required = false;
 
@@ -33,11 +51,11 @@ const fieldsArrayGenerator = (inputType, args = []) => {
         fieldObj.options =
           field.type.enumValues || field.type.ofType.enumValues || [];
         // provide each option a type property
-        fieldObj.options.map((option) => {
+        fieldObj.options.map((option: Option) => {
           let type;
           switch (typeof option.name) {
             case 'number':
-            case 'float':
+            case 'bigint':
               type = 'Int';
               break;
             case 'boolean':
@@ -99,7 +117,7 @@ const PeriqlesFormContent = ({
   }
   // STATE
   // intuit input fields from mutation's input type schema
-  const fields = fieldsArrayGenerator(inputType, args);
+  const fields: Field[] = fieldsArrayGenerator(inputType, args);
 
   // assign an initial state for each field that reflects its data type
   const initialState = {};
@@ -124,23 +142,23 @@ const PeriqlesFormContent = ({
     // add this initial value to initialState
     initialState[field.name] = initialValue;
   });
-  const [formState, setFormState] = useState(initialState);   // shape: { nameOfField: valueOfField }
-
+  const [formState, setFormState] = useState(initialState); // shape: { nameOfField: valueOfField }
 
   // HANDLERS
   /**
    * @param {object} Event
    */
   const handleSubmit = (e) => {
-    
     if (e.key === 'Enter' || e.type === 'click') {
       e.preventDefault(); // prevent page refesh
     }
 
     // validate non-null text fields
     const fieldNames = Object.keys(formState);
-    for (let i = 0; i < fieldNames.length; i+=1) {
-      const fieldObj = fields.filter((fieldObj) => fieldObj.name === fieldNames[i])[0];
+    for (let i = 0; i < fieldNames.length; i += 1) {
+      const fieldObj = fields.filter(
+        (fieldObj) => fieldObj.name === fieldNames[i],
+      )[0];
       if (fieldObj.required && formState[fieldNames[i]] === '') {
         window.alert(`The following field is REQUIRED: ${fieldObj.label}`);
         return;
@@ -160,7 +178,7 @@ const PeriqlesFormContent = ({
       },
       onError: (err) => {
         if (callbacks.onFailure) callbacks.onFailure(err);
-      }
+      },
     });
   };
 
@@ -189,17 +207,15 @@ const PeriqlesFormContent = ({
     let element;
 
     //If label isn't given, set it as field.name w/ spaces & 1st letter capitalized
-    if(!specs.label) {
+    if (!specs.label) {
       specs.label = field.name.replace(/([a-z])([A-Z])/g, '$1 $2');
       specs.label = specs.label[0].toUpperCase() + specs.label.slice(1);
     }
-    if(specs.render) {
-      element = (
-        specs.render(formState, setFormState, handleChange)
-      )
+    if (specs.render) {
+      element = specs.render(formState, setFormState, handleChange);
       return element;
     }
-    
+
     switch (specs.element) {
       case 'range':
         element = (
@@ -217,7 +233,7 @@ const PeriqlesFormContent = ({
           </label>
         );
         break;
-        
+
       case 'image':
         element = (
           <label>
@@ -234,7 +250,7 @@ const PeriqlesFormContent = ({
           </label>
         );
         break;
-        
+
       case 'radio':
         //if options aren't given, use field.options
         const radioOptions = specs.options || field.options;
@@ -242,8 +258,7 @@ const PeriqlesFormContent = ({
           <div
             className={field.name + '-radio periqles-radio'}
             value={formState[field.name]}
-            onChange={handleChange}
-            >
+            onChange={handleChange}>
             <label className="periqles-radio-div-label">{specs.label}</label>
             {radioOptions.map((option, index) => {
               return (
@@ -252,7 +267,9 @@ const PeriqlesFormContent = ({
                     key={`${mutationName}${field.name}radio${index}`}
                     type="radio"
                     name={field.name}
-                    className={field.name + '-radio-option periqles-radio-option'}
+                    className={
+                      field.name + '-radio-option periqles-radio-option'
+                    }
                     value={option.value}
                     // dynamically set initial "checked" attribute based on whether this option's value matches the div's value
                     defaultChecked={option.value === formState[field.name]}
@@ -260,12 +277,11 @@ const PeriqlesFormContent = ({
                   {option.label}
                 </label>
               );
-              })
-            }
+            })}
           </div>
         );
         break;
-        
+
       // TODO: handle non-null/non-null-default selects
       case 'select':
         //if options aren't given, use field.options
@@ -277,15 +293,18 @@ const PeriqlesFormContent = ({
               className={field.name + '-select periqles-select'}
               name={field.name}
               defaultValue={formState[field.name]}
-              onChange={handleChange}
-              >
+              onChange={handleChange}>
               {selectOptions.map((option, index) => {
-                return (<option
-                  key={`${mutationName}${field.name}select${index}`}
-                  value={option.value}
-                  className={field.name + '-select-option periqles-select-option'}>
-                  {option.label}
-                </option>)
+                return (
+                  <option
+                    key={`${mutationName}${field.name}select${index}`}
+                    value={option.value}
+                    className={
+                      field.name + '-select-option periqles-select-option'
+                    }>
+                    {option.label}
+                  </option>
+                );
               })}
             </select>
           </label>
@@ -317,10 +336,9 @@ const PeriqlesFormContent = ({
               className={`${field.name}-${elementType} periqles-${elementType}`}
               name={field.name}
               value={formState[field.name]}
-              onChange={handleChange}>
-              </input>
+              onChange={handleChange}></input>
           </label>
-        ); 
+        );
     }
 
     return element;
@@ -343,8 +361,7 @@ const PeriqlesFormContent = ({
               className={field.name + '-number periqles-number'}
               name={field.name}
               value={formState[field.name]}
-              onChange={handleChange}>
-            </input>   
+              onChange={handleChange}></input>
           </label>
         );
         break;
@@ -378,7 +395,9 @@ const PeriqlesFormContent = ({
                   <option
                     key={`${mutationName}${field.name}select${index}`}
                     value={option.name}
-                    className={field.name + '-select-option periqles-select-option'}>
+                    className={
+                      field.name + '-select-option periqles-select-option'
+                    }>
                     {option.name}
                   </option>
                 );
@@ -406,10 +425,10 @@ const PeriqlesFormContent = ({
           mobile: 'tel',
           phonenumber: 'tel',
           cell: 'tel',
-        }
+        };
         const textFieldName = field.name.toLowerCase();
         const elementType = elementLookup[textFieldName] || 'text';
-        
+
         element = (
           <label>
             {field.label}
@@ -420,7 +439,7 @@ const PeriqlesFormContent = ({
               value={formState[field.name]}
               onChange={handleChange}></input>
           </label>
-        ); 
+        );
     }
 
     return element;
@@ -435,11 +454,11 @@ const PeriqlesFormContent = ({
    */
 
   const formBuilder = (fields) => {
-    const formElementsArray = [];
+    const formElementsArray: any = [];
     fields.forEach((field) => {
       if (args[field.name]) return; // early return
 
-      let element;
+      let element: any;
       if (specifications.fields[field.name]) {
         element = generateSpecifiedElement(
           field,
@@ -460,18 +479,20 @@ const PeriqlesFormContent = ({
   headerText = headerText[0].toUpperCase() + headerText.slice(1); // capitalize first letter
 
   return (
-      <form className="PeriqlesForm" aria-labelledby="form" onSubmit={handleSubmit}>
-        <h2>{headerText}</h2>
-        {formBuilder(fields)}
-        <button className="periqles-submit" onClick={handleSubmit}>
-          Submit
-        </button>
-      </form>
+    <form
+      className="PeriqlesForm"
+      aria-labelledby="form"
+      onSubmit={handleSubmit}>
+      <h2>{headerText}</h2>
+      {formBuilder(fields)}
+      <button className="periqles-submit" onClick={handleSubmit}>
+        Submit
+      </button>
+    </form>
   );
 };
 
 export default PeriqlesFormContent;
-
 
 /*FORM VAILDATION NOTES:
       https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation#what_is_form_validation

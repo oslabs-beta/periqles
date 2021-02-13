@@ -14,13 +14,12 @@ import PeriqlesFormContent from './PeriqlesFormContent.jsx';
  */
 
 const PeriqlesForm = ({
-  environment,
-  mutationName,
-  mutationGQL,
-  specifications,
-  args,
-  callbacks,
-  relay
+  environment: Object,
+  mutationName: String,
+  mutationGQL: Object,
+  specifications?: Object,
+  args: Object,
+  callbacks: Object,
 }) => {
   const [typeSchema, setTypeSchema] = useState(undefined);
 

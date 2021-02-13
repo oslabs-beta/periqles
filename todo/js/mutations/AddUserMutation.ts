@@ -1,10 +1,9 @@
-import {
-  commitMutation,
-  graphql,
-  type Disposable,
-  type Environment,
-  type RecordProxy,
-  type RecordSourceSelectorProxy,
+import {commitMutation, graphql} from 'react-relay';
+import type {
+  Disposable,
+  Environment,
+  RecordProxy,
+  RecordSourceSelectorProxy,
 } from 'react-relay';
 
 import {ConnectionHandler} from 'relay-runtime';

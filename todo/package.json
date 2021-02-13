@@ -4,11 +4,13 @@
     "start": "babel-node ./server.js",
     "build": "relay-compiler --src ./js/ --schema ./data/schema.graphql --artifactDirectory ./__generated__/relay",
     "flow-typed": "flow-typed install --flowVersion=0.118.0",
-    "update-schema": "babel-node ./scripts/updateSchema.js",
+    "update-schema": "babel-node ./scripts/updateSchema.ts",
     "lint": "eslint ./ --cache",
     "test": "jest --verbose"
   },
   "dependencies": {
+    "@types/react": "^17.0.2",
+    "@types/react-dom": "^17.0.1",
     "classnames": "2.2.6",
     "express": "^4.16.4",
     "express-graphql": "^0.12.0",
@@ -18,9 +20,6 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-relay": "^10.1.0",
-    "todomvc-app-css": "^2.3.0",
-    "todomvc-common": "^1.0.3",
-    "whatwg-fetch": "3.5.0",
     "yarn": "^1.22.10"
   },
   "devDependencies": {
@@ -44,10 +43,11 @@
     "eslint-plugin-prettier": "^3.2.0",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-relay": "^1.8.1",
-    "flow-bin": "^0.118.0",
-    "flow-typed": "^2.6.0",
     "prettier": "^2.2.1",
     "relay-compiler": "^10.1.0",
+    "source-map-loader": "^0.2.4",
+    "ts-loader": "^8.0.17",
+    "typescript": "^4.1.5",
     "webpack": "^4.41.5",
     "webpack-dev-server": "3.10.3"
   },
@@ -56,5 +56,6 @@
     "trailingComma": "all",
     "bracketSpacing": false,
     "jsxBracketSameLine": true
-  }
+  },
+  "type": "module"
 }
