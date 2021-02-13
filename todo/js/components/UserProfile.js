@@ -45,17 +45,6 @@ const UserProfile = () => {
     store: new Store(new RecordSource()),
   });
 
-  // seed a DemoUser to start with
-  AddUserMutation.commit(
-    modernEnvironment,
-    'user',
-    'pw1',
-    'user@email.com',
-    'NON_BINARY',
-    'HAWAIIAN',
-    1,
-  );
-
   const mutationGQL = graphql`
     mutation UserProfile_AddUserMutation($input: AddUserInput!) {
       addUser(input: $input) {
@@ -76,10 +65,13 @@ const UserProfile = () => {
         element: 'radio',
         label: 'Gender',
         options: [
+          {label: 'nonbinary', value: 'NON_BINARY'},
           {label: 'male', value: 'MALE'},
           {label: 'female', value: 'FEMALE'},
-          {label: 'nonbinary', value: 'NON_BINARY'},
         ],
+        // render: (formState, setFormState, handleChange) => {
+        //  return <label>Gender:<input onChange={handleChange} /></label>
+        // }
       },
       pizzaTopping: {
         label: 'Favorite pizza topping:',
@@ -92,13 +84,22 @@ const UserProfile = () => {
           {label: 'olives', value: 'OLIVES'},
           {label: 'hawaiian', value: 'HAWAIIAN'},
         ],
+        // render: (formState, setFormState, handleChange) => {
+        //  return <input onChange= {handleChange} />
+        // },
       },
-    },
+    }
   };
 
-  const args = [{name: 'clientMutationId', value: '0000'}];
+  const onSuccess = (response) => {
+    setUpdate(true);
+  };
 
+  const onFailure = (errorMsg) => {
+    alert('Problem submitting form:', errorMsg);
+  };
 
+  const args = {clientMutationId: '0000'};
 
   return (
     <section className="UserProfile">
@@ -106,62 +107,50 @@ const UserProfile = () => {
       <section className="UserProfile-flex">
 
         <PeriqlesForm
+          environment={modernEnvironment}
           mutationName={'AddUser'}
           mutationGQL={mutationGQL}
           args={args}
-          specifications={specifications}
-          setUpdate={setUpdate}
-          environment={modernEnvironment}
-        /> 
-
+          callbacks={{onSuccess, onFailure}}
+        />
         <main className="UserProfile-main">
-          <h2>Most Recently Added User</h2>
-
-          <QueryRenderer
-            environment={modernEnvironment}
-            query={graphql`
-              query UserProfileQuery {
-                demoUser {
-                  userId
-                  username
-                  password
-                  email
-                  gender
-                  pizzaTopping
-                  age
+            <h2>Most Recently Added User</h2>
+            <QueryRenderer
+              environment={modernEnvironment}
+              query={graphql`
+                query UserProfileQuery {
+                  demoUser {
+                    userId
+                    username
+                    password
+                    email
+                    gender
+                    pizzaTopping
+                    age
+                  }
                 }
-              }
-            `}
-            render={({error, props}) => {
-              setUpdate(false);
-              if (props && !props.demoUser) {
-                <p>Sign up...</p>;
-              }
-              if (props && props.demoUser) {
-                const {demoUser} = props;
-                return (
-                  <ul>
-                    <li className="userDisplayItem">
-                      Username: {demoUser.username}
-                    </li>
-                    <li className="userDisplayItem">Email: {demoUser.email}</li>
-                    <li className="userDisplayItem">
-                      Gender: {demoUser.gender}
-                    </li>
-                    <li className="userDisplayItem">
-                      Favorite Pizza Topping: {demoUser.pizzaTopping}
-                    </li>
-                    <li className="userDisplayItem">Age: {demoUser.age}</li>
-                  </ul>
-                );
-              } else if (error) {
-                return <p>{error.message}</p>;
-              }
-
-              <p>Loading...</p>;
-            }}
-          />
-
+              `}
+              render={({error, props}: {error: ?Error, props: ?UserProfileQueryResponse}) => {
+                setUpdate(false);
+                if (props && !props.demoUser) {
+                  <p>Sign up...</p>
+                }
+                if (props && props.demoUser) {
+                  const {demoUser} = props;
+                  return (
+                    <ul>
+                      <li className="userDisplayItem">Username: {demoUser.username}</li>
+                      <li className="userDisplayItem">Email: {demoUser.email}</li>
+                      <li className="userDisplayItem">Gender: {demoUser.gender}</li>
+                      <li className="userDisplayItem">Favorite Pizza Topping: {demoUser.pizzaTopping}</li>
+                      <li className="userDisplayItem">Age: {demoUser.age}</li>
+                    </ul>
+                  );
+                } else if (error) {
+                  return <p>{error.message}</p>;
+                }
+               }}
+            />
         </main>
       </section>
     </section>
@@ -169,14 +158,3 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
-
-
-// const select = document.querySelector('.pizzaTopping-select');
-// if (select) console.log('select\'s default value:', select.getAttribute('defaultValue'));
-
-// export default createFragmentContainer(UserProfile, {
-//   demoUser: graphql``,
-// });
-// export default createFragmentContainer(UserProfile, {
-//   demoUser: '',
-// });
