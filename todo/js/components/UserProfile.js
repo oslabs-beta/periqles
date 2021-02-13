@@ -1,3 +1,4 @@
+/* eslint-disable*/
 import React, {useState} from 'react';
 import {createFragmentContainer, QueryRenderer, graphql} from 'react-relay';
 import {
@@ -8,19 +9,19 @@ import {
   type RequestNode,
   type Variables,
 } from 'relay-runtime';
+
 import AddUserMutation from '../mutations/AddUserMutation';
+
+
+
+
+
+
 import PeriqlesForm from './PeriqlesForm.jsx';
-import type {RelayProp} from 'react-relay';
-import type {TodoApp_user} from 'relay/TodoApp_user.graphql';
-import type {UserProfileQueryResponse} from 'relay/UserProfileQuery.graphql';
 
-type Props = {|
-  +relay: RelayProp,
-  +user: TodoApp_user,
-|};
-
-// const UserProfile = ({relay, demoUser = null}: Props) => {
 const UserProfile = () => {
+  const [updated, setUpdate] = useState(false);
+
   async function fetchQuery(
     operation: RequestNode,
     variables: Variables,
@@ -35,17 +36,14 @@ const UserProfile = () => {
         variables,
       }),
     });
-  
+
     return response.json();
   }
 
-  const [updated, setUpdate] = useState(false);
-  
-  const modernEnvironment: Environment = new Environment({
+    const modernEnvironment: Environment = new Environment({
     network: Network.create(fetchQuery),
     store: new Store(new RecordSource()),
   });
-
 
   const mutationGQL = graphql`
     mutation UserProfile_AddUserMutation($input: AddUserInput!) {
@@ -60,18 +58,6 @@ const UserProfile = () => {
       }
     }
   `;
-
-  // seed QueryRenderer with a DemoUser to start with
-  // AddUserMutation.commit(
-  //   // relay.environment,
-  //   modernEnvironment,
-  //   'UN1',
-  //   'PW1',
-  //   'E1',
-  //   'NON_BINARY',
-  //   'HAWAIIAN',
-  //   1,
-  // );
 
   const specifications = {
     fields: {
@@ -110,12 +96,8 @@ const UserProfile = () => {
   };
 
   const onFailure = (errorMsg) => {
-    console.error('Problem submitting form:', errorMsg);
+    alert('Problem submitting form:', errorMsg);
   };
-
-  // onSuccess & onFailure callbacks are passed mutation response & error message as arguments
-  // currently callbacks must be passed in as prop object properties
-  // callbacks must be named onSuccess & onFailure
 
   const args = {clientMutationId: '0000'};
 
@@ -123,12 +105,11 @@ const UserProfile = () => {
     <section className="UserProfile">
       <h1>Periqles Demo</h1>
       <section className="UserProfile-flex">
+
         <PeriqlesForm
-          setUpdate={setUpdate}
           environment={modernEnvironment}
           mutationName={'AddUser'}
           mutationGQL={mutationGQL}
-          specifications={specifications}
           args={args}
           callbacks={{onSuccess, onFailure}}
         />
@@ -168,10 +149,8 @@ const UserProfile = () => {
                 } else if (error) {
                   return <p>{error.message}</p>;
                 }
-
-                <p>Loading...</p>
-              }}
-          />
+               }}
+            />
         </main>
       </section>
     </section>
@@ -179,10 +158,3 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
-
-// export default createFragmentContainer(UserProfile, {
-//   demoUser: graphql``,
-// });
-// export default createFragmentContainer(UserProfile, {
-//   demoUser: '',
-// });
