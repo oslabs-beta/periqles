@@ -11,12 +11,6 @@ import {
 } from 'relay-runtime';
 
 import AddUserMutation from '../mutations/AddUserMutation';
-
-
-
-
-
-
 import PeriqlesForm from './PeriqlesForm.jsx';
 
 const UserProfile = () => {

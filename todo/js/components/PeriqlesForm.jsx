@@ -74,7 +74,6 @@ const PeriqlesForm = ({
     <div className="PF">
       {typeSchema ? (
         <PeriqlesFormContent
-          setUpdate={setUpdate}
           environment={environment}
           inputType={typeSchema}
           mutationName={mutationName}
