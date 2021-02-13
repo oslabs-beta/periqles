@@ -100,11 +100,10 @@ const PeriqlesFormContent = ({
   // STATE
   // intuit input fields from mutation's input type schema
   const fields = fieldsArrayGenerator(inputType, args);
-  // console.log('generated fields', fields);
+
   // assign an initial state for each field that reflects its data type
   const initialState = {};
   fields.forEach((field) => {
-    // console.log('field object', field);
     let initialValue;
     switch (field.type) {
       case 'String':
@@ -126,7 +125,7 @@ const PeriqlesFormContent = ({
     initialState[field.name] = initialValue;
   });
   const [formState, setFormState] = useState(initialState);   // shape: { nameOfField: valueOfField }
-  // console.log('initial state', formState);
+
 
   // HANDLERS
   /**
@@ -138,10 +137,7 @@ const PeriqlesFormContent = ({
       e.preventDefault(); // prevent page refesh
     }
 
-    // iterate over formState
-    //if a field that is required is ''
-    // trigger alert, indicating required fields
-    //early return out of entire handleSubmit
+    // validate non-null text fields
     const fieldNames = Object.keys(formState);
     for (let i = 0; i < fieldNames.length; i+=1) {
       const fieldObj = fields.filter((fieldObj) => fieldObj.name === fieldNames[i])[0];
@@ -160,6 +156,7 @@ const PeriqlesFormContent = ({
       variables,
       onCompleted: (response, errors) => {
         if (callbacks.onSuccess) callbacks.onSuccess(response);
+        setFormState(initialState);
       },
       onError: (err) => {
         if (callbacks.onFailure) callbacks.onFailure(err);
@@ -475,32 +472,6 @@ const PeriqlesFormContent = ({
 
 export default PeriqlesFormContent;
 
-/*
-// mock props
-  const schema = {name: {name: 'name', type: 'String'}};
-const environment = {'networkLayer': 'fake network layer', 'store': 'fake Relay store'};
-const mutation = 'AddTodoMutation';
-const mutationGQL = `mutation AddTodoMutation($input: AddTodoInput) { }`
-const specifications = {
-    fields: {
-        name: {
-            label: "Name",
-            element: "text",
-        },
-        gender: {
-            label: "Gender",
-            element: "radio",
-            options: [
-              {label: "male", value: "m"},
-              {label:"female", value: "f"},
-              {label: "non-binary", value: "x"},
-            ],
-        }
-    },
-};
-
-const args = {'clientMutationId': '0000'};
-*/
 
 /*FORM VAILDATION NOTES:
       https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation#what_is_form_validation
