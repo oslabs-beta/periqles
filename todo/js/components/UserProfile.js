@@ -46,9 +46,6 @@ const UserProfile = () => {
     store: new Store(new RecordSource()),
   });
 
-  // console.log('relay in UserProfile component:', relay);
-  console.log('environment in UserProfile component:', modernEnvironment);
-  // console.log('demoUser in UserProfile component:', demoUser);
 
   const mutationGQL = graphql`
     mutation UserProfile_AddUserMutation($input: AddUserInput!) {
@@ -82,10 +79,13 @@ const UserProfile = () => {
         element: 'radio',
         label: 'Gender',
         options: [
+          {label: 'nonbinary', value: 'NON_BINARY'},
           {label: 'male', value: 'MALE'},
           {label: 'female', value: 'FEMALE'},
-          {label: 'nonbinary', value: 'NON_BINARY'},
         ],
+        // render: (formState, setFormState, handleChange) => {
+        //  return <label>Gender:<input onChange={handleChange} /></label>
+        // }
       },
       pizzaTopping: {
         label: 'Favorite pizza topping:',
@@ -98,32 +98,43 @@ const UserProfile = () => {
           {label: 'olives', value: 'OLIVES'},
           {label: 'hawaiian', value: 'HAWAIIAN'},
         ],
+        // render: (formState, setFormState, handleChange) => {
+        //  return <input onChange= {handleChange} />
+        // },
       },
-    },
+    }
   };
 
-  const args = [{name: 'clientMutationId', value: '0000'}];
+  const onSuccess = (response) => {
+    setUpdate(true);
+  };
 
-  const select = document.querySelector('.pizzaTopping-select');
-  if (select) console.log('select\'s default value:', select.getAttribute('defaultValue'));
+  const onFailure = (errorMsg) => {
+    console.error('Problem submitting form:', errorMsg);
+  };
+
+  // onSuccess & onFailure callbacks are passed mutation response & error message as arguments
+  // currently callbacks must be passed in as prop object properties
+  // callbacks must be named onSuccess & onFailure
+
+  const args = {clientMutationId: '0000'};
 
   return (
     <section className="UserProfile">
       <h1>Periqles Demo</h1>
       <section className="UserProfile-flex">
         <PeriqlesForm
-          // environment={relay.environment}
           setUpdate={setUpdate}
           environment={modernEnvironment}
           mutationName={'AddUser'}
           mutationGQL={mutationGQL}
           specifications={specifications}
           args={args}
+          callbacks={{onSuccess, onFailure}}
         />
         <main className="UserProfile-main">
             <h2>Most Recently Added User</h2>
             <QueryRenderer
-              // environment={relay.environment}
               environment={modernEnvironment}
               query={graphql`
                 query UserProfileQuery {
@@ -139,7 +150,6 @@ const UserProfile = () => {
                 }
               `}
               render={({error, props}: {error: ?Error, props: ?UserProfileQueryResponse}) => {
-                // console.log('these are the props from UserProfile', props);
                 setUpdate(false);
                 if (props && !props.demoUser) {
                   <p>Sign up...</p>
