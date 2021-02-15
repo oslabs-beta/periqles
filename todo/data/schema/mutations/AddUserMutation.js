@@ -1,25 +1,7 @@
-import {
-  cursorForObjectInConnection,
-  mutationWithClientMutationId,
-} from 'graphql-relay';
-
-import {GraphQLID, GraphQLNonNull, GraphQLString, GraphQLInt} from 'graphql';
-import {GenderEnum, PizzaToppingEnum} from '../nodes'; // TODO: should I be using this some way?
-
-import {addUser, getDemoUserOrThrow} from '../../database';
-
-// // TODO: replace with Typescript
-// /*
-// type Input = {|
-//   +text: string,
-//   +userId: string,
-// |};
-
-// type Payload = {|
-//   +todoId: string,
-//   +userId: string,
-// |};
-// */
+import {mutationWithClientMutationId} from 'graphql-relay';
+import {GraphQLNonNull, GraphQLString, GraphQLInt} from 'graphql';
+import {GenderEnum, PizzaToppingEnum} from '../nodes.js';
+import {addUser, getDemoUserOrThrow} from '../../database.js';
 
 const AddUserMutation = mutationWithClientMutationId({
   name: 'AddUser',

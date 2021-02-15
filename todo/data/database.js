@@ -1,26 +1,8 @@
-import {number, string} from 'prop-types';
-
 //DEMO USER CLASSES, FUNCTIONS AND INFO
 
 // DemoUser class:
 export class DemoUser {
-  +userId: string;
-  +username: string;
-  +password: string;
-  +email: string;
-  +gender: string;
-  +pizzaTopping: string;
-  +age: number;
-
-  constructor(
-    userId: string,
-    username: string,
-    password: string,
-    email: string,
-    gender: string,
-    pizzaTopping: string,
-    age: number,
-  ) {
+  constructor(userId, username, password, email, gender, pizzaTopping, age) {
     this.userId = userId;
     this.username = username;
     this.password = password;
@@ -43,16 +25,16 @@ export class DemoUser {
 // };
 
 // Mock Databse
-const demoUsersById: Map<string, DemoUser> = new Map();
+const demoUsersById = new Map();
 
 // Seed initial user
-let nextUserId: number = 0;
+let nextUserId = 0;
 
 //getDemoUser and getDemoUserOrThrow functions
-function getDemoUser(userId: string): ?DemoUser {
+function getDemoUser(userId) {
   return demoUsersById.get(userId);
 }
-export function getDemoUserOrThrow(userId: string): DemoUser {
+export function getDemoUserOrThrow(userId) {
   // console.log('hello from getDemoUserOrThrow');
   const demoUser = getDemoUser(userId);
 
@@ -63,7 +45,7 @@ export function getDemoUserOrThrow(userId: string): DemoUser {
   return demoUser;
 }
 
-export function getLastDemoUserOrThrow(): DemoUser {
+export function getLastDemoUserOrThrow() {
   // console.log('hello from getDemoUserOrThrow');
   let lastDemoUser;
   const demoUsersIterator = demoUsersById[Symbol.iterator]();
@@ -76,7 +58,7 @@ export function getLastDemoUserOrThrow(): DemoUser {
   return lastDemoUser;
 }
 
-export function getAllUsers(): DemoUser {
+export function getAllUsers() {
   // console.log('hello from getDemoUserOrThrow');
   let demoUserList = [];
   const demoUsersIterator = demoUsersById[Symbol.iterator]();

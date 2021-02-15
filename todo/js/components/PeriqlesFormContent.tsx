@@ -2,70 +2,68 @@ import {any} from 'prop-types';
 import React, {useState} from 'react';
 import {commitMutation} from 'react-relay';
 
-interface Option {
-  name: string;
-  type: string;
-}
-
-interface Field {
-  name: string;
-  type?: string;
-  options?: [
-    {
-      name: string;
-      type: string;
-    },
-  ];
-  required?: boolean;
-}
-
-const fieldsArrayGenerator = (inputType, args = {}): Field[] => {
+const fieldsArrayGenerator = (
+  inputType: InputType,
+  args: PeriqlesMutationArgs = {},
+): PeriqlesField[] => {
   if (!inputType || !inputType.inputFields) {
     console.error('ERROR at PeriqlesForm: mutation input type is undefined.');
     return [];
   }
-  const fieldsArray: Field[] = [];
-  // exclude from the form any inputs accounted for by args
-  const exclude = Object.keys(args);
-  inputType.inputFields.forEach((field) => {
-    if (exclude.includes(field.name)) return;
 
-    let fieldObj: Field = {
+  const fieldsArray: Array<PeriqlesField> = [];
+
+  inputType.inputFields.forEach((field) => {
+    // exclude from the form any inputs accounted for by args
+    if (args[field.name]) return;
+
+    let fieldObj: PeriqlesField = {
       name: field.name,
     };
 
     //check the field.type.kind to see if the field is NON_NULL (required)
     //if so, set fieldObj.required to true
-    if (field.type.kind === 'NON_NULL') {
-      fieldObj.required = true;
-    } else field.required = false;
+    fieldObj.required = field.type.kind === 'NON_NULL';
 
     // the input field is a scalar, nullable type
     if (field.type.name && field.type.kind === 'SCALAR') {
       fieldObj.type = field.type.name;
     }
+
     // the input field is an enumerated type (whether or not wrapped in a NON_NULL type)
-    else if (field.type.kind === 'ENUM' || field.type.ofType.kind === 'ENUM') {
+    else if (field.type.kind === 'ENUM' || field.type.ofType?.kind === 'ENUM') {
       fieldObj.type = 'Enum';
       try {
-        fieldObj.options =
-          field.type.enumValues || field.type.ofType.enumValues || [];
+        const optionsArr =
+          field.type.enumValues || field.type.ofType?.enumValues || [];
         // provide each option a type property
-        fieldObj.options.map((option: Option) => {
-          let type;
+        fieldObj.options = optionsArr.map((option: EnumValue) => {
+          let value, type;
+
           switch (typeof option.name) {
             case 'number':
             case 'bigint':
+              value = option.name;
               type = 'Int';
               break;
             case 'boolean':
+              // stringify booleans b/c HTML typing doesn't allow for boolean value attributes
+              value = `${option.name}`;
               type = 'Boolean';
               break;
             default:
+              value = option.name;
               type = 'String';
           }
-          option.type = type;
-          return option;
+
+          const mappedOption: PeriqlesFieldOption = {
+            name: `${option.name}`,
+            label: `${option.name}`,
+            value,
+            type,
+          };
+
+          return mappedOption;
         });
       } catch (err) {
         console.error(
@@ -75,7 +73,8 @@ const fieldsArrayGenerator = (inputType, args = {}): Field[] => {
       }
     }
     // the input field is a scalar wrapped in a NON_NULL type
-    else if (field.type.ofType.name && field.type.ofType.kind === 'SCALAR') {
+    else if (field.type.ofType?.name && field.type.ofType?.kind === 'SCALAR') {
+      // TODO
       fieldObj.type = field.type.ofType.name;
     }
     // TODO: the input field is not a scalar or enum type
@@ -110,18 +109,18 @@ const PeriqlesFormContent = ({
   args = {},
   inputType,
   callbacks,
-}) => {
+}: PeriqlesFormContentProps): JSX.Element => {
   if (!inputType || !inputType.inputFields) {
     console.error('ERROR at PeriqlesForm: mutation input type is undefined.');
     return <p>! ERROR !</p>;
   }
   // STATE
   // intuit input fields from mutation's input type schema
-  const fields: Field[] = fieldsArrayGenerator(inputType, args);
+  const fields: PeriqlesField[] = fieldsArrayGenerator(inputType, args);
 
   // assign an initial state for each field that reflects its data type
   const initialState = {};
-  fields.forEach((field) => {
+  fields.forEach((field: PeriqlesField) => {
     let initialValue;
     switch (field.type) {
       case 'String':
@@ -134,7 +133,9 @@ const PeriqlesFormContent = ({
         initialValue = false;
         break;
       case 'Enum':
-        initialValue = field.options[0].name;
+        if (!field.options) {
+          initialValue = '';
+        } else initialValue = field.options[0].name;
         break;
       default:
         initialValue = '';
@@ -148,7 +149,7 @@ const PeriqlesFormContent = ({
   /**
    * @param {object} Event
    */
-  const handleSubmit = (e) => {
+  const handleSubmit = (e): void => {
     if (e.key === 'Enter' || e.type === 'click') {
       e.preventDefault(); // prevent page refesh
     }
@@ -165,27 +166,24 @@ const PeriqlesFormContent = ({
       }
     }
 
-    const input = {...formState, ...args};
-    const variables = {
+    const input: Input = {...formState, ...args};
+    const variables: Variables = {
       input,
     };
     commitMutation(environment, {
       mutation: mutationGQL,
       variables,
-      onCompleted: (response, errors) => {
-        if (callbacks.onSuccess) callbacks.onSuccess(response);
+      onCompleted: (response, errors): void => {
+        if (callbacks?.onSuccess) callbacks.onSuccess(response);
         setFormState(initialState);
       },
-      onError: (err) => {
-        if (callbacks.onFailure) callbacks.onFailure(err);
+      onError: (err): void => {
+        if (callbacks?.onFailure) callbacks.onFailure(err);
       },
     });
   };
 
-  /**
-   * @param {object} Event
-   */
-  const handleChange = (e) => {
+  const handleChange = (e): void => {
     const {name, value, type} = e.target;
     let useValue = value;
     // type-coerce values from number input elements before storing in state
@@ -203,8 +201,12 @@ const PeriqlesFormContent = ({
    * @param {Object} specs An object representing developer-specified information to use for an HTML element representing this field. Example: {label: "Name", element: "textarea", options: []}
    * @return  Returns the specified HTML input element with the specified label and specified sub-options, if any.
    */
-  const generateSpecifiedElement = (field, specs) => {
-    let element;
+
+  const generateSpecifiedElement = (
+    field: PeriqlesField,
+    specs: PeriqlesFieldSpecs,
+  ): JSX.Element => {
+    let element: JSX.Element;
 
     //If label isn't given, set it as field.name w/ spaces & 1st letter capitalized
     if (!specs.label) {
@@ -252,8 +254,31 @@ const PeriqlesFormContent = ({
         break;
 
       case 'radio':
+        // TODO: same logic as select options
         //if options aren't given, use field.options
-        const radioOptions = specs.options || field.options;
+        const radioOptions: Array<PeriqlesFieldOption> = [];
+        if (specs.options) {
+          specs.options.forEach((spec) => {
+            let name, type;
+
+            field.options?.forEach((option) => {
+              if (option.label === spec.label) {
+                name = option.name;
+                type = option.type;
+              }
+            });
+
+            let newOption: PeriqlesFieldOption = {
+              name,
+              label: spec.label,
+              value: spec.value,
+              type,
+            };
+
+            radioOptions.push(newOption);
+          });
+        } else field.options?.forEach((option) => radioOptions.push(option));
+
         element = (
           <div
             className={field.name + '-radio periqles-radio'}
@@ -284,8 +309,29 @@ const PeriqlesFormContent = ({
 
       // TODO: handle non-null/non-null-default selects
       case 'select':
-        //if options aren't given, use field.options
-        const selectOptions = specs.options || field.options;
+        const selectOptions: Array<PeriqlesFieldOption> = [];
+        if (specs.options) {
+          specs.options.forEach((spec) => {
+            let name, type;
+
+            field.options?.forEach((option) => {
+              if (option.label === spec.label) {
+                name = option.name;
+                type = option.type;
+              }
+            });
+
+            let newOption: PeriqlesFieldOption = {
+              name,
+              label: spec.label,
+              value: spec.value,
+              type,
+            };
+
+            selectOptions.push(newOption);
+          });
+        } else field.options?.forEach((option) => selectOptions.push(option));
+
         element = (
           <label>
             {specs.label}
@@ -326,7 +372,7 @@ const PeriqlesFormContent = ({
         break;
 
       default:
-        const elementType = specs.element || 'text';
+        const elementType: string = specs.element || 'text';
 
         element = (
           <label>
@@ -344,12 +390,12 @@ const PeriqlesFormContent = ({
     return element;
   };
 
-  const generateDefaultElement = (field) => {
+  const generateDefaultElement = (field: PeriqlesField): JSX.Element => {
     // assign a label that matches name but w/ spaces between words and first char uppercased
     field.label = field.name.replace(/([a-z])([A-Z])/g, '$1 $2');
     field.label = field.label[0].toUpperCase() + field.label.slice(1);
 
-    let element;
+    let element: JSX.Element;
 
     switch (field.type) {
       case 'Int':
@@ -381,7 +427,10 @@ const PeriqlesFormContent = ({
         break;
 
       case 'Enum':
-        const selectOptions = field.options;
+        // TODO: new select options logic
+        const selectOptions: Array<PeriqlesFieldOption> = [];
+        field.options?.forEach((option) => selectOptions.push(option));
+
         element = (
           <label>
             {field.label}
@@ -426,8 +475,8 @@ const PeriqlesFormContent = ({
           phonenumber: 'tel',
           cell: 'tel',
         };
-        const textFieldName = field.name.toLowerCase();
-        const elementType = elementLookup[textFieldName] || 'text';
+        const textFieldName: string = field.name.toLowerCase();
+        const elementType: string = elementLookup[textFieldName] || 'text';
 
         element = (
           <label>
@@ -453,12 +502,12 @@ const PeriqlesFormContent = ({
    * @param {object} args An object whose keys represent the names of mutation input fields to exclude from the form, and whose values provide the value to be used for each variable when the mutation is committed.
    */
 
-  const formBuilder = (fields) => {
-    const formElementsArray: any = [];
+  const formBuilder = (fields: PeriqlesField[]): JSX.Element[] => {
+    const formElementsArray: JSX.Element[] = [];
     fields.forEach((field) => {
       if (args[field.name]) return; // early return
 
-      let element: any;
+      let element: JSX.Element;
       if (specifications.fields[field.name]) {
         element = generateSpecifiedElement(
           field,
@@ -473,7 +522,7 @@ const PeriqlesFormContent = ({
   };
 
   // ADDITIONAL ELEMENTS AND STYLES
-  let headerText = mutationName
+  let headerText: string = mutationName
     .replace('Mutation', '')
     .replace(/([a-z])([A-Z])/g, '$1 $2'); // add spaces before capital letters
   headerText = headerText[0].toUpperCase() + headerText.slice(1); // capitalize first letter

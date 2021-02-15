@@ -1,7 +1,7 @@
 #!/usr/bin/env babel-node
 import fs from 'fs';
 import path from 'path';
-import {schema} from '../data/schema/index.ts';
+import {schema} from '../data/schema/index.js';
 import {printSchema} from 'graphql';
 
 const schemaPath = path.resolve(__dirname, '../data/schema.graphql');

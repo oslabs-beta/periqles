@@ -1,33 +1,24 @@
 import {
-  GraphQLBoolean,
-  GraphQLInt,
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString,
   GraphQLEnumType,
+  GraphQLInt,
 } from 'graphql';
 
-import {
-  connectionArgs,
-  connectionDefinitions,
-  connectionFromArray,
-  fromGlobalId,
-  globalIdField,
-  nodeDefinitions,
-} from 'graphql-relay';
+import {fromGlobalId, globalIdField, nodeDefinitions} from 'graphql-relay';
 
-import {DemoUser, getDemoUserOrThrow} from '../database';
+import {DemoUser, getDemoUserOrThrow} from '../database.js';
 
-// $FlowFixMe graphql-relay types not available in flow-typed, strengthen this typing
 const {nodeInterface, nodeField} = nodeDefinitions(
-  (globalId: string): {} => {
-    const {type, id}: {id: string; type: string} = fromGlobalId(globalId);
+  (globalId) => {
+    const {type, id} = fromGlobalId(globalId);
     if (type === 'DemoUser') {
       return getDemoUserOrThrow(id);
     }
     return null;
   },
-  (obj: {}): GraphQLObjectType => {
+  (obj) => {
     if (obj instanceof DemoUser) {
       return demoGraphQLUser;
     }
@@ -81,31 +72,31 @@ const demoGraphQLUser = new GraphQLObjectType({
     id: globalIdField('DemoUser'),
     userId: {
       type: new GraphQLNonNull(GraphQLString),
-      resolve: (demoUser): string => demoUser.userId, // where does this value come from? mutation? methods come from database so maybe adding Demo methods there,
+      resolve: (demoUser) => demoUser.userId,
     },
     username: {
       type: new GraphQLNonNull(GraphQLString),
-      resolve: (demoUser): string => demoUser.username, // where does this value come from? mutation? methods come from database so maybe adding Demo methods there,
+      resolve: (demoUser) => demoUser.username,
     },
     password: {
       type: new GraphQLNonNull(GraphQLString),
-      resolve: (demoUser): string => demoUser.password, // where does this value come from? mutation? methods come from database so maybe adding Demo methods there,
+      resolve: (demoUser) => demoUser.password,
     },
     email: {
       type: new GraphQLNonNull(GraphQLString),
-      resolve: (demoUser): string => demoUser.email, // where does this value come from? mutation? methods come from database so maybe adding Demo methods there,
+      resolve: (demoUser) => demoUser.email,
     },
     gender: {
       type: new GraphQLNonNull(GenderEnum),
-      resolve: (demoUser): string => demoUser.gender, // where does this value come from? mutation? methods come from database so maybe adding Demo methods there,
+      resolve: (demoUser) => demoUser.gender,
     },
     pizzaTopping: {
       type: new GraphQLNonNull(PizzaToppingEnum),
-      resolve: (demoUser): string => demoUser.pizzaTopping, // where does this value come from? mutation? methods come from database so maybe adding Demo methods there,
+      resolve: (demoUser) => demoUser.pizzaTopping,
     },
     age: {
       type: new GraphQLNonNull(GraphQLInt),
-      resolve: (demoUser): number => demoUser.age, // where does this value come from? mutation? methods come from database so maybe adding Demo methods there,
+      resolve: (demoUser) => demoUser.age,
     },
   },
   interfaces: [nodeInterface],

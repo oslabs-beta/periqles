@@ -3,10 +3,13 @@ import React, {useState} from 'react';
 import {createFragmentContainer, QueryRenderer, graphql} from 'react-relay';
 import {Environment, Network, RecordSource, Store} from 'relay-runtime';
 import type {RequestNode, Variables} from 'relay-runtime';
-import type {UserProfileQueryResponse} from 'relay/UserProfileQuery.graphql';
-
+// import type {UserProfileQueryResponse} from 'relay/UserProfileQuery.graphql'; // based off todo app example, need to locate generated/relay folder after successful npm run build
 import AddUserMutation from '../mutations/AddUserMutation';
-import PeriqlesForm from './PeriqlesForm.jsx';
+import PeriqlesForm from './PeriqlesForm';
+
+interface QueryResponse {
+  demoUser?: Record<string, string | boolean | number>;
+}
 
 const UserProfile = () => {
   const [updated, setUpdate] = useState(false);
@@ -48,29 +51,7 @@ const UserProfile = () => {
     }
   `;
 
-  interface Specifications {
-    fields: {FieldSpecs};
-  }
-
-  interface FieldSpecs {
-    element: string;
-    label: string;
-    options?: Option[];
-    render?: (
-      formState: FormState,
-      setFormState: (value: any) => FormState,
-      handleChange: (e: SyntheticEvent) => void,
-    ) => any;
-  }
-
-  interface Option {
-    label: string;
-    value: string | number | boolean;
-  }
-
-  interface FormState {}
-
-  const specifications: Specifications = {
+  const specifications: PeriqlesSpecifications = {
     fields: {
       gender: {
         element: 'radio',
@@ -116,7 +97,7 @@ const UserProfile = () => {
     <section className="UserProfile">
       <h1>Periqles Demo</h1>
       <section className="UserProfile-flex">
-        <PeriqlesForm
+        <PeriqlesForm // error: JSX element type 'PeriqlesForm' does not have any construct or call signatures.
           environment={modernEnvironment}
           mutationName={'AddUser'}
           mutationGQL={mutationGQL}
@@ -140,13 +121,7 @@ const UserProfile = () => {
                 }
               }
             `}
-            render={({
-              error,
-              props,
-            }: {
-              error: Error;
-              props: UserProfileQueryResponse;
-            }) => {
+            render={({error, props}: {error: Error; props: QueryResponse}) => {
               setUpdate(false);
               if (props && !props.demoUser) {
                 <p>Sign up...</p>;

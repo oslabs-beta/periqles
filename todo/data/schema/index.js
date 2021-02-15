@@ -1,7 +1,7 @@
 import {GraphQLObjectType, GraphQLSchema} from 'graphql';
 import {nodeField} from './nodes.js';
-import {demoUserQuery} from './queries/demoUserQuery';
-import {AddUserMutation} from './mutations/AddUserMutation';
+import {demoUserQuery} from './queries/demoUserQuery.js';
+import {AddUserMutation} from './mutations/AddUserMutation.js';
 
 const Query = new GraphQLObjectType({
   name: 'Query',
