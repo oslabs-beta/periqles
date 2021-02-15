@@ -1,12 +1,13 @@
 // /* eslint-disable*/
 import React, {useState} from 'react';
-import {createFragmentContainer, QueryRenderer, graphql} from 'react-relay';
+import {QueryRenderer, graphql} from 'react-relay';
 import {Environment, Network, RecordSource, Store} from 'relay-runtime';
-import type {RequestNode, Variables} from 'relay-runtime';
+// import type {RequestNode, Variables} from 'relay-runtime';
 // import type {UserProfileQueryResponse} from 'relay/UserProfileQuery.graphql'; // based off todo app example, need to locate generated/relay folder after successful npm run build
-import AddUserMutation from '../mutations/AddUserMutation';
+// import AddUserMutation from '../mutations/AddUserMutation';
 import PeriqlesForm from './PeriqlesForm';
 
+// TODO: "Unexpected reserved word 'interface'"
 interface QueryResponse {
   demoUser?: Record<string, string | boolean | number>;
 }

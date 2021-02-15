@@ -2,7 +2,7 @@ import express from 'express';
 import {graphqlHTTP} from 'express-graphql';
 import path from 'path';
 // import periqles from 'periqles';
-import {schema} from './data/schema';
+import {schema} from './data/schema/index.js';
 
 const APP_PORT = 3000;
 

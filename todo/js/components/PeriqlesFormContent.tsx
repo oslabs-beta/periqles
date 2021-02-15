@@ -1,4 +1,4 @@
-import {any} from 'prop-types';
+// import {any} from 'prop-types';
 import React, {useState} from 'react';
 import {commitMutation} from 'react-relay';
 
@@ -280,9 +280,9 @@ const PeriqlesFormContent = ({
         } else field.options?.forEach((option) => radioOptions.push(option));
 
         element = (
+      
           <div
             className={field.name + '-radio periqles-radio'}
-            value={formState[field.name]}
             onChange={handleChange}>
             <label className="periqles-radio-div-label">{specs.label}</label>
             {radioOptions.map((option, index) => {
@@ -542,10 +542,3 @@ const PeriqlesFormContent = ({
 };
 
 export default PeriqlesFormContent;
-
-/*FORM VAILDATION NOTES:
-      https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation#what_is_form_validation
-      -input type tags generally have built-in validation
-      -required tag: eg. <input type="text" id="username" name="username" required></input>
-      -input type tell can specify a pattern: <input type="tel" id="phone" name="phone" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required></input>
-        */
