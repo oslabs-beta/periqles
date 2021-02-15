@@ -1,15 +1,7 @@
-import {
-  commitMutation,
-  graphql,
-  type Disposable,
-  type Environment,
-  type RecordProxy,
-  type RecordSourceSelectorProxy,
-} from 'react-relay';
-
-import {ConnectionHandler} from 'relay-runtime';
+import {commitMutation, graphql} from 'react-relay';
+// import type {Disposable, Environment} from 'react-relay';
 // import type {TodoApp_user} from 'relay/TodoApp_user.graphql';
-import type {AddUserInput} from 'relay/AddUserMutation.graphql';
+// import type {AddUserInput} from 'relay/AddUserMutation.graphql';
 
 const mutation = graphql`
   mutation AddUserMutation($input: AddUserInput!) {
@@ -42,16 +34,16 @@ let tempID = 0;
 
 // can leave this out
 function commit(
-  environment: Environment,
+  environment,
   username,
   password,
   email,
   gender,
   pizzaTopping,
   age,
-): Disposable {
+) {
   // console.log('commit called');
-  const input: AddUserInput = {
+  const input = {
     // add input values listed above to an input object
     username,
     password,

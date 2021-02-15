@@ -1,17 +1,15 @@
-/* eslint-disable*/
+// /* eslint-disable*/
 import React, {useState} from 'react';
 import {createFragmentContainer, QueryRenderer, graphql} from 'react-relay';
-import {
-  Environment,
-  Network,
-  RecordSource,
-  Store,
-  type RequestNode,
-  type Variables,
-} from 'relay-runtime';
-
+import {Environment, Network, RecordSource, Store} from 'relay-runtime';
+import type {RequestNode, Variables} from 'relay-runtime';
+// import type {UserProfileQueryResponse} from 'relay/UserProfileQuery.graphql'; // based off todo app example, need to locate generated/relay folder after successful npm run build
 import AddUserMutation from '../mutations/AddUserMutation';
-import PeriqlesForm from './PeriqlesForm.jsx';
+import PeriqlesForm from './PeriqlesForm';
+
+interface QueryResponse {
+  demoUser?: Record<string, string | boolean | number>;
+}
 
 const UserProfile = () => {
   const [updated, setUpdate] = useState(false);
@@ -34,7 +32,7 @@ const UserProfile = () => {
     return response.json();
   }
 
-    const modernEnvironment: Environment = new Environment({
+  const modernEnvironment: Environment = new Environment({
     network: Network.create(fetchQuery),
     store: new Store(new RecordSource()),
   });
@@ -53,7 +51,7 @@ const UserProfile = () => {
     }
   `;
 
-  const specifications = {
+  const specifications: PeriqlesSpecifications = {
     fields: {
       gender: {
         element: 'radio',
@@ -82,15 +80,15 @@ const UserProfile = () => {
         //  return <input onChange= {handleChange} />
         // },
       },
-    }
+    },
   };
 
   const onSuccess = (response) => {
     setUpdate(true);
   };
 
-  const onFailure = (errorMsg) => {
-    alert('Problem submitting form:', errorMsg);
+  const onFailure = (error) => {
+    alert(`Problem submitting form: ${error.toString()}`);
   };
 
   const args = {clientMutationId: '0000'};
@@ -99,8 +97,7 @@ const UserProfile = () => {
     <section className="UserProfile">
       <h1>Periqles Demo</h1>
       <section className="UserProfile-flex">
-
-        <PeriqlesForm
+        <PeriqlesForm // error: JSX element type 'PeriqlesForm' does not have any construct or call signatures.
           environment={modernEnvironment}
           mutationName={'AddUser'}
           mutationGQL={mutationGQL}
@@ -108,43 +105,49 @@ const UserProfile = () => {
           callbacks={{onSuccess, onFailure}}
         />
         <main className="UserProfile-main">
-            <h2>Most Recently Added User</h2>
-            <QueryRenderer
-              environment={modernEnvironment}
-              query={graphql`
-                query UserProfileQuery {
-                  demoUser {
-                    userId
-                    username
-                    password
-                    email
-                    gender
-                    pizzaTopping
-                    age
-                  }
+          <h2>Most Recently Added User</h2>
+          <QueryRenderer
+            environment={modernEnvironment}
+            query={graphql`
+              query UserProfileQuery {
+                demoUser {
+                  userId
+                  username
+                  password
+                  email
+                  gender
+                  pizzaTopping
+                  age
                 }
-              `}
-              render={({error, props}: {error: ?Error, props: ?UserProfileQueryResponse}) => {
-                setUpdate(false);
-                if (props && !props.demoUser) {
-                  <p>Sign up...</p>
-                }
-                if (props && props.demoUser) {
-                  const {demoUser} = props;
-                  return (
-                    <ul>
-                      <li className="userDisplayItem">Username: {demoUser.username}</li>
-                      <li className="userDisplayItem">Email: {demoUser.email}</li>
-                      <li className="userDisplayItem">Gender: {demoUser.gender}</li>
-                      <li className="userDisplayItem">Favorite Pizza Topping: {demoUser.pizzaTopping}</li>
-                      <li className="userDisplayItem">Age: {demoUser.age}</li>
-                    </ul>
-                  );
-                } else if (error) {
-                  return <p>{error.message}</p>;
-                }
-               }}
-            />
+              }
+            `}
+            render={({error, props}: {error: Error; props: QueryResponse}) => {
+              setUpdate(false);
+              if (props && !props.demoUser) {
+                <p>Sign up...</p>;
+              }
+              if (props && props.demoUser) {
+                const {demoUser} = props;
+                return (
+                  <ul>
+                    <li className="userDisplayItem">
+                      Username: {demoUser.username}
+                    </li>
+                    <li className="userDisplayItem">Email: {demoUser.email}</li>
+                    <li className="userDisplayItem">
+                      Gender: {demoUser.gender}
+                    </li>
+                    <li className="userDisplayItem">
+                      Favorite Pizza Topping: {demoUser.pizzaTopping}
+                    </li>
+                    <li className="userDisplayItem">Age: {demoUser.age}</li>
+                  </ul>
+                );
+              } else if (error) {
+                return <p>{error.message}</p>;
+              }
+            }}
+          />
         </main>
       </section>
     </section>

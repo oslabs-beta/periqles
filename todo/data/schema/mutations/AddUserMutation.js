@@ -1,35 +1,16 @@
-import {
-  cursorForObjectInConnection,
-  mutationWithClientMutationId,
-} from 'graphql-relay';
-
-import {GraphQLID, GraphQLNonNull, GraphQLString, GraphQLInt} from 'graphql';
-import {GraphQLUser, GenderEnum, PizzaToppingEnum} from '../nodes'; // TODO: should I be using this some way?
-
-import {addUser, getDemoUserOrThrow} from '../../database';
-
-// // TODO: replace with Typescript
-// /*
-// type Input = {|
-//   +text: string,
-//   +userId: string,
-// |};
-
-// type Payload = {|
-//   +todoId: string,
-//   +userId: string,
-// |};
-// */
+import {mutationWithClientMutationId} from 'graphql-relay';
+import {GraphQLNonNull, GraphQLString, GraphQLInt} from 'graphql';
+import {GenderEnum, PizzaToppingEnum} from '../nodes.js';
+import {addUser, getDemoUserOrThrow} from '../../database.js';
 
 const AddUserMutation = mutationWithClientMutationId({
   name: 'AddUser',
   inputFields: {
-    // TODO
     username: {type: new GraphQLNonNull(GraphQLString)},
     password: {type: new GraphQLNonNull(GraphQLString)},
     email: {type: new GraphQLNonNull(GraphQLString)},
-    gender: {type: new GraphQLNonNull(GenderEnum)}, // TODO: enum
-    pizzaTopping: {type: new GraphQLNonNull(PizzaToppingEnum)}, // TODO: enum
+    gender: {type: new GraphQLNonNull(GenderEnum)},
+    pizzaTopping: {type: new GraphQLNonNull(PizzaToppingEnum)},
     age: {type: new GraphQLNonNull(GraphQLInt)},
   },
   outputFields: {
@@ -52,11 +33,11 @@ const AddUserMutation = mutationWithClientMutationId({
     gender: {
       type: new GraphQLNonNull(GenderEnum),
       resolve: ({gender}) => gender,
-    }, // TODO: enum
+    },
     pizzaTopping: {
       type: new GraphQLNonNull(PizzaToppingEnum),
       resolve: ({pizzaTopping}) => pizzaTopping,
-    }, // TODO: enum
+    },
     age: {
       type: new GraphQLNonNull(GraphQLInt),
       resolve: ({age}) => age,

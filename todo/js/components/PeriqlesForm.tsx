@@ -13,6 +13,7 @@ import PeriqlesFormContent from './PeriqlesFormContent.jsx';
  *
  */
 
+// TODO: parameter types
 const PeriqlesForm = ({
   environment,
   mutationName,
@@ -20,12 +21,11 @@ const PeriqlesForm = ({
   specifications,
   args,
   callbacks,
-  relay
-}) => {
-  const [typeSchema, setTypeSchema] = useState(undefined);
+}: PeriqlesFormProps): JSX.Element => {
+  const [typeSchema, setTypeSchema] = useState({name: '', inputFields: []});
 
   const introspect = () => {
-    const inputTypeName = mutationName + 'Input';
+    const inputTypeName: string = mutationName + 'Input';
 
     fetch('/graphql', {
       method: 'POST',
@@ -39,6 +39,9 @@ const PeriqlesForm = ({
             name
             inputFields {
                 name
+                enumValues {
+                  name
+                }
                 type {
                     name
                     kind
