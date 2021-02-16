@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "./dist/", // path to output directory
-    // "sourceMap": true, // allow sourcemap support
+    "sourceMap": true, // allow sourcemap support
     "strictNullChecks": true, // enable strict null checks as a best practice
     "module": "es6", // specify module code generation
     "jsx": "react", // use typescript to transpile jsx to js
@@ -13,7 +13,7 @@
       "./types",
       "./types/periqles/index.d.ts",
       "node_modules/@types"
-    ] // tell compiler where to find .d.ts declaration files
+    ]
   },
-  "include": ["./js/"]
+  "include": ["./ts/"]
 }

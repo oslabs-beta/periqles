@@ -61,7 +61,7 @@ export const fieldsArrayGenerator = (
     // exclude from the form any inputs accounted for by args
     if (args[field.name]) return;
 
-    let fieldObj: PeriqlesField = {
+    const fieldObj: PeriqlesField = {
       name: field.name,
     };
 
@@ -215,7 +215,7 @@ export const generateSpecifiedElement = (
             }
           });
 
-          let newOption: PeriqlesFieldOption = {
+          const newOption: PeriqlesFieldOption = {
             name,
             label: spec.label,
             value: spec.value,
@@ -266,7 +266,7 @@ export const generateSpecifiedElement = (
             }
           });
 
-          let newOption: PeriqlesFieldOption = {
+          const newOption: PeriqlesFieldOption = {
             name,
             label: spec.label,
             value: spec.value,
@@ -288,7 +288,7 @@ export const generateSpecifiedElement = (
             {selectOptions.map((option, index) => {
               return (
                 <option
-                  //key={`${mutationName}${field.name}select${index}`}
+                  key={`${field.name}select${index}`}
                   value={option.value}
                   className={
                     field.name + '-select-option periqles-select-option'
