@@ -40,11 +40,16 @@ export const introspect = (mutationName, setFields, args) => {
   })
     .then((res) => res.json())
     .then(({data}) => {
-      // setTypeSchema(data.__type);
+      if (!data.__type) {
+        throw new Error('ERROR at periqles: Failed to introspect.');
+      }
       const typeSchema = data.__type;
-       // intuit fields off the schema
+      // intuit fields off the schema
       const fieldsArr: PeriqlesField[] = fieldsArrayGenerator(typeSchema, args);
       setFields(fieldsArr);
+    })
+    .catch((err) => {
+      console.error('ERROR at periqles: Failed to introspect.', err);
     });
 };
 

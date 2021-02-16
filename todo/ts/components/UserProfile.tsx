@@ -11,7 +11,6 @@ interface QueryResponse {
 
 const UserProfile = () => {
   const [updated, setUpdate] = useState(false);
-  console.log('Hi from UserProfile');
 
   async function fetchQuery(operation, variables): Promise<{}> {
     const response = await fetch('/graphql', {
@@ -142,7 +141,8 @@ const UserProfile = () => {
                   </ul>
                 );
               } else if (error) {
-                return <p>{error.message}</p>;
+                // return <p>{error.message}</p>;
+                console.error(error.message);
               }
 
               return <p>Loading...</p>;

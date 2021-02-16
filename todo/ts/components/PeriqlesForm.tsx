@@ -31,7 +31,6 @@ const PeriqlesForm = ({
   // const [initialState, setInitialState] = useState<FormState>({});
   const [formState, setFormState] = useState<FormState>({});
   const [fields, setFields] = useState<PeriqlesField[]>([]);
-  console.log('Hi from PeriqlesForm.');
 
   useEffect(() => {
     introspect(mutationName, setFields, args);
