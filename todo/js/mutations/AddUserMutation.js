@@ -1,6 +1,5 @@
 import {commitMutation, graphql} from 'react-relay';
 // import type {Disposable, Environment} from 'react-relay';
-// import type {TodoApp_user} from 'relay/TodoApp_user.graphql';
 // import type {AddUserInput} from 'relay/AddUserMutation.graphql';
 
 const mutation = graphql`

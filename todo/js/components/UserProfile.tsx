@@ -1,13 +1,10 @@
-// /* eslint-disable*/
 import React, {useState} from 'react';
 import {QueryRenderer, graphql} from 'react-relay';
 import {Environment, Network, RecordSource, Store} from 'relay-runtime';
-// import type {RequestNode, Variables} from 'relay-runtime';
-// import type {UserProfileQueryResponse} from 'relay/UserProfileQuery.graphql'; // based off todo app example, need to locate generated/relay folder after successful npm run build
-// import AddUserMutation from '../mutations/AddUserMutation';
 import PeriqlesForm from './PeriqlesForm';
-
-// TODO: "Unexpected reserved word 'interface'"
+// import type {RequestNode, Variables} from 'relay-runtime';
+// based off todo app example, need to locate generated/relay folder after successful npm run build
+// import type {UserProfileQueryResponse} from 'relay/UserProfileQuery.graphql'; 
 interface QueryResponse {
   demoUser?: Record<string, string | boolean | number>;
 }
@@ -16,8 +13,8 @@ const UserProfile = () => {
   const [updated, setUpdate] = useState(false);
 
   async function fetchQuery(
-    operation: RequestNode,
-    variables: Variables,
+    operation,
+    variables,
   ): Promise<{}> {
     const response = await fetch('/graphql', {
       method: 'POST',
@@ -98,7 +95,7 @@ const UserProfile = () => {
     <section className="UserProfile">
       <h1>Periqles Demo</h1>
       <section className="UserProfile-flex">
-        <PeriqlesForm // error: JSX element type 'PeriqlesForm' does not have any construct or call signatures.
+        <PeriqlesForm
           environment={modernEnvironment}
           mutationName={'AddUser'}
           mutationGQL={mutationGQL}

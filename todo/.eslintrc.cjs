@@ -1,13 +1,16 @@
 module.exports = {
   extends: [
+    'eslint:recommended',
     'fbjs/strict',
     'plugin:prettier/recommended',
     'plugin:react/recommended',
     'plugin:relay/recommended',
     'prettier/react',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
   ],
   parser: 'babel-eslint',
-  plugins: ['babel', 'prettier', 'react', 'relay'],
+  plugins: ['babel', 'prettier', 'react', 'relay', '@typescript-eslint'],
   rules: {
     'no-console': 'off',
     'one-var': 'off',
