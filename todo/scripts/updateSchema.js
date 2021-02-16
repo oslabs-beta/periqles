@@ -2,7 +2,9 @@
 import fs from 'fs';
 import path from 'path';
 import {schema} from '../data/schema/index.js';
-import {printSchema} from 'graphql';
+import graphql from 'graphql';
+const {printSchema} = graphql;
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 const schemaPath = path.resolve(__dirname, '../data/schema.graphql');
 

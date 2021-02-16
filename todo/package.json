@@ -1,9 +1,10 @@
 {
   "private": true,
   "scripts": {
+    "tsc": "tsc --watch",
     "start": "NODE_ENV='development' webpack serve & nodemon server.js --es-module-specifier-resolution=node",
-    "start-prod": "NODE_ENV='production' webpack & node server.js",
-    "build": "tsc --watch && relay-compiler --src ./ts/ --schema ./data/schema.graphql --artifactDirectory ./__generated__/relay --extensions js jsx ts tsx",
+    "start-prod": "NODE_ENV='production' webpack & node server.js --es-module-specifier-resolution=node",
+    "build": "relay-compiler --src ./ts/ --schema ./data/schema.graphql --artifactDirectory ./__generated__/relay --extensions js jsx ts tsx",
     "update-schema": "babel-node ./scripts/updateSchema.js",
     "lint": "eslint .",
     "test": "jest --verbose"
@@ -32,6 +33,7 @@
     "react-dom": "^17.0.1",
     "react-relay": "^10.1.0",
     "style-loader": "^2.0.0",
+    "ts-graphql-plugin": "^2.1.3",
     "ts-loader": "^8.0.17",
     "webpack": "^4.41.5",
     "webpack-cli": "^4.5.0",
@@ -41,6 +43,7 @@
     "@typescript-eslint/eslint-plugin": "^4.15.1",
     "@typescript-eslint/parser": "^4.15.1",
     "babel-eslint": "^10.1.0",
+    "babel-plugin-macros": "^2.8.0",
     "eslint": "^7.14.0",
     "eslint-config-fbjs": "^3.1.1",
     "eslint-config-prettier": "^6.15.0",

@@ -1,9 +1,17 @@
 import path from 'path';
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
+// const TsGraphQLPlugin = require('ts-graphql-plugin/webpack');
+// import TsGraphQL from 'ts-graphql-plugin';
+
+// const {TsGraphQLPlugin} = TsGraphQL;
+// const tsgqlPlugin = new TsGraphQLPlugin({
+//   /* plugin options */
+// });
 
 export default {
   mode: process.env.NODE_ENV,
-  entry: './dist/app.js',
+  // entry: './dist/app.js',
+  entry: './ts/app.tsx',
   output: {
     filename: './bundle.js',
     path: path.resolve(__dirname, 'dist'),
@@ -32,26 +40,9 @@ export default {
       {
         test: /\.(t|j)sx?$/,
         enforce: 'pre',
-        use: [
-          'ts-loader',
-          'source-map-loader',
-          {
-            loader: 'babel-loader',
-            options: {
-              plugins: [
-                ['relay', {artifactDirectory: './__generated__/relay/'}],
-                '@babel/plugin-transform-runtime',
-                '@babel/plugin-proposal-class-properties',
-                // 'macro',
-              ],
-              presets: [
-                '@babel/preset-react',
-                '@babel/preset-env',
-                '@babel/typescript',
-              ],
-            },
-          },
-        ],
+        use: ['babel-loader', 
+        // 'ts-loader', 
+        'source-map-loader'],
         exclude: /node_modules/,
       },
       {
@@ -60,9 +51,38 @@ export default {
       },
     ],
   },
-  // externals: {
-  //   'react': 'React',
-  //   'react-dom': 'ReactDOM',
-  // },
   devtool: 'source-map',
 };
+
+//     // 'babel-loader',
+//     {
+//       loader: 'babel-loader',
+//       options: {
+//         plugins: [
+//           ['relay', {artifactDirectory: './__generated__/relay/'}],
+//           '@babel/plugin-transform-runtime',
+//           '@babel/plugin-proposal-class-properties',
+//           // 'macros',
+//         ],
+//         presets: [
+//           '@babel/preset-react',
+//           '@babel/preset-env',
+//           '@babel/typescript',
+//         ],
+//       },
+//     },
+
+// {
+//   test: /\.tsx?$/,
+//   exclude: /node_modules/,
+//   loader: 'ts-loader',
+//   options: {
+//     getCustomTransformers: () => ({
+//       before: [
+//         tsgqlPlugin.getTransformer({
+//           /* transformer options */
+//         }),
+//       ],
+//     }),
+//   },
+// },

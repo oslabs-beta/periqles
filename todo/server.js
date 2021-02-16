@@ -15,7 +15,6 @@ const app = express();
 // only needed when in production mode
 if (process.env.NODE_ENV === 'production') {
   app.use('/', express.static(path.resolve(__dirname, 'public')));
-  // app.use('/', express.static('./public'));
 }
 
 // Set up GraphQL endpoint
@@ -28,5 +27,5 @@ app.use(
 );
 
 app.listen(APP_PORT, () => {
-  console.log(`Backend server listening on http://localhost:${APP_PORT}`);
+  console.log(`Backend server listening at http://localhost:${APP_PORT}`);
 });

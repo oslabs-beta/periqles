@@ -46,6 +46,7 @@ const UserProfile = () => {
       }
     }
   `;
+  console.log('Hi, I made it past line 36');
 
   const specifications: PeriqlesSpecifications = {
     fields: {
