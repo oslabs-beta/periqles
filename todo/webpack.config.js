@@ -23,6 +23,8 @@ export default {
     port: 8080, // port used in development mode
     hot: true, // hot module replacement
     open: true, // opens the page when server starts
+    // TODO: a more secure setting for allowed origins
+    headers: {'Access-Control-Allow-Origin': '*'}, // allow cors from any host
     proxy: {
       // our backend; used to serve GraphQL API reqs
       '/graphql': 'http://localhost:3000',
@@ -40,9 +42,11 @@ export default {
       {
         test: /\.(t|j)sx?$/,
         enforce: 'pre',
-        use: ['babel-loader', 
-        // 'ts-loader', 
-        'source-map-loader'],
+        use: [
+          'babel-loader',
+          // 'ts-loader',
+          'source-map-loader',
+        ],
         exclude: /node_modules/,
       },
       {

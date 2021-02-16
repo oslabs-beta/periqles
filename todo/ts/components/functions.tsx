@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export const introspect = (mutationName, setTypeSchema) => {
+export const introspect = (mutationName, setFields, args) => {
   const inputTypeName: string = mutationName + 'Input';
 
   fetch('/graphql', {
@@ -40,8 +40,11 @@ export const introspect = (mutationName, setTypeSchema) => {
   })
     .then((res) => res.json())
     .then(({data}) => {
-      // console.log('Input type fetched by PF:', data.__type);
-      setTypeSchema(data.__type);
+      // setTypeSchema(data.__type);
+      const typeSchema = data.__type;
+       // intuit fields off the schema
+      const fieldsArr: PeriqlesField[] = fieldsArrayGenerator(typeSchema, args);
+      setFields(fieldsArr);
     });
 };
 

@@ -24,17 +24,17 @@ const PeriqlesForm = ({
   args,
   callbacks,
 }: PeriqlesFormProps): JSX.Element => {
-  const [typeSchema, setTypeSchema] = useState<InputType>({
-    name: '',
-    inputFields: [],
-  });
-  const [initialState, setInitialState] = useState<FormState>({});
+  // const [typeSchema, setTypeSchema] = useState<InputType>({
+  //   name: '',
+  //   inputFields: [],
+  // });
+  // const [initialState, setInitialState] = useState<FormState>({});
   const [formState, setFormState] = useState<FormState>({});
   const [fields, setFields] = useState<PeriqlesField[]>([]);
-  console.log('Hi from PeriqlesForm. mutationGQL:', mutationGQL);
+  console.log('Hi from PeriqlesForm.');
 
   useEffect(() => {
-    introspect(mutationName, setTypeSchema);
+    introspect(mutationName, setFields, args);
   }, []);
 
   // HANDLERS
@@ -64,7 +64,7 @@ const PeriqlesForm = ({
       variables,
       onCompleted: (response, errors): void => {
         if (callbacks?.onSuccess) callbacks.onSuccess(response);
-        setFormState({initialState});
+        setFormState({});
       },
       onError: (err): void => {
         if (callbacks?.onFailure) callbacks.onFailure(err);
@@ -83,14 +83,10 @@ const PeriqlesForm = ({
     setFormState({...formState, [name]: useValue});
   };
 
-  const renderFields = () => {
-    // intuit fields off the schema
-    const fieldsArr: PeriqlesField[] = fieldsArrayGenerator(typeSchema, args);
-    setFields(fieldsArr);
-
+  const renderFields = (fields: PeriqlesField[]) => {
     // add each field to formState
     const startingValues = {};
-    fieldsArr.forEach((field: PeriqlesField) => {
+    fields.forEach((field: PeriqlesField) => {
       let initialValue;
       switch (field.type) {
         case 'String':
@@ -112,11 +108,9 @@ const PeriqlesForm = ({
       }
       startingValues[field.name] = initialValue;
     });
+    setFormState(startingValues);
 
-    setInitialState(startingValues);
-    setFormState(initialState);
-
-    return fieldsArr.map((field: PeriqlesField, index: number) => {
+    return fields.map((field: PeriqlesField, index: number) => {
       const specs = specifications
         ? specifications.fields[field.name]
         : undefined;
@@ -144,7 +138,7 @@ const PeriqlesForm = ({
       aria-labelledby="form"
       onSubmit={(e) => handleSubmit(e, initialState, fields)}>
       <h2>{headerText}</h2>
-      {typeSchema ? renderFields() : <p>Loading form...</p>}
+      {fields.length ? renderFields(fields) : <p>Loading form...</p>}
       <button
         className="periqles-submit"
         onClick={(e) => handleSubmit(e, initialState, fields)}>

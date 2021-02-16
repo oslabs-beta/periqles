@@ -46,7 +46,6 @@ const UserProfile = () => {
       }
     }
   `;
-  console.log('Hi, I made it past line 36');
 
   const specifications: PeriqlesSpecifications = {
     fields: {
@@ -93,40 +92,41 @@ const UserProfile = () => {
   return (
     <section className="UserProfile">
       <h1>Periqles Demo</h1>
-      <QueryRenderer
-        environment={modernEnvironment}
-        query={graphql`
-          query UserProfileQuery {
-            demoUser {
-              userId
-              username
-              password
-              email
-              gender
-              pizzaTopping
-              age
-            }
-          }
-        `}
-        render={({error, props}: {error: Error; props: QueryResponse}) => {
-          if (props && !props.demoUser) {
-            <p>Sign up...</p>;
-          }
-          if (props && props.demoUser) {
-            const {demoUser} = props;
-            console.log('mutationgql as props for PF:', mutationGQL);
-            return (
-              <section className="UserProfile-flex">
-                <PeriqlesForm
-                  environment={modernEnvironment}
-                  mutationName={'AddUser'}
-                  mutationGQL={mutationGQL}
-                  specifications={specifications}
-                  args={args}
-                  callbacks={{onSuccess, onFailure}}
-                />
-                <main className="UserProfile-main">
-                  <h2>Most Recently Added User</h2>
+      <section className="UserProfile-flex">
+        <PeriqlesForm
+          environment={modernEnvironment}
+          mutationName={'AddUser'}
+          mutationGQL={mutationGQL}
+          specifications={specifications}
+          args={args}
+          callbacks={{onSuccess, onFailure}}
+        />
+        <main className="UserProfile-main">
+          <h2>Most Recently Added User</h2>
+          <QueryRenderer
+            environment={modernEnvironment}
+            query={graphql`
+              query UserProfileQuery {
+                demoUser {
+                  userId
+                  username
+                  password
+                  email
+                  gender
+                  pizzaTopping
+                  age
+                }
+              }
+            `}
+            render={({error, props}: {error: Error; props: QueryResponse}) => {
+              // console.log(props);
+              if (props && !props.demoUser) {
+                return <p>Sign up...</p>;
+              }
+              if (props && props.demoUser) {
+                const {demoUser} = props;
+                console.log('Rendering DemoUser query response...');
+                return (
                   <ul>
                     <li className="userDisplayItem">
                       Username: {demoUser.username}
@@ -140,14 +140,16 @@ const UserProfile = () => {
                     </li>
                     <li className="userDisplayItem">Age: {demoUser.age}</li>
                   </ul>
-                </main>
-              </section>
-            );
-          } else if (error) {
-            return <p>{error.message}</p>;
-          }
-        }}
-      />
+                );
+              } else if (error) {
+                return <p>{error.message}</p>;
+              }
+
+              return <p>Loading...</p>;
+            }}
+          />
+        </main>
+      </section>
     </section>
   );
 };

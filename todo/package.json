@@ -23,6 +23,7 @@
     "babel-loader": "^8.2.2",
     "babel-plugin-relay": "^10.1.0",
     "classnames": "2.2.6",
+    "cors": "^2.8.5",
     "css-loader": "^5.0.2",
     "express": "^4.16.4",
     "express-graphql": "^0.12.0",
