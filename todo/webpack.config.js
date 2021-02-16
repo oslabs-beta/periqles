@@ -27,7 +27,7 @@ export default {
     headers: {'Access-Control-Allow-Origin': '*'}, // allow cors from any host
     proxy: {
       // our backend; used to serve GraphQL API reqs
-      '/graphql': 'http://localhost:3000',
+      '/graphql/*': 'http://localhost:3000',
     },
     onListening: function (server) {
       const port = server.listeningApp.address().port;
@@ -42,11 +42,7 @@ export default {
       {
         test: /\.(t|j)sx?$/,
         enforce: 'pre',
-        use: [
-          'babel-loader',
-          // 'ts-loader',
-          'source-map-loader',
-        ],
+        use: ['babel-loader', 'source-map-loader'],
         exclude: /node_modules/,
       },
       {
