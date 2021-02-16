@@ -8,6 +8,7 @@ const PeriqlesField = ({
   setFormState,
   handleChange,
 }: PeriqlesFieldProps) => {
+  console.log('Hi from PeriqlesField');
   const renderField = () => {
     if (!specs) {
       return generateDefaultElement(field, formState, handleChange);

@@ -11,6 +11,7 @@ interface QueryResponse {
 
 const UserProfile = () => {
   const [updated, setUpdate] = useState(false);
+  console.log('Hi from UserProfile');
 
   async function fetchQuery(
     operation,
@@ -82,7 +83,7 @@ const UserProfile = () => {
   };
 
   const onSuccess = (response) => {
-    setUpdate(true);
+    setUpdate(!updated);
   };
 
   const onFailure = (error) => {
@@ -121,7 +122,6 @@ const UserProfile = () => {
               }
             `}
             render={({error, props}: {error: Error; props: QueryResponse}) => {
-              setUpdate(false);
               if (props && !props.demoUser) {
                 <p>Sign up...</p>;
               }

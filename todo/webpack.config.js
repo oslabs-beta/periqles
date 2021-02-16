@@ -21,7 +21,7 @@ export default {
     },
     onListening: function (server) {
       const port = server.listeningApp.address().port;
-      console.log('Webpack dev server listening on port:', port);
+      console.log('Frontend listening on port:', port);
     },
   },
   resolve: {
@@ -32,7 +32,7 @@ export default {
       {
         test: /\.(t|j)sx?$/,
         enforce: 'pre',
-        loader: [
+        use: [
           'ts-loader',
           'source-map-loader',
           {
@@ -42,6 +42,7 @@ export default {
                 ['relay', {artifactDirectory: './__generated__/relay/'}],
                 '@babel/plugin-transform-runtime',
                 '@babel/plugin-proposal-class-properties',
+                // 'macro',
               ],
               presets: [
                 '@babel/preset-react',
