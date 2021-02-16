@@ -4,7 +4,7 @@ import {Environment, Network, RecordSource, Store} from 'relay-runtime';
 import PeriqlesForm from './PeriqlesForm';
 // import type {RequestNode, Variables} from 'relay-runtime';
 // based off todo app example, need to locate generated/relay folder after successful npm run build
-// import type {UserProfileQueryResponse} from 'relay/UserProfileQuery.graphql'; 
+// import type {UserProfileQueryResponse} from 'relay/UserProfileQuery.graphql';
 interface QueryResponse {
   demoUser?: Record<string, string | boolean | number>;
 }
@@ -13,10 +13,7 @@ const UserProfile = () => {
   const [updated, setUpdate] = useState(false);
   console.log('Hi from UserProfile');
 
-  async function fetchQuery(
-    operation,
-    variables,
-  ): Promise<{}> {
+  async function fetchQuery(operation, variables): Promise<{}> {
     const response = await fetch('/graphql', {
       method: 'POST',
       headers: {
@@ -95,39 +92,40 @@ const UserProfile = () => {
   return (
     <section className="UserProfile">
       <h1>Periqles Demo</h1>
-      <section className="UserProfile-flex">
-        <PeriqlesForm
-          environment={modernEnvironment}
-          mutationName={'AddUser'}
-          mutationGQL={mutationGQL}
-          specifications={specifications}
-          args={args}
-          callbacks={{onSuccess, onFailure}}
-        />
-        <main className="UserProfile-main">
-          <h2>Most Recently Added User</h2>
-          <QueryRenderer
-            environment={modernEnvironment}
-            query={graphql`
-              query UserProfileQuery {
-                demoUser {
-                  userId
-                  username
-                  password
-                  email
-                  gender
-                  pizzaTopping
-                  age
-                }
-              }
-            `}
-            render={({error, props}: {error: Error; props: QueryResponse}) => {
-              if (props && !props.demoUser) {
-                <p>Sign up...</p>;
-              }
-              if (props && props.demoUser) {
-                const {demoUser} = props;
-                return (
+      <QueryRenderer
+        environment={modernEnvironment}
+        query={graphql`
+          query UserProfileQuery {
+            demoUser {
+              userId
+              username
+              password
+              email
+              gender
+              pizzaTopping
+              age
+            }
+          }
+        `}
+        render={({error, props}: {error: Error; props: QueryResponse}) => {
+          if (props && !props.demoUser) {
+            <p>Sign up...</p>;
+          }
+          if (props && props.demoUser) {
+            const {demoUser} = props;
+            console.log('mutationgql as props for PF:', mutationGQL);
+            return (
+              <section className="UserProfile-flex">
+                <PeriqlesForm
+                  environment={modernEnvironment}
+                  mutationName={'AddUser'}
+                  mutationGQL={mutationGQL}
+                  specifications={specifications}
+                  args={args}
+                  callbacks={{onSuccess, onFailure}}
+                />
+                <main className="UserProfile-main">
+                  <h2>Most Recently Added User</h2>
                   <ul>
                     <li className="userDisplayItem">
                       Username: {demoUser.username}
@@ -141,14 +139,14 @@ const UserProfile = () => {
                     </li>
                     <li className="userDisplayItem">Age: {demoUser.age}</li>
                   </ul>
-                );
-              } else if (error) {
-                return <p>{error.message}</p>;
-              }
-            }}
-          />
-        </main>
-      </section>
+                </main>
+              </section>
+            );
+          } else if (error) {
+            return <p>{error.message}</p>;
+          }
+        }}
+      />
     </section>
   );
 };
