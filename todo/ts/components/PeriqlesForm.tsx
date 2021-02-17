@@ -24,20 +24,16 @@ const PeriqlesForm = ({
   args,
   callbacks,
 }: PeriqlesFormProps): JSX.Element => {
-  // const [typeSchema, setTypeSchema] = useState<InputType>({
-  //   name: '',
-  //   inputFields: [],
-  // });
-  // const [initialState, setInitialState] = useState<FormState>({});
   const [formState, setFormState] = useState<FormState>({});
   const [fields, setFields] = useState<PeriqlesField[]>([]);
+  // console.log('props at PF', mutationName);
 
   useEffect(() => {
     introspect(mutationName, setFields, args);
   }, []);
 
   // HANDLERS
-  const handleSubmit = (e, initialState, fields): void => {
+  const handleSubmit = (e, fields): void => {
     if (e.key === 'Enter' || e.type === 'click') {
       e.preventDefault(); // prevent page refesh
     }
@@ -135,12 +131,12 @@ const PeriqlesForm = ({
     <form
       className="PeriqlesForm"
       aria-labelledby="form"
-      onSubmit={(e) => handleSubmit(e, initialState, fields)}>
+      onSubmit={(e) => handleSubmit(e, fields)}>
       <h2>{headerText}</h2>
       {fields.length ? renderFields(fields) : <p>Loading form...</p>}
       <button
         className="periqles-submit"
-        onClick={(e) => handleSubmit(e, initialState, fields)}>
+        onClick={(e) => handleSubmit(e, fields)}>
         Submit
       </button>
     </form>

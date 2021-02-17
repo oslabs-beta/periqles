@@ -9,18 +9,31 @@ const {graphqlHTTP} = expressGraphql;
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 const app = express();
-var corsOptions = {
-  origin: 'http://localhost:8080', // TODO
-};
+app.use(express.json());
+// var corsOptions = {
+//   origin: 'http://localhost:8080', // TODO
+// };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+app.use(cors());
+
+// console.log('checking environment variables', process.env.NODE_ENV);
+app.use('*', (req, res, next) => {
+  console.log('Incoming request:', req.method);
+  return next();
+});
 
 // Serve static assets
 // only needed when in production mode
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === undefined) {
   app.use('/', express.static(path.resolve(__dirname, 'public')));
   app.use('/dist/', express.static(path.join(__dirname, 'dist')));
 }
+
+app.use('/graphql', (req, res, next) => {
+  console.log('Trying to query API:', req.body);
+  return next();
+});
 
 // Set up GraphQL endpoint
 app.use(
@@ -49,5 +62,5 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Backend server listening at http://localhost:${PORT}`);
+  console.log(`Backend server listening on port: ${PORT}`);
 });

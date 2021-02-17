@@ -63,6 +63,10 @@ body * {
   border-radius: 10px;
 }
 
+main {
+  margin-left: 30px;
+}
+
 .UserProfile-main {
   text-align:left;
 }

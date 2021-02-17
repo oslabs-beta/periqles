@@ -1,12 +1,5 @@
 import path from 'path';
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
-// const TsGraphQLPlugin = require('ts-graphql-plugin/webpack');
-// import TsGraphQL from 'ts-graphql-plugin';
-
-// const {TsGraphQLPlugin} = TsGraphQL;
-// const tsgqlPlugin = new TsGraphQLPlugin({
-//   /* plugin options */
-// });
 
 export default {
   mode: process.env.NODE_ENV,
@@ -25,9 +18,18 @@ export default {
     open: true, // opens the page when server starts
     // TODO: a more secure setting for allowed origins
     headers: {'Access-Control-Allow-Origin': '*'}, // allow cors from any host
+    historyApiFallback: true, // if 404, serve index.html
     proxy: {
       // our backend; used to serve GraphQL API reqs
-      '/graphql/*': 'http://localhost:3000',
+      '/graphql': 'http://localhost:3000',
+      // '/graphql': {
+      //   target: 'http://localhost:3000',
+      //   secure: false,
+      //   changeOrigin: true,
+      //   headers: {
+      //     Connection: 'keep-alive',
+      //   },
+      // },
     },
     onListening: function (server) {
       const port = server.listeningApp.address().port;
