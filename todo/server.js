@@ -9,7 +9,6 @@ const {graphqlHTTP} = expressGraphql;
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 const app = express();
-app.use(express.json());
 // var corsOptions = {
 //   origin: 'http://localhost:8080', // TODO
 // };
@@ -30,19 +29,26 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === undefined)
   app.use('/dist/', express.static(path.join(__dirname, 'dist')));
 }
 
-app.use('/graphql', (req, res, next) => {
-  console.log('Trying to query API:', req.body);
-  return next();
-});
-
-// Set up GraphQL endpoint
-app.use(
+// Set up GraphQL endpoint for POSTs
+app.post(
   '/graphql',
   graphqlHTTP({
     schema: schema,
     pretty: true,
   }),
 );
+
+// Send a GET to /graphql to use GraphiQL
+app.get(
+  '/graphql',
+  graphqlHTTP({
+    schema: schema,
+    pretty: true,
+    graphiql: true,
+  }),
+);
+
+app.use(express.json());
 
 //ERROR HANDLING
 app.use((err, req, res, next) => {

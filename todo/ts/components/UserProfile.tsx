@@ -9,7 +9,7 @@ interface QueryResponse {
   demoUser?: Record<string, string | boolean | number>;
 }
 
-const UserProfile = () => {
+const UserProfile = (): JSX.Element => {
   const [updated, setUpdate] = useState(false);
 
   async function fetchQuery(operation, variables): Promise<{}> {
@@ -118,7 +118,6 @@ const UserProfile = () => {
               }
             `}
             render={({error, props}: {error: Error; props: QueryResponse}) => {
-              // console.log(props);
               if (props && !props.demoUser) {
                 return <p>Sign up...</p>;
               }

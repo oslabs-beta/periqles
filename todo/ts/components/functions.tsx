@@ -1,9 +1,47 @@
 import * as React from 'react';
+import {graphql} from 'react-relay';
 
-export const introspect = (mutationName, setFields, args) => {
-  const inputTypeName: string = mutationName + 'Input';
+/*
+fetch('/graphql', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      query: graphql`
+        query functions_TypeQuery($inputType: String!) {
+          __type(name: $inputType) {
+            name
+            inputFields {
+              name
+              enumValues {
+                name
+              }
+              type {
+                name
+                kind
+                ofType {
+                  name
+                  kind
+                  enumValues {
+                    name
+                    description
+                  }
+                }
+              }
+            }
+          }
+        }
+      `,
+      variables: {
+        inputType: inputTypeName,
+      },
+    }),
+  })
+*/
 
-  fetch('/graphql', {
+/*
+fetch('/graphql', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -38,10 +76,54 @@ export const introspect = (mutationName, setFields, args) => {
       },
     }),
   })
+*/
+
+export const introspect = (mutationName, setFields, args) => {
+  const inputTypeName: string = mutationName + 'Input';
+
+  fetch('/graphql', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      query: `query typeQuery($inputType: String!)
+        {
+      __type(name: $inputType) {
+          name
+          inputFields {
+              name
+              type {
+                  name
+                  kind
+                  ofType {
+                      name
+                      kind
+                      enumValues {
+                          name
+                          description
+                      }
+                  }
+                }
+            }
+        }
+      }`,
+      variables: {
+        inputType: inputTypeName,
+      },
+    }),
+  })
     .then((res) => res.json())
     .then(({data}) => {
+      if (!data) {
+        return console.error(
+          'ERROR at periqles: Failed to introspect. No data received.',
+        );
+      }
       if (!data.__type) {
-        throw new Error('ERROR at periqles: Failed to introspect.');
+        return console.error(
+          'ERROR at periqles: Failed to introspect. No __type property on received data.',
+        );
       }
       const typeSchema = data.__type;
       // intuit fields off the schema
@@ -52,7 +134,6 @@ export const introspect = (mutationName, setFields, args) => {
       console.error('ERROR at periqles: Failed to introspect.', err);
     });
 };
-
 
 export const fieldsArrayGenerator = (
   inputType: InputType,
@@ -144,9 +225,6 @@ export const fieldsArrayGenerator = (
   return fieldsArray;
 };
 
-
-
-
 /* eslint-disable flowtype/no-types-missing-file-annotation */
 /**
  * Builds an HTML element to collect user input for a GraphQL mutation based on user-provided instructions.
@@ -233,7 +311,7 @@ export const generateSpecifiedElement = (
           radioOptions.push(newOption);
         });
       } else field.options?.forEach((option) => radioOptions.push(option));
-      
+
       element = (
         <div className={field.name + '-radio periqles-radio'}>
           <label className="periqles-radio-div-label">{specs.label}</label>

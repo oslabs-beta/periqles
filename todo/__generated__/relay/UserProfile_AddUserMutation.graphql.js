@@ -19,10 +19,10 @@ export type AddUserInput = {|
   age: number,
   clientMutationId?: ?string,
 |};
-export type AddUserMutationVariables = {|
+export type UserProfile_AddUserMutationVariables = {|
   input: AddUserInput
 |};
-export type AddUserMutationResponse = {|
+export type UserProfile_AddUserMutationResponse = {|
   +addUser: ?{|
     +userId: string,
     +username: string,
@@ -33,15 +33,15 @@ export type AddUserMutationResponse = {|
     +age: number,
   |}
 |};
-export type AddUserMutation = {|
-  variables: AddUserMutationVariables,
-  response: AddUserMutationResponse,
+export type UserProfile_AddUserMutation = {|
+  variables: UserProfile_AddUserMutationVariables,
+  response: UserProfile_AddUserMutationResponse,
 |};
 */
 
 
 /*
-mutation AddUserMutation(
+mutation UserProfile_AddUserMutation(
   $input: AddUserInput!
 ) {
   addUser(input: $input) {
@@ -137,7 +137,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "AddUserMutation",
+    "name": "UserProfile_AddUserMutation",
     "selections": (v1/*: any*/),
     "type": "Mutation",
     "abstractKey": null
@@ -146,20 +146,20 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "AddUserMutation",
+    "name": "UserProfile_AddUserMutation",
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "9be2400cb86e745643106650aafb2028",
+    "cacheID": "ae10689a7b5a621a1a09d833975f7f73",
     "id": null,
     "metadata": {},
-    "name": "AddUserMutation",
+    "name": "UserProfile_AddUserMutation",
     "operationKind": "mutation",
-    "text": "mutation AddUserMutation(\n  $input: AddUserInput!\n) {\n  addUser(input: $input) {\n    userId\n    username\n    password\n    email\n    gender\n    pizzaTopping\n    age\n  }\n}\n"
+    "text": "mutation UserProfile_AddUserMutation(\n  $input: AddUserInput!\n) {\n  addUser(input: $input) {\n    userId\n    username\n    password\n    email\n    gender\n    pizzaTopping\n    age\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '0bac3490fbe0762506bf0d23ccb47958';
+(node/*: any*/).hash = '4ad681667ade44b20d61b8c3be8a43f8';
 
 export default node;

@@ -4,7 +4,7 @@
     "tsc": "tsc --watch",
     "start": "NODE_ENV='development' webpack serve & nodemon -r dotenv/config server.js --es-module-specifier-resolution=node",
     "start-prod": "NODE_ENV='production' webpack & node -r dotenv/config server.js --es-module-specifier-resolution=node",
-    "build": "relay-compiler --src ./ts/ --schema ./data/schema.graphql --artifactDirectory ./__generated__/relay --extensions js jsx ts tsx",
+    "build": "relay-compiler --src ./ts/ --schema ./data/schema.graphql --artifactDirectory ./__generated__/relay --extensions js jsx ts tsx --exclude ./__generated__/",
     "update-schema": "babel-node ./scripts/updateSchema.js",
     "lint": "eslint .",
     "test": "jest --verbose"
@@ -37,7 +37,7 @@
     "style-loader": "^2.0.0",
     "ts-graphql-plugin": "^2.1.3",
     "ts-loader": "^8.0.17",
-    "webpack": "^4.41.5",
+    "webpack": "^5.0.0",
     "webpack-cli": "^4.5.0",
     "yarn": "^1.22.10"
   },
@@ -59,7 +59,8 @@
     "relay-compiler": "^10.1.0",
     "source-map-loader": "^0.2.4",
     "typescript": "^4.1.5",
-    "webpack-dev-server": "3.10.3"
+    "webpack-dev-server": "3.10.3",
+    "webpack-livereload-plugin": "^2.3.0"
   },
   "prettier": {
     "singleQuote": true,
