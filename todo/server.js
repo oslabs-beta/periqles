@@ -23,6 +23,8 @@ app.use('*', (req, res, next) => {
 });
 
 // Serve static assets
+app.use(express.static('public/*'));
+
 // only needed when in production mode
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === undefined) {
   app.use('/', express.static(path.resolve(__dirname, 'public')));
