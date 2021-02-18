@@ -27,13 +27,15 @@ const PeriqlesForm = ({
   const [formState, setFormState] = useState<FormState>({});
   const [fields, setFields] = useState<PeriqlesField[]>([]);
   // console.log('props at PF', mutationName);
+  console.log('Rendering PeriqlesForm');
 
   useEffect(() => {
     introspect(mutationName, setFields, args);
-  }, []);
+  }, [mutationName]);
 
   // HANDLERS
   const handleSubmit = (e, fields): void => {
+    console.log('Submitting form');
     if (e.key === 'Enter' || e.type === 'click') {
       e.preventDefault(); // prevent page refesh
     }
@@ -68,6 +70,7 @@ const PeriqlesForm = ({
   };
 
   const handleChange = (e): void => {
+    console.log('Handling change');
     const {name, value, type} = e.target;
     let useValue = value;
     // type-coerce values from number input elements before storing in state
@@ -103,7 +106,8 @@ const PeriqlesForm = ({
       }
       startingValues[field.name] = initialValue;
     });
-    setFormState(startingValues);
+    // console.log('Setting initial form state');
+    // setFormState(startingValues);    // infinite loop
 
     return fields.map((field: PeriqlesField, index: number) => {
       const specs = specifications

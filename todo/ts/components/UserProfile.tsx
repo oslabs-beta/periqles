@@ -11,6 +11,7 @@ interface QueryResponse {
 
 const UserProfile = (): JSX.Element => {
   const [updated, setUpdate] = useState(false);
+  console.log('Rendering UserProfile');
 
   async function fetchQuery(operation, variables): Promise<{}> {
     const response = await fetch('/graphql', {
