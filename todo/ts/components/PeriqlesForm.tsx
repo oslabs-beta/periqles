@@ -26,8 +26,6 @@ const PeriqlesForm = ({
 }: PeriqlesFormProps): JSX.Element => {
   const [formState, setFormState] = useState<FormState>({});
   const [fields, setFields] = useState<PeriqlesField[]>([]);
-  // console.log('props at PF', mutationName);
-  console.log('Rendering PeriqlesForm');
 
   useEffect(() => {
     introspect(mutationName, setFields, args);
@@ -35,7 +33,6 @@ const PeriqlesForm = ({
 
   // HANDLERS
   const handleSubmit = (e, fields): void => {
-    console.log('Submitting form');
     if (e.key === 'Enter' || e.type === 'click') {
       e.preventDefault(); // prevent page refesh
     }
@@ -83,29 +80,29 @@ const PeriqlesForm = ({
 
   const renderFields = (fields: PeriqlesField[]) => {
     // add each field to formState
-    const startingValues = {};
-    fields.forEach((field: PeriqlesField) => {
-      let initialValue;
-      switch (field.type) {
-        case 'String':
-          initialValue = '';
-          break;
-        case 'Int':
-          initialValue = 0;
-          break;
-        case 'Boolean':
-          initialValue = false;
-          break;
-        case 'Enum':
-          if (!field.options) {
-            initialValue = '';
-          } else initialValue = field.options[0].name;
-          break;
-        default:
-          initialValue = '';
-      }
-      startingValues[field.name] = initialValue;
-    });
+    // const startingValues = {};
+    // fields.forEach((field: PeriqlesField) => {
+    //   let initialValue;
+    //   switch (field.type) {
+    //     case 'String':
+    //       initialValue = '';
+    //       break;
+    //     case 'Int':
+    //       initialValue = 0;
+    //       break;
+    //     case 'Boolean':
+    //       initialValue = false;
+    //       break;
+    //     case 'Enum':
+    //       if (!field.options) {
+    //         initialValue = '';
+    //       } else initialValue = field.options[0].name;
+    //       break;
+    //     default:
+    //       initialValue = '';
+    //   }
+    //   startingValues[field.name] = initialValue;
+    // });
     // console.log('Setting initial form state');
     // setFormState(startingValues);    // infinite loop
 
