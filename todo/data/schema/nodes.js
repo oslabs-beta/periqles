@@ -1,14 +1,10 @@
-import {
-  GraphQLNonNull,
-  GraphQLObjectType,
-  GraphQLString,
-  GraphQLEnumType,
-  GraphQLInt,
-} from 'graphql';
-
-import {fromGlobalId, globalIdField, nodeDefinitions} from 'graphql-relay';
-
+// note: import statements must be single-line. Multiline import statements not yet supported by experimental ES6 module loader.
+import graphql from 'graphql';
+import graphqlRelay from 'graphql-relay';
 import {DemoUser, getDemoUserOrThrow} from '../database.js';
+
+const {GraphQLNonNull, GraphQLObjectType, GraphQLString, GraphQLEnumType, GraphQLInt} = graphql;
+const {fromGlobalId, globalIdField, nodeDefinitions} = graphqlRelay;
 
 const {nodeInterface, nodeField} = nodeDefinitions(
   (globalId) => {

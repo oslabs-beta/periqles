@@ -1,7 +1,10 @@
-import {mutationWithClientMutationId} from 'graphql-relay';
-import {GraphQLNonNull, GraphQLString, GraphQLInt} from 'graphql';
+import graphqlRelay from 'graphql-relay';
+import graphql from 'graphql';
 import {GenderEnum, PizzaToppingEnum} from '../nodes.js';
 import {addUser, getDemoUserOrThrow} from '../../database.js';
+
+const {mutationWithClientMutationId} = graphqlRelay;
+const {GraphQLNonNull, GraphQLString, GraphQLInt} = graphql;
 
 const AddUserMutation = mutationWithClientMutationId({
   name: 'AddUser',

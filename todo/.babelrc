@@ -2,7 +2,8 @@
   "plugins": [
     ["relay", { "artifactDirectory": "./__generated__/relay/" }],
     "@babel/plugin-transform-runtime",
-    "@babel/plugin-proposal-class-properties"
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-transform-typescript"
   ],
-  "presets": ["@babel/preset-react", "@babel/preset-env", "@babel/preset-flow"]
+  "presets": ["@babel/preset-react", "@babel/preset-env", "@babel/preset-typescript"]
 }

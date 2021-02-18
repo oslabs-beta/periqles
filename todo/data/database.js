@@ -13,22 +13,13 @@ export class DemoUser {
   }
 }
 
-//If we wanted to add an initial user, we can update the values for this object and pass it into the Mock DB on line 59
-// export const DEMO_USER_INFO = {
-//   userId: string,
-//   username: string,
-//   password: string,
-//   email: string,
-//   gender: string,
-//   pizzaTopping: string,
-//   age: number,
-// };
-
-// Mock Databse
-const demoUsersById = new Map();
+// Mock database seeded with initial user
+const demoUsersById = new Map([
+  [0, new DemoUser('0', 'bob', 'anna', 'bob@bob.io', 'MALE', 'HAWAIIAN', 10)],
+]);
 
 // Seed initial user
-let nextUserId = 0;
+let nextUserId = 1;
 
 //getDemoUser and getDemoUserOrThrow functions
 function getDemoUser(userId) {

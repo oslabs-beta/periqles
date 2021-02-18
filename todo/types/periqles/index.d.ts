@@ -1,5 +1,6 @@
+/* eslint-disable flowtype/object-type-delimiter */
 type Scalar = number | boolean | string;
-type FormState = Record<string, Scalar>;
+type FormState = Record<string, number | string>;
 
 // PROPS FOR PERIQLES COMPONENTS
 
@@ -49,7 +50,7 @@ interface PeriqlesCallbacks {
   onFailure?: (err: object) => any;
 }
 
-type PeriqlesMutationArgs = Record<string, Scalar | bigint>;
+type PeriqlesMutationArgs = Record<string, Scalar>;
 
 interface RelayEnvironment {
   store: any;
@@ -67,8 +68,12 @@ interface PeriqlesFormProps {
   callbacks?: PeriqlesCallbacks;
 }
 
-interface PeriqlesFormContentProps extends PeriqlesFormProps {
-  inputType: InputType;
+interface PeriqlesFieldProps {
+  field: PeriqlesField;
+  formState: FormState;
+  handleChange: (e) => void;
+  specs?: PeriqlesFieldSpecs;
+  setFormState: React.Dispatch<React.SetStateAction<FormState>>;
 }
 
 // RESULT OF INTROSPECTION QUERY
