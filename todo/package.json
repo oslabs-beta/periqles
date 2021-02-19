@@ -9,6 +9,10 @@
     "lint": "eslint .",
     "test": "jest --verbose"
   },
+  "jest": {
+    "globalSetup": "./jest-setup.js",
+    "globalTeardown": "./jest-teardown.js"
+  },
   "dependencies": {
     "@babel/core": "^7.12.9",
     "@babel/node": "^7.12.6",
@@ -45,7 +49,11 @@
     "@typescript-eslint/eslint-plugin": "^4.15.1",
     "@typescript-eslint/parser": "^4.15.1",
     "babel-eslint": "^10.1.0",
+    "babel-jest": "^26.6.3",
     "babel-plugin-macros": "^2.8.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
+    "enzyme-to-json": "^3.6.1",
     "eslint": "^7.14.0",
     "eslint-config-fbjs": "^3.1.1",
     "eslint-config-prettier": "^6.15.0",
@@ -54,6 +62,7 @@
     "eslint-plugin-prettier": "^3.2.0",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-relay": "^1.8.1",
+    "jest": "^26.6.3",
     "nodemon": "^2.0.7",
     "prettier": "^2.2.1",
     "relay-compiler": "^10.1.0",
