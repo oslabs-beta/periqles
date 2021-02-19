@@ -1,8 +1,8 @@
 type Scalar = number | boolean | string;
 type FormState = Record<string, number | string>;
 
-// PROPS FOR PERIQLES COMPONENTS
 
+// PROPS FOR PERIQLES COMPONENTS
 interface PeriqlesSpecifications {
   fields: Record<string, PeriqlesFieldSpecs>;
 }

@@ -1,6 +1,10 @@
+/// <reference path="../types/index.d.ts" />
 import * as React from 'react';
 
-export const introspect = (mutationName, setFields, args) => {
+export const introspect = (
+  mutationName: string, 
+  setFields: React.Dispatch<React.SetStateAction<PeriqlesField[]>>, 
+  args: PeriqlesMutationArgs): void => {
   const inputTypeName: string = mutationName + 'Input';
 
   fetch('/graphql', {
@@ -147,7 +151,6 @@ export const fieldsArrayGenerator = (
   return fieldsArray;
 };
 
-/* eslint-disable flowtype/no-types-missing-file-annotation */
 /**
  * Builds an HTML element to collect user input for a GraphQL mutation based on user-provided instructions.
  * @param {Object} field An object representing an input field for a GraphQL mutation. Example: {name: "name", type: "String"}
@@ -159,8 +162,8 @@ export const generateSpecifiedElement = (
   field: PeriqlesField,
   specs: PeriqlesFieldSpecs,
   formState: FormState,
-  handleChange,
-  setFormState,
+  handleChange: (e) => void,
+  setFormState: React.Dispatch<React.SetStateAction<FormState>>,
 ): JSX.Element => {
   let element: JSX.Element;
 

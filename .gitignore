@@ -1,6 +1,10 @@
 node_modules
-# lib-esm
+lib-esm
+lib
 _bundles
+.eslintrc.js
+.eslintignore
+package-lock.json
 
 # Logs
 logs
