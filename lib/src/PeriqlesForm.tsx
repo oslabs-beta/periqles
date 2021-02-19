@@ -1,7 +1,9 @@
 import * as React from 'react';
 import PeriqlesField from './PeriqlesField';
-import {introspect, fieldsArrayGenerator} from './functions';
+import {introspect} from './functions';
+// TODO: use an if statement so this doesn't have to be a peer dependency?
 import {commitMutation} from 'react-relay';
+import '../periqles.css'
 
 const {useState, useEffect} = React;
 
