@@ -9,6 +9,8 @@ import renderer from 'react-test-renderer';
 import PeriqlesForm from '../ts/components/PeriqlesForm'
 import UserProfile from '../ts/components/UserProfile'
 import { format } from 'prettier';
+import { JsxEmit } from 'typescript';
+import { parseJsonSourceFileConfigFileContent } from 'typescript';
 
 //Setting up adapter
 configure({ adapter: new Adapter() });
@@ -16,44 +18,54 @@ configure({ adapter: new Adapter() });
 //React Component Tests
 describe('Periqles unit tests', () => {
   //PeriqlesForm  Tests
-  describe('Form Tags' => {
+  describe('PeriqlesForm Tests' => {
     let wrapper; 
     const props = {
     }
     
     beforeAll(() => {
-      wrapper = shallow(<PeriqlesForm/>)
+      wrapper = shallow(<PeriqlesForm {...props}/>)
     })
    
-    if ('Should render a form tag with a className of PeriqlesForm', () => {
+    it ('Should render a form tag with a className of PeriqlesForm', () => {
+      expect(wrapper.type().toEqual('form'))
+      expect(wrapper.hasClass('PeriqlesForm')).to.be.true
+    })
+
+    it ('Should render a form tag with an onSubmit function that calls handleSubmit with the synthetic event and fields as arguments', () => {
+      const props = {
+        event: 'e',
+        fields: [],
+        handleSubmit: jest.fn()
+      };
+      // const wrapper = shallow(<PeriqlesForm {...props} />);
+      // wrapper.simulate('')
+    })
+
+    it ('Should render a h2 tag with headerText props', () => {
+      const props = {
+
+      }
 
     })
 
-    if ('Should render a form tag with an onSubmit function that calls handleSubmit with the synthetic event and fields as arguments', () => {
+    it ('Should render input elements if the field prop has a length > 0', () => {
 
     })
 
-    if ('Should render a h2 tag with headerText props', () => {
+    it ('Should render a p tag with the  "Loading form..." if the field prop has a length > 0', () => {
 
     })
 
-    if ('Should render input elements if the field prop has a length > 0', () => {
+    it ('Should render a button with a className of periqles-submit', () => {
 
     })
 
-    if ('Should render a p tag with the  "Loading form..." if the field prop has a length > 0', () => {
+    it ('Should render a button with an onSubmit function that calls handleSubmit with the synthetic event and fields as arguments', () => {
 
     })
 
-    if ('Should render a button with a className of periqles-submit', () => {
-
-    })
-
-    if ('Should render a button with an onSubmit function that calls handleSubmit with the synthetic event and fields as arguments', () => {
-
-    })
-
-    if ('Should render a button with the text "Submit"', () => {
+    it ('Should render a button with the text "Submit"', () => {
 
     })
 
