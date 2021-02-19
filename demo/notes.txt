@@ -1,1 +1,2 @@
 -- Must change export statement in __generated__ files from "module.exports" to ES6 "export default" or else app will throw error "Module not defined."
+-- One solution to this problem might be to change our ts.config. Currently, it generates modules in es6 syntax, but we can set "module" to "commonjs" instead.

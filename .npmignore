@@ -1,0 +1,8 @@
+.*
+**/tsconfig.json
+**/webpack.config.js
+node_modules
+lib/src
+lib/server
+lib/__tests__
+lib/periqles-logo.png
