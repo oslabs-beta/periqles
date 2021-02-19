@@ -1,4 +1,3 @@
-/// <reference path="../types/index.d.ts" />
 import * as React from 'react';
 import PeriqlesField from './PeriqlesField';
 import {introspect} from './functions';
@@ -24,7 +23,7 @@ const PeriqlesForm = ({
   mutationName,
   mutationGQL,
   specifications,
-  args,
+  args = {},
   callbacks,
 }: PeriqlesFormProps): JSX.Element => {
   const [formState, setFormState] = useState<FormState>({});

@@ -23,7 +23,7 @@ export default {
     rules: [
       {
         test: /\.tsx?$/,
-        loader: ['ts-loader', 'babel-loader'],
+        loader: ['babel-loader', 'ts-loader'],
         exclude: /node_modules/,
       },
       {

@@ -6,7 +6,7 @@
     "module": "es6", // syntax for generated modules
     "jsx": "react", // use typescript to transpile jsx to js
     "target": "es5", // specify ECMAScript target version
-    // "lib": ["es2015", "dom"], // include ambient type declarations for JS constructs common in runtimes and the DOM 
+    "lib": ["es2015", "dom"], // include ambient type declarations for JS constructs common in runtimes and the DOM 
     "allowJs": true, // infer types from .js files
     "moduleResolution": "node", // search under node_modules to resolve non-relative imports
     "allowSyntheticDefaultImports": true,
@@ -24,5 +24,11 @@
       "node_modules/@types"
     ]
   },
-  "include": ["./src/"]
+  "files": [
+    "./types/index.d.ts",
+    "./src/functions.tsx",
+    "./src/index.tsx",
+    "./src/PeriqlesField.tsx",
+    "./src/PeriqlesForm.tsx",
+  ]
 }
