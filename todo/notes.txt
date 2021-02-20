@@ -1,1 +1,0 @@
--- Must change export statement in __generated__ files from "module.exports" to ES6 "export default" or else app will throw error "Module not defined."
