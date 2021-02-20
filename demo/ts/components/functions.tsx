@@ -1,82 +1,4 @@
 import * as React from 'react';
-import {graphql} from 'react-relay';
-
-/*
-fetch('/graphql', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      query: graphql`
-        query functions_TypeQuery($inputType: String!) {
-          __type(name: $inputType) {
-            name
-            inputFields {
-              name
-              enumValues {
-                name
-              }
-              type {
-                name
-                kind
-                ofType {
-                  name
-                  kind
-                  enumValues {
-                    name
-                    description
-                  }
-                }
-              }
-            }
-          }
-        }
-      `,
-      variables: {
-        inputType: inputTypeName,
-      },
-    }),
-  })
-*/
-
-/*
-fetch('/graphql', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      query: `query typeQuery($inputType: String!)
-        {
-      __type(name: $inputType) {
-          name
-          inputFields {
-              name
-              enumValues {
-                name
-              }
-              type {
-                  name
-                  kind
-                  ofType {
-                      name
-                      kind
-                      enumValues {
-                          name
-                          description
-                      }
-                  }
-                }
-            }
-        }
-      }`,
-      variables: {
-        inputType: inputTypeName,
-      },
-    }),
-  })
-*/
 
 export const introspect = (mutationName, setFields, args) => {
   const inputTypeName: string = mutationName + 'Input';
@@ -229,18 +151,28 @@ export const fieldsArrayGenerator = (
 /**
  * Builds an HTML element to collect user input for a GraphQL mutation based on user-provided instructions.
  * @param {Object} field An object representing an input field for a GraphQL mutation. Example: {name: "name", type: "String"}
- * @param {Object} specs An object representing developer-specified information to use for an HTML element representing this field. Example: {label: "Name", element: "textarea", options: []}
+ * @param {Object} specs An object representing developer-specified information to use for an HTML element representing this field. 
+ * @param {Function} handleChange
+ * @param {Object} formState
+ * @param {Function} setFormState
  * @return  Returns the specified HTML input element with the specified label and specified sub-options, if any.
  */
 
-export const generateSpecifiedElement = (
+export const generateSpecifiedElement = (params: {
   field: PeriqlesField,
   specs: PeriqlesFieldSpecs,
   formState: FormState,
   handleChange,
   setFormState,
-): JSX.Element => {
+}): JSX.Element => {
   let element: JSX.Element;
+  const {
+    field,
+    specs,
+    formState,
+    handleChange,
+    setFormState,
+  } = params;
 
   //If label isn't given, set it as field.name w/ spaces & 1st letter capitalized
   if (!specs.label) {
@@ -288,29 +220,25 @@ export const generateSpecifiedElement = (
       break;
 
     case 'radio':
-      //if options aren't given, use field.options
-      const radioOptions: Array<PeriqlesFieldOption> = [];
+      if (!field.options || !field.options.length) break;
+      let radioOptions: Array<PeriqlesFieldOption> = [];
       if (specs.options) {
         specs.options.forEach((spec) => {
-          let name, type;
-
           field.options?.forEach((option) => {
-            if (option.label === spec.label) {
-              name = option.name;
-              type = option.type;
+            if (option.value === spec.value) {
+              const newOption: PeriqlesFieldOption = {
+                name: option.name,
+                label: spec.label,
+                value: option.value,
+                type: option.type,
+              };
+              return radioOptions.push(newOption);
             }
           });
-
-          const newOption: PeriqlesFieldOption = {
-            name,
-            label: spec.label,
-            value: spec.value,
-            type,
-          };
-
-          radioOptions.push(newOption);
         });
-      } else field.options?.forEach((option) => radioOptions.push(option));
+      } else {
+        radioOptions = field.options;
+      }
 
       element = (
         <div className={field.name + '-radio periqles-radio'}>
@@ -340,28 +268,26 @@ export const generateSpecifiedElement = (
 
     // TODO: handle non-null/non-null-default selects
     case 'select':
-      const selectOptions: Array<PeriqlesFieldOption> = [];
+      if (!field.options || !field.options.length) break;
+      let selectOptions: Array<PeriqlesFieldOption> = [];
+      // if specified options exist for this dropdown, replace default option labels with specified labels. Only include in the dropdown options present in both the specs and the enumerated values introspected from the schema.
       if (specs.options) {
         specs.options.forEach((spec) => {
-          let name, type;
-
           field.options?.forEach((option) => {
-            if (option.label === spec.label) {
-              name = option.name;
-              type = option.type;
+            if (option.value === spec.value) {
+              const newOption: PeriqlesFieldOption = {
+                name: option.name,
+                label: spec.label,
+                value: option.value,
+                type: option.type,
+              };
+              return selectOptions.push(newOption);
             }
           });
-
-          const newOption: PeriqlesFieldOption = {
-            name,
-            label: spec.label,
-            value: spec.value,
-            type,
-          };
-
-          selectOptions.push(newOption);
         });
-      } else field.options?.forEach((option) => selectOptions.push(option));
+      } else {
+        selectOptions = field.options;
+      }
 
       element = (
         <label>
@@ -369,12 +295,12 @@ export const generateSpecifiedElement = (
           <select
             className={field.name + '-select periqles-select'}
             name={field.name}
-            defaultValue={formState[field.name]}
+            defaultValue={selectOptions[0].value}
             onChange={handleChange}>
-            {selectOptions.map((option, index) => {
+            {selectOptions.map((option) => {
               return (
                 <option
-                  key={`${field.name}select${index}`}
+                  key={`${field.name}select${option.name}option`}
                   value={option.value}
                   className={
                     field.name + '-select-option periqles-select-option'
@@ -421,11 +347,20 @@ export const generateSpecifiedElement = (
   return element;
 };
 
-export const generateDefaultElement = (
+/**
+ * Builds an HTML element to collect user input for a GraphQL mutation based on default logic.
+ * @param {Object} field An object representing an input field for a GraphQL mutation.
+ * @param {Object} formState
+ * @param {Function} handleChange
+ * @return  Returns an HTML input element.
+ */
+export const generateDefaultElement = (params: {
   field: PeriqlesField,
   formState: FormState,
-  handleChange,
-): JSX.Element => {
+  handleChange: (e) => void,
+}): JSX.Element => {
+  const {field, formState, handleChange} = params;
+
   // assign a label that matches name but w/ spaces between words and first char uppercased
   field.label = field.name.replace(/([a-z])([A-Z])/g, '$1 $2');
   field.label = field.label[0].toUpperCase() + field.label.slice(1);
@@ -447,7 +382,7 @@ export const generateDefaultElement = (
       );
       break;
 
-    // TODO: test that this works with formState values restricted only to numbers or strings
+    // TODO: formState values restricted only to numbers or strings due to HTML input type defs
     case 'Boolean':
       element = (
         <label>
@@ -463,9 +398,8 @@ export const generateDefaultElement = (
       break;
 
     case 'Enum':
-      // TODO: new select options logic
-      const selectOptions: Array<PeriqlesFieldOption> = [];
-      field.options?.forEach((option) => selectOptions.push(option));
+      if (!field.options || !field.options.length) break;
+      const selectOptions: Array<PeriqlesFieldOption> = field.options;
 
       element = (
         <label>
@@ -473,17 +407,17 @@ export const generateDefaultElement = (
           <select
             className={field.name + '-select periqles-select'}
             name={field.name}
-            defaultValue={formState[field.name]}
+            defaultValue={selectOptions[0].value}
             onChange={handleChange}>
-            {selectOptions.map((option, index) => {
+            {selectOptions.map((option) => {
               return (
                 <option
-                  key={`${field.name}select${index}`}
-                  value={option.name}
+                  key={`${field.name}select${option.name}option`}
+                  value={option.value}
                   className={
                     field.name + '-select-option periqles-select-option'
                   }>
-                  {option.name}
+                  {option.label}
                 </option>
               );
             })}

@@ -42,8 +42,6 @@ interface PeriqlesFieldOption {
   value: number | string;
   type: string;
 }
-
-// TODO: define callback function types, need to view response object from successful mutation & error object from failure
 interface PeriqlesCallbacks {
   onSuccess?: (response: object) => any;
   onFailure?: (err: object) => any;
@@ -74,6 +72,21 @@ interface PeriqlesFieldProps {
   specs?: PeriqlesFieldSpecs;
   setFormState: React.Dispatch<React.SetStateAction<FormState>>;
 }
+
+// PERIQLES HELPER FUNCTIONS
+type GenerateDefaultElement = (params: {
+  field: PeriqlesField,
+  formState: FormState,
+  handleChange: (e) => void,
+}) => JSX.Element;
+
+type GenerateSpecifiedElement = (params: {
+  field: PeriqlesField,
+  specs: PeriqlesFieldSpecs,
+  formState: FormState,
+  handleChange: (e) => void,
+  setFormState: React.Dispatch<React.SetStateAction<FormState>>,
+}) => JSX.Element;
 
 // RESULT OF INTROSPECTION QUERY
 
