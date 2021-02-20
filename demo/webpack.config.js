@@ -1,9 +1,7 @@
 const path = require('path');
-// const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 module.exports = {
   mode: process.env.NODE_ENV,
-  // entry: './dist/app.js',
   entry: './ts/app.tsx',
   output: {
     filename: './bundle.js',
@@ -20,16 +18,7 @@ module.exports = {
     headers: {'Access-Control-Allow-Origin': '*'}, // allow cors from any host
     historyApiFallback: true, // if 404, serve index.html
     proxy: {
-      // our backend; used to serve GraphQL API reqs
       '/graphql': 'http://localhost:3000',
-      // '/graphql': {
-      //   target: 'http://localhost:3000',
-      //   secure: false,
-      //   changeOrigin: true,
-      //   headers: {
-      //     Connection: 'keep-alive',
-      //   },
-      // },
     },
     onListening: function (server) {
       const port = server.listeningApp.address().port;
@@ -55,36 +44,3 @@ module.exports = {
   },
   devtool: 'source-map',
 };
-
-//     // 'babel-loader',
-//     {
-//       loader: 'babel-loader',
-//       options: {
-//         plugins: [
-//           ['relay', {artifactDirectory: './__generated__/relay/'}],
-//           '@babel/plugin-transform-runtime',
-//           '@babel/plugin-proposal-class-properties',
-//           // 'macros',
-//         ],
-//         presets: [
-//           '@babel/preset-react',
-//           '@babel/preset-env',
-//           '@babel/typescript',
-//         ],
-//       },
-//     },
-
-// {
-//   test: /\.tsx?$/,
-//   exclude: /node_modules/,
-//   loader: 'ts-loader',
-//   options: {
-//     getCustomTransformers: () => ({
-//       before: [
-//         tsgqlPlugin.getTransformer({
-//           /* transformer options */
-//         }),
-//       ],
-//     }),
-//   },
-// },

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import AuthorCard from './AuthorCard';
 
-const Authors = (): JSX.Element => {
+const Creators = (): JSX.Element => {
   const authors = [
     {
       // img: '../../public/assets/cameron.jpeg',
@@ -27,10 +27,13 @@ const Authors = (): JSX.Element => {
   ];
 
   return (
-    <div className="Authors">
-      {authors.map((author, index) => <AuthorCard key={index} author={author}/>)}
-    </div>
+    <footer>
+      <h2>Creators</h2>
+      <div className="creators">
+        {authors.map((author, index) => <AuthorCard key={index} author={author}/>)}
+      </div>
+    </footer>
   );
 };
 
-export default Authors;
+export default Creators;
