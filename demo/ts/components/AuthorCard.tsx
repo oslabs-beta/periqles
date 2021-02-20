@@ -2,9 +2,12 @@
 import * as React from 'react';
 
 interface AuthorCardProps {
-  img: string;
-  name: string;
-  link: string;
+  key: number;
+  author: {
+    img: string;
+    name: string;
+    link: string;
+  }
 }
 
 const AuthorCard = ({author}: AuthorCardProps): JSX.Element => {
@@ -12,7 +15,7 @@ const AuthorCard = ({author}: AuthorCardProps): JSX.Element => {
 
   return (
     <p className="AuthorCard">
-      <img src={img} className="author-img"></img>
+      <img src={img} className="author-img" alt={name}></img>
       {/* <span className="author-name">{name}</span> */}
       <a href={link} className="author-link">{name}</a>
     </p>

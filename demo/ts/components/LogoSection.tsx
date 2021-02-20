@@ -1,18 +1,23 @@
-import * as 'react'
+import * as React from 'react'
 
-const LogoSection = (): JSX.Element => {
+const LinksSection = (): JSX.Element => {
 
   return (
-    <><div className="LogoSection">
-      <img className = "MarketingLogo" src='/public/assets/npm-logo-black.svg' alt="NPM"><a href="" /></img>
-      <img className = "MarketingLogo" src='/public/assets/Github-Mark-64px.png' alt="Github"><a href='https://github.com/oslabs-beta/periqles' /></img>
+    <div className="LogoSection">
+      <a href="">
+        <img className="MarketingLogo" src="/public/assets/npm-logo-black.svg" alt="NPM" />
+      </a>
+      <a href="https:\/\/github.com/oslabs-beta/periqles">
+        <img className = "MarketingLogo" src="/public/assets/Github-Mark-64px.png" alt="Github" />
+      </a>
+    
+      // <div className="PitchArea">
+      <p className = "MarketingPitch" >
+        Periqles is great! Periqles is awesome! Give periqles a try today!
+      </p>
+      // </div>
     </div>
-      <div className="PitchArea">
-        <textarea className = "MarketingPitch" >
-        
-        </textarea>
-      </div></>
   );
 };
 
-export default LogoSection;
+export default LinksSection;

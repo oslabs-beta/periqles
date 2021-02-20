@@ -12,19 +12,16 @@ var __assign = (this && this.__assign) || function () {
 import * as React from 'react';
 import PeriqlesField from './PeriqlesField';
 import { introspect } from './functions';
-// can we avoid having react-relay as a dependency?
 import { commitMutation } from 'react-relay';
 import '../periqles.css';
 var useState = React.useState, useEffect = React.useEffect;
 /**
- * Higher-order component that performs an introspection query then returns a form component that renders dynamically based on an introspected input type.
+ * Functional component that performs an introspection query then renders PeriqlesField components based on the mutation's defined input type.
  * @param {Object} environment (REQUIRED) The RelayEnvironment instance shared by this application's components, containing the network layer and store.
- * @param {String} mutationName (REQUIRED) The name of a mutation exactly as written on the Relay schema.
- * @param {String|Object} mutationGQL (REQUIRED) A GraphQˀL mutation string or GraphQLTaggedNode request object.
- * @param {Object} specifications Optional parameters to specify the form's appearance and behavior, including a "fields" property that is an array of objects matching field names to specifed HTML input element types.
- * @param {[Object]} args Optional arguments to be passed to the mutation, represented as an array of objects with the shape {name, value}. Input fields represented here will be excluded from the form.
- * @return {Function} PeriqlesField, a React functional component
- *
+ * @param {String} mutationName (REQUIRED) The name of a mutation exactly as written on the schema.
+ * @param {String|Function} mutationGQL (REQUIRED) A GraphQL mutation string or (if using Relay) a tagged template literal using the graphql`` tag imported from react-relay.
+ * @param {Object} specifications Optional parameters to specify the form's appearance and behavior.
+ * @param {Object} args Optional arguments to be passed to the mutation as input variables, represented as key-value pairs. Fields represented here will be excluded from the form.
  */
 var PeriqlesForm = function (_a) {
     var environment = _a.environment, mutationName = _a.mutationName, mutationGQL = _a.mutationGQL, specifications = _a.specifications, _b = _a.args, args = _b === void 0 ? {} : _b, callbacks = _a.callbacks;
@@ -40,10 +37,12 @@ var PeriqlesForm = function (_a) {
         }
         // validate non-null text fields
         var fieldNames = Object.keys(formState);
+        console.log('fieldNames', fieldNames);
         var _loop_1 = function (i) {
             var fieldObj = fields.filter(function (fieldObj) { return fieldObj.name === fieldNames[i]; })[0];
+            console.log('this fieldObj:', fieldObj);
             if (fieldObj.required && formState[fieldNames[i]] === '') {
-                window.alert("The following field is REQUIRED: " + fieldObj.label);
+                window.alert("The following field is required: " + fieldObj.label);
                 return { value: void 0 };
             }
         };
@@ -82,32 +81,6 @@ var PeriqlesForm = function (_a) {
         setFormState(__assign(__assign({}, formState), (_a = {}, _a[name] = useValue, _a)));
     };
     var renderFields = function (fields) {
-        // add each field to formState
-        // const startingValues = {};
-        // fields.forEach((field: PeriqlesField) => {
-        //   let initialValue;
-        //   switch (field.type) {
-        //     case 'String':
-        //       initialValue = '';
-        //       break;
-        //     case 'Int':
-        //       initialValue = 0;
-        //       break;
-        //     case 'Boolean':
-        //       initialValue = false;
-        //       break;
-        //     case 'Enum':
-        //       if (!field.options) {
-        //         initialValue = '';
-        //       } else initialValue = field.options[0].name;
-        //       break;
-        //     default:
-        //       initialValue = '';
-        //   }
-        //   startingValues[field.name] = initialValue;
-        // });
-        // console.log('Setting initial form state');
-        // setFormState(startingValues);    // infinite loop
         return fields.map(function (field, index) {
             var specs = specifications
                 ? specifications.fields[field.name]
@@ -116,9 +89,9 @@ var PeriqlesForm = function (_a) {
         });
     };
     var headerText = mutationName
-        .replace('Mutation', '') //remove 'Mutation'
+        .replace('Mutation', '')
         .replace(/([a-z])([A-Z])/g, '$1 $2'); // add spaces before capital letters
-    headerText = headerText[0].toUpperCase() + headerText.slice(1); // capitalize first letter
+    headerText = headerText[0].toUpperCase() + headerText.slice(1);
     return (React.createElement("form", { className: "PeriqlesForm", "aria-labelledby": "form", onSubmit: function (e) { return handleSubmit(e, fields); } },
         React.createElement("h2", null, headerText),
         fields.length ? renderFields(fields) : React.createElement("p", null, "Loading form..."),

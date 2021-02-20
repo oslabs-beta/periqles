@@ -103,60 +103,60 @@ export var fieldsArrayGenerator = function (inputType, args) {
     });
     return fieldsArray;
 };
+/* eslint-disable flowtype/no-types-missing-file-annotation */
 /**
  * Builds an HTML element to collect user input for a GraphQL mutation based on user-provided instructions.
  * @param {Object} field An object representing an input field for a GraphQL mutation. Example: {name: "name", type: "String"}
- * @param {Object} specs An object representing developer-specified information to use for an HTML element representing this field. Example: {label: "Name", element: "textarea", options: []}
+ * @param {Object} specs An object representing developer-specified information to use for an HTML element representing this field.
+ * @param {Function} handleChange
+ * @param {Object} formState
+ * @param {Function} setFormState
  * @return  Returns the specified HTML input element with the specified label and specified sub-options, if any.
  */
-export var generateSpecifiedElement = function (field, specs, formState, handleChange, setFormState) {
-    var _a, _b;
-    var element;
+export var generateSpecifiedElement = function (_a) {
+    var field = _a.field, specs = _a.specs, formState = _a.formState, handleChange = _a.handleChange, setFormState = _a.setFormState;
+    if (specs.render) {
+        return specs.render(formState, setFormState, handleChange);
+    }
     //If label isn't given, set it as field.name w/ spaces & 1st letter capitalized
     if (!specs.label) {
         specs.label = field.name.replace(/([a-z])([A-Z])/g, '$1 $2');
         specs.label = specs.label[0].toUpperCase() + specs.label.slice(1);
     }
-    if (specs.render) {
-        element = specs.render(formState, setFormState, handleChange);
-        return element;
-    }
     switch (specs.element) {
         case 'range':
-            element = (React.createElement("label", null,
+            return (React.createElement("label", null,
                 specs.label,
                 React.createElement("input", { type: "range", className: field.name + '-range periqles-range', name: field.name, min: specs.min || 0, max: specs.max || Infinity, value: formState[field.name], onChange: handleChange })));
-            break;
         case 'image':
-            element = (React.createElement("label", null,
+            return (React.createElement("label", null,
                 specs.label,
                 React.createElement("input", { type: "image", className: field.name + '-image periqles-image', name: field.name, src: specs.src, alt: specs.label, value: formState[field.name], onChange: handleChange })));
             break;
         case 'radio':
-            //if options aren't given, use field.options
+            if (!field.options || !field.options.length)
+                break;
             var radioOptions_1 = [];
             if (specs.options) {
                 specs.options.forEach(function (spec) {
                     var _a;
-                    var name, type;
                     (_a = field.options) === null || _a === void 0 ? void 0 : _a.forEach(function (option) {
-                        if (option.label === spec.label) {
-                            name = option.name;
-                            type = option.type;
+                        if (option.value === spec.value) {
+                            var newOption = {
+                                name: option.name,
+                                label: spec.label,
+                                value: option.value,
+                                type: option.type,
+                            };
+                            return radioOptions_1.push(newOption);
                         }
                     });
-                    var newOption = {
-                        name: name,
-                        label: spec.label,
-                        value: spec.value,
-                        type: type,
-                    };
-                    radioOptions_1.push(newOption);
                 });
             }
-            else
-                (_a = field.options) === null || _a === void 0 ? void 0 : _a.forEach(function (option) { return radioOptions_1.push(option); });
-            element = (React.createElement("div", { className: field.name + '-radio periqles-radio' },
+            else {
+                radioOptions_1 = field.options;
+            }
+            return (React.createElement("div", { className: field.name + '-radio periqles-radio' },
                 React.createElement("label", { className: "periqles-radio-div-label" }, specs.label),
                 radioOptions_1.map(function (option, index) {
                     return (React.createElement("label", { key: field.name + "radio-label" + index, className: "periqles-radio-option-label" },
@@ -165,78 +165,79 @@ export var generateSpecifiedElement = function (field, specs, formState, handleC
                             defaultChecked: option.value === formState[field.name] }),
                         option.label));
                 })));
-            break;
         // TODO: handle non-null/non-null-default selects
         case 'select':
+            if (!field.options || !field.options.length)
+                break;
             var selectOptions_1 = [];
+            // if specified options exist for this dropdown, replace default option labels with specified labels. Only include in the dropdown options present in both the specs and the enumerated values introspected from the schema.
             if (specs.options) {
                 specs.options.forEach(function (spec) {
                     var _a;
-                    var name, type;
                     (_a = field.options) === null || _a === void 0 ? void 0 : _a.forEach(function (option) {
-                        if (option.label === spec.label) {
-                            name = option.name;
-                            type = option.type;
+                        if (option.value === spec.value) {
+                            var newOption = {
+                                name: option.name,
+                                label: spec.label,
+                                value: option.value,
+                                type: option.type,
+                            };
+                            return selectOptions_1.push(newOption);
                         }
                     });
-                    var newOption = {
-                        name: name,
-                        label: spec.label,
-                        value: spec.value,
-                        type: type,
-                    };
-                    selectOptions_1.push(newOption);
                 });
             }
-            else
-                (_b = field.options) === null || _b === void 0 ? void 0 : _b.forEach(function (option) { return selectOptions_1.push(option); });
-            element = (React.createElement("label", null,
+            else {
+                selectOptions_1 = field.options;
+            }
+            return (React.createElement("label", null,
                 specs.label,
-                React.createElement("select", { className: field.name + '-select periqles-select', name: field.name, defaultValue: formState[field.name], onChange: handleChange }, selectOptions_1.map(function (option, index) {
-                    return (React.createElement("option", { key: field.name + "select" + index, value: option.value, className: field.name + '-select-option periqles-select-option' }, option.label));
+                React.createElement("select", { className: field.name + '-select periqles-select', name: field.name, defaultValue: selectOptions_1[0].value, onChange: handleChange }, selectOptions_1.map(function (option) {
+                    return (React.createElement("option", { key: field.name + "select" + option.name + "option", value: option.value, className: field.name + '-select-option periqles-select-option' }, option.label));
                 }))));
-            break;
         case 'textarea':
-            element = (React.createElement("label", null,
+            return (React.createElement("label", null,
                 specs.label,
                 React.createElement("textarea", { className: field.name + '-textarea periqles-textarea', name: field.name, value: formState[field.name], onChange: handleChange })));
-            break;
         default:
-            var elementType = specs.element || 'text';
-            element = (React.createElement("label", null,
+            // const elementType: string = specs.element || 'text';
+            var elementType = 'text';
+            return (React.createElement("label", null,
                 specs.label,
                 React.createElement("input", { type: elementType, className: field.name + "-" + elementType + " periqles-" + elementType, name: field.name, value: formState[field.name], onChange: handleChange })));
     }
-    return element;
 };
-export var generateDefaultElement = function (field, formState, handleChange) {
-    var _a;
+/**
+ * Builds an HTML element to collect user input for a GraphQL mutation based on default logic.
+ * @param {Object} field An object representing an input field for a GraphQL mutation.
+ * @param {Object} formState
+ * @param {Function} handleChange
+ * @return  Returns an HTML input element.
+ */
+export var generateDefaultElement = function (_a) {
+    var field = _a.field, formState = _a.formState, handleChange = _a.handleChange;
     // assign a label that matches name but w/ spaces between words and first char uppercased
     field.label = field.name.replace(/([a-z])([A-Z])/g, '$1 $2');
     field.label = field.label[0].toUpperCase() + field.label.slice(1);
-    var element;
     switch (field.type) {
         case 'Int':
-            element = (React.createElement("label", null,
+            return (React.createElement("label", null,
                 field.label,
                 React.createElement("input", { type: "number", className: field.name + '-number periqles-number', name: field.name, value: formState[field.name], onChange: handleChange })));
-            break;
-        // TODO: test that this works with formState values restricted only to numbers or strings
+        // TODO: formState values restricted only to numbers or strings due to HTML input type defs
         case 'Boolean':
-            element = (React.createElement("label", null,
+            return (React.createElement("label", null,
                 field.label,
                 React.createElement("input", { type: "checkbox", className: field.name + '-checkbox periqles-checkbox', name: field.name, value: formState[field.name], onChange: handleChange })));
-            break;
         case 'Enum':
-            // TODO: new select options logic
-            var selectOptions_2 = [];
-            (_a = field.options) === null || _a === void 0 ? void 0 : _a.forEach(function (option) { return selectOptions_2.push(option); });
-            element = (React.createElement("label", null,
+            if (!field.options || !field.options.length)
+                break;
+            var selectOptions = field.options;
+            return (React.createElement("label", null,
                 field.label,
-                React.createElement("select", { className: field.name + '-select periqles-select', name: field.name, defaultValue: formState[field.name], onChange: handleChange }, selectOptions_2.map(function (option, index) {
-                    return (React.createElement("option", { key: field.name + "select" + index, value: option.name, className: field.name + '-select-option periqles-select-option' }, option.name));
+                React.createElement("select", { className: field.name + '-select periqles-select', name: field.name, defaultValue: selectOptions[0].value, onChange: handleChange }, selectOptions.map(function (option) {
+                    return (React.createElement("option", { key: field.name + "select" + option.name + "option", value: option.value, className: field.name + '-select-option periqles-select-option' }, option.label));
                 }))));
-            break;
         default:
             var elementLookup = {
                 pass: 'password',
@@ -258,10 +259,9 @@ export var generateDefaultElement = function (field, formState, handleChange) {
             };
             var textFieldName = field.name.toLowerCase();
             var elementType = elementLookup[textFieldName] || 'text';
-            element = (React.createElement("label", null,
+            return (React.createElement("label", null,
                 field.label,
                 React.createElement("input", { type: elementType, className: field.name + "-" + elementType + " periqles-" + elementType, name: field.name, value: formState[field.name], onChange: handleChange })));
     }
-    return element;
 };
 //# sourceMappingURL=functions.js.map
