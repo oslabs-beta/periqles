@@ -1,11 +1,17 @@
 /* eslint-disable no-lone-blocks */
-import React from 'react';
-import {render, fireEvent, waitForElement} from '@testing-library/react';
+import * as React from 'react';
+import {
+  render,
+  screen,
+  fireEvent,
+  waitForElement,
+} from '@testing-library/react';
+// import '../setupTests';
+import App from '../testing.jsx';
 
 //components to test
 import PeriqlesForm from '../ts/components/PeriqlesForm.tsx';
-import UserProfile from '../ts/components/UserProfile.tsx';
-import App from '../testing.js';
+// import UserProfile from '../ts/components/UserProfile.tsx';
 
 // //React Component Tests
 const defaultProps = {
@@ -20,28 +26,36 @@ const defaultProps = {
   },
   className: 'PeriqlesForm',
   handleSubmit: () => {},
+  fieldNames: [],
+  input: {},
+  variables: {input},
+  handleChange: () => {},
   headerText: 'I am a header',
   loadingTest: 'Loading form...',
   fields: ['Fields'],
+  PeriqlesField: {},
   renderFields: () => {},
   // className: 'periqles-submit',
   buttonText: 'Submit',
+  fetch: () => {},
 };
 
 // console.log('This is the App Component: ', App);
 // console.log('This is the PF Component: ', PeriqlesForm);
 // console.log('This is the UP Component: ', UserProfile);
 
-describe('App', () => {
-  test('renders App component', () => {
-    render(<App />);
-  });
-});
+// describe('App', () => {
+//   test('renders App component', () => {
+//     render(<App />);
+//   });
+// });
 
 //PeriqlesForm Tests
 describe('Periqles Test', () => {
-  test('Should render a form tag with a className of PeriqlesForm', () => {
-    render(<App />);
+  it('Should render a form tag with a className of PeriqlesForm', () => {
+    // render(<PeriqlesForm {...defaultProps} />);
+
+    render(<PeriqlesForm {...defaultProps} />);
   });
 });
 

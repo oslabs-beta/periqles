@@ -7,7 +7,7 @@
     "build": "relay-compiler --src ./ts/ --schema ./data/schema.graphql --artifactDirectory ./__generated__/relay --extensions js jsx ts tsx --exclude ./__generated__/",
     "update-schema": "babel-node ./scripts/updateSchema.js",
     "lint": "eslint .",
-    "test": "jest --verbose",
+    "test": "jest --verbose ",
     "jest": "node --experimental-vm-modules node_modules/.bin/jest"
   },
   "dependencies": {
