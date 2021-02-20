@@ -7,17 +7,16 @@
     "build": "relay-compiler --src ./ts/ --schema ./data/schema.graphql --artifactDirectory ./__generated__/relay --extensions js jsx ts tsx --exclude ./__generated__/",
     "update-schema": "babel-node ./scripts/updateSchema.js",
     "lint": "eslint .",
-    "test": "jest --verbose"
+    "test": "jest --verbose",
+    "jest": "node --experimental-vm-modules node_modules/.bin/jest"
   },
   "dependencies": {
-    "@babel/core": "^7.12.9",
     "@babel/node": "^7.12.6",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@babel/plugin-transform-runtime": "^7.12.1",
-    "@babel/preset-env": "^7.12.7",
     "@babel/preset-react": "^7.12.7",
-    "@babel/preset-typescript": "^7.12.16",
     "@babel/runtime": "^7.12.5",
+    "@testing-library/jest-dom": "^5.11.9",
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.1",
     "babel-loader": "^8.2.2",
@@ -42,6 +41,10 @@
     "yarn": "^1.22.10"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.17",
+    "@babel/preset-env": "^7.12.17",
+    "@babel/preset-typescript": "^7.12.17",
+    "@testing-library/dom": "^7.29.6",
     "@testing-library/react": "^11.2.5",
     "@types/jest": "^26.0.20",
     "@typescript-eslint/eslint-plugin": "^4.15.1",
@@ -61,6 +64,7 @@
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-relay": "^1.8.1",
     "jest": "^26.6.3",
+    "jest-webpack-resolver": "^0.3.0",
     "nodemon": "^2.0.7",
     "prettier": "^2.2.1",
     "relay-compiler": "^10.1.0",
@@ -69,15 +73,6 @@
     "typescript": "^4.1.5",
     "webpack-dev-server": "3.10.3",
     "webpack-livereload-plugin": "^2.3.0"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "transform": {
-      "node_modules/variables/.+\\.(j|t)sx?$": "ts-jest"
-    },
-    "transformIgnorePatterns": [
-      "node_modules/(?!variables/.*)"
-    ]
   },
   "prettier": {
     "singleQuote": true,
