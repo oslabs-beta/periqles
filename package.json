@@ -37,8 +37,8 @@
   "scripts": {
     "tsc": "tsc",
     "clean": "shx rm -rf _bundles lib lib-esm",
-    "simple-build": "tsc --watch && webpack",
     "build": "npm run clean && tsc && tsc -m es6 --outDir lib-esm && webpack",
+    "publish:local": "npm run build && npm pack && cp periqles-0.1.0.tgz ~",
     "lint": "eslint ./src ./types",
     "test": "jest --verbose",
     "prepare": "npm run build"
