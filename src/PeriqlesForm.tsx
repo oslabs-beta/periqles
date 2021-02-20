@@ -38,10 +38,12 @@ const PeriqlesForm = ({
 
     // validate non-null text fields
     const fieldNames = Object.keys(formState);
+    console.log('fieldNames', fieldNames);
     for (let i = 0; i < fieldNames.length; i += 1) {
       const fieldObj = fields.filter(
         (fieldObj) => fieldObj.name === fieldNames[i],
       )[0];
+      console.log('this fieldObj:', fieldObj);
       if (fieldObj.required && formState[fieldNames[i]] === '') {
         window.alert(`The following field is required: ${fieldObj.label}`);
         return;
