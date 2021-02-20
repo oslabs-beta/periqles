@@ -9,14 +9,17 @@ const PeriqlesField = ({
   handleChange,
 }: PeriqlesFieldProps): JSX.Element => {
   return (specs 
-    ? generateSpecifiedElement(
+    ? generateSpecifiedElement({
         field,
         specs,
         formState,
         setFormState,
         handleChange,
-      ) 
-    : generateDefaultElement(field, formState, handleChange));
+      }) 
+    : generateDefaultElement({
+        field, 
+        formState, 
+        handleChange}));
 };
 
 export default PeriqlesField;

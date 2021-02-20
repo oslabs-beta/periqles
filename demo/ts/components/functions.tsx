@@ -158,21 +158,14 @@ export const fieldsArrayGenerator = (
  * @return  Returns the specified HTML input element with the specified label and specified sub-options, if any.
  */
 
-export const generateSpecifiedElement = (params: {
-  field: PeriqlesField,
-  specs: PeriqlesFieldSpecs,
-  formState: FormState,
+export const generateSpecifiedElement: GenerateSpecifiedElement = ({
+  field,
+  specs,
+  formState,
   handleChange,
   setFormState,
-}): JSX.Element => {
+}) => {
   let element: JSX.Element;
-  const {
-    field,
-    specs,
-    formState,
-    handleChange,
-    setFormState,
-  } = params;
 
   //If label isn't given, set it as field.name w/ spaces & 1st letter capitalized
   if (!specs.label) {
@@ -354,13 +347,7 @@ export const generateSpecifiedElement = (params: {
  * @param {Function} handleChange
  * @return  Returns an HTML input element.
  */
-export const generateDefaultElement = (params: {
-  field: PeriqlesField,
-  formState: FormState,
-  handleChange: (e) => void,
-}): JSX.Element => {
-  const {field, formState, handleChange} = params;
-
+export const generateDefaultElement: GenerateDefaultElement = ({field, formState, handleChange}) => {
   // assign a label that matches name but w/ spaces between words and first char uppercased
   field.label = field.name.replace(/([a-z])([A-Z])/g, '$1 $2');
   field.label = field.label[0].toUpperCase() + field.label.slice(1);
