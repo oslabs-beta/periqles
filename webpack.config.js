@@ -3,12 +3,7 @@ const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 export default {
   mode: 'production',
-  entry: {
-    // 'periqles-lib': './src/PeriqlesForm.tsx',
-    // 'periqles-lib.min': './src/PeriqlesForm.tsx'
-    'periqles-lib': './src/index.tsx',
-    'periqles-lib.min': './src/index.tsx'
-  },
+  entry: './src/index.tsx',
   output: {
     path: path.resolve(__dirname, '_bundles'),
     filename: 'periqles.js',
@@ -23,7 +18,7 @@ export default {
     rules: [
       {
         test: /\.tsx?$/,
-        loader: ['babel-loader', 'ts-loader'],
+        use: ['babel-loader', 'ts-loader'],
         exclude: /node_modules/,
       },
       {
@@ -37,14 +32,11 @@ export default {
       },
     ],
   },
-  plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      minimize: true,
-      sourceMap: true,
-      include: /\.min\.js$/,  // minify only the bundle file named periqles-min
-    })
-  ],
+  optimization: {
+    minimize: true,
+  },
   devtool: 'source-map',
+  externals: 'react',   // enables periqles to use host project's copy of React
 };
 
 // can add fork-ts-checker-webpack-plugin to ts-loader for faster build times: https://github.com/TypeStrong/ts-loader#faster-builds
