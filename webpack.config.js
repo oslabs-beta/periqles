@@ -7,8 +7,8 @@ export default {
   output: {
     path: path.resolve(__dirname, '_bundles'),
     filename: 'periqles.js',
-    libraryTarget: 'umd', // = universal module definition (universal compatibility)
     library: 'periqles',  // tell webpack we're bundling a library and provide the name
+    libraryTarget: 'umd', // = universal module definition (universal compatibility)
     umdNamedDefine: true,
   },
   resolve: {
