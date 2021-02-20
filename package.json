@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "description": "React form library for GraphQL APIs using Apollo or Relay client",
   "main": "index.js",
-  "types": "types/index.d.ts",
   "engines": {
     "node": "*"
   },
