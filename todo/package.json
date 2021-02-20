@@ -9,10 +9,6 @@
     "lint": "eslint .",
     "test": "jest --verbose"
   },
-  "jest": {
-    "globalSetup": "./jest-setup.js",
-    "globalTeardown": "./jest-teardown.js"
-  },
   "dependencies": {
     "@babel/core": "^7.12.9",
     "@babel/node": "^7.12.6",
@@ -46,6 +42,8 @@
     "yarn": "^1.22.10"
   },
   "devDependencies": {
+    "@testing-library/react": "^11.2.5",
+    "@types/jest": "^26.0.20",
     "@typescript-eslint/eslint-plugin": "^4.15.1",
     "@typescript-eslint/parser": "^4.15.1",
     "babel-eslint": "^10.1.0",
@@ -67,9 +65,19 @@
     "prettier": "^2.2.1",
     "relay-compiler": "^10.1.0",
     "source-map-loader": "^0.2.4",
+    "ts-jest": "^26.5.1",
     "typescript": "^4.1.5",
     "webpack-dev-server": "3.10.3",
     "webpack-livereload-plugin": "^2.3.0"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "transform": {
+      "node_modules/variables/.+\\.(j|t)sx?$": "ts-jest"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!variables/.*)"
+    ]
   },
   "prettier": {
     "singleQuote": true,

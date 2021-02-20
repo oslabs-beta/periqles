@@ -1,154 +1,90 @@
 /* eslint-disable no-lone-blocks */
 import React from 'react';
-import {configure, shallow} from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import toJson from 'enzyme-to-json';
 import renderer from 'react-test-renderer';
-
+// import react-testing methods
+import {
+  render,
+  fireEvent,
+  waitFor,
+  screen,
+  getByLabelText,
+  cleanup,
+} from '@testing-library/react';
+// add custom jest matchers from jest-dom
+import '@testing-library/jest-dom/extend-expect';
 //components to test
-import PeriqlesForm from '../ts/components/PeriqlesForm'
-import UserProfile from '../ts/components/UserProfile'
-import { format } from 'prettier';
-import { JsxEmit } from 'typescript';
-import { parseJsonSourceFileConfigFileContent } from 'typescript';
-
-//Setting up adapter
-configure({ adapter: new Adapter() });
+import PeriqlesForm from '../ts/components/PeriqlesForm';
+import UserProfile from '../ts/components/UserProfile';
 
 //React Component Tests
 describe('Periqles unit tests', () => {
+  const defaultProps = {
+    environment: 'modernEnvironment',
+    mutationName: 'AddUser',
+    mutationGQL: 'mutationGQL',
+    specifications: ['specifications'],
+    args: 'args',
+    callbacks: {
+      onSuccess: () => {},
+      onFailure: () => {},
+    },
+    className: 'PeriqlesForm',
+    handleSubmit: () => {},
+    headerText: 'I am a header',
+    loadingTest: 'Loading form...',
+    fields: ['Fields'],
+    renderFields: () => {},
+    className: 'periqles-submit',
+    buttonText: 'Submit',
+  };
+  afterEach(cleanup);
   //PeriqlesForm  Tests
-  describe('PeriqlesForm Tests' => {
-    let wrapper; 
-    const props = {
-    }
-    
-    beforeAll(() => {
-      wrapper = shallow(<PeriqlesForm {...props}/>)
-    })
-   
-    it ('Should render a form tag with a className of PeriqlesForm', () => {
-      expect(wrapper.type().toEqual('form'))
-      expect(wrapper.hasClass('PeriqlesForm')).to.be.true
-    })
+  describe('PeriqlesForm Tests', () => {
+    it('Should render a form tag with a className of PeriqlesForm', () => {
+      const {container} = render(<PeriqlesForm {...defaultProps} />);
+      const formTag = container.querySelector('form');
+      expect(formTag).toBeDefined();
+    });
 
-    it ('Should render a form tag with an onSubmit function that calls handleSubmit with the synthetic event and fields as arguments', () => {
-      const props = {
-        event: 'e',
-        fields: [],
-        handleSubmit: jest.fn()
-      };
-      // const wrapper = shallow(<PeriqlesForm {...props} />);
-      // wrapper.simulate('')
-    })
+    it('Should render a form tag with an onSubmit function', () => {
+      // wrapper.find('PeriqlesForm').simulate('submit');
+      // expect(props.handleSubmit).toHaveBeenCalledTimes(1);
+    });
 
-    it ('Should render a h2 tag with headerText props', () => {
-      const props = {
+    // it('Should render a form tag with that calls handleSubmit with the synthetic event and fields as arguments onSubmit', () => {});
 
-      }
+    it('Should render a H2 tag with headerText props', () => {
+      // expect(wrapper.find('h2')).to.have.length(1);
+      // expect(wrapper.find('h2')).text.toEqual(props.headerText);
+    });
 
-    })
+    it('Should be passed a props called field that is an array of input tags', () => {
+      // expect(wrapper.find());
+    });
 
-    it ('Should render input elements if the field prop has a length > 0', () => {
+    it('Should be passed a props called renderFields that is a function that takes a single argument', () => {});
 
-    })
+    it('Should call the renderFields function if the field prop has a length > 0', () => {});
 
-    it ('Should render a p tag with the  "Loading form..." if the field prop has a length > 0', () => {
+    it('Should render multiple input elements if the field prop has a length > 0 ', () => {});
 
-    })
+    it('Should render a p tag with the  "Loading form..." if the field prop has a length > 0', () => {});
 
-    it ('Should render a button with a className of periqles-submit', () => {
+    it('Should render a button with a className of periqles-submit', () => {});
 
-    })
+    it('Should render a button with an onSubmit event handler', () => {});
 
-    it ('Should render a button with an onSubmit function that calls handleSubmit with the synthetic event and fields as arguments', () => {
+    it('Should render a button with that calls the handleSubmit function with the synthetic event and fields as arguments on submit', () => {});
 
-    })
+    it('Should render a p tag with the  "Loading form..." if the field prop has a length > 0', () => {});
 
-    it ('Should render a button with the text "Submit"', () => {
+    it('Should render a button with a className of periqles-submit', () => {});
 
-    })
+    it('Should render a button with an onSubmit event handler', () => {});
 
+    it('Should render a button with that calls the handleSubmit function with the synthetic event and fields as arguments on submit', () => {});
 
-  })
-})
-
-
-
-//PERIQLES FORM COMPONENT FOR REFERENCE
-// <form
-// className="PeriqlesForm"
-// aria-labelledby="form"
-// onSubmit={(e) => handleSubmit(e, fields)}>
-// <h2>{headerText}</h2>
-// {fields.length ? renderFields(fields) : <p>Loading form...</p>}
-// <button
-//   className="periqles-submit"
-//   onClick={(e) => handleSubmit(e, fields)}>
-//   Submit
-// </button>
-// </form>
-
-
-//USER PROFILE COMPONENT FOR REFERENCE
-{/* <section className="UserProfile">
-      <h1>Periqles Demo</h1>
-      <section className="UserProfile-flex">
-        <PeriqlesForm
-          environment={modernEnvironment}
-          mutationName={'AddUser'}
-          mutationGQL={mutationGQL}
-          specifications={specifications}
-          args={args}
-          callbacks={{onSuccess, onFailure}}
-        />
-        <main className="UserProfile-main">
-          <h2>Most Recently Added User</h2>
-          <QueryRenderer
-            environment={modernEnvironment}
-            query={graphql`
-              query UserProfileQuery {
-                demoUser {
-                  userId
-                  username
-                  password
-                  email
-                  gender
-                  pizzaTopping
-                  age
-                }
-              }
-            `}
-            render={({error, props}: {error: Error; props: QueryResponse}) => {
-              if (props && !props.demoUser) {
-                return <p>Sign up...</p>;
-              }
-              if (props && props.demoUser) {
-                const {demoUser} = props;
-                console.log('Rendering DemoUser query response...');
-                return (
-                  <ul>
-                    <li className="userDisplayItem">
-                      Username: {demoUser.username}
-                    </li>
-                    <li className="userDisplayItem">Email: {demoUser.email}</li>
-                    <li className="userDisplayItem">
-                      Gender: {demoUser.gender}
-                    </li>
-                    <li className="userDisplayItem">
-                      Favorite Pizza Topping: {demoUser.pizzaTopping}
-                    </li>
-                    <li className="userDisplayItem">Age: {demoUser.age}</li>
-                  </ul>
-                );
-              } else if (error) {
-                // return <p>{error.message}</p>;
-                console.error(error.message);
-              }
-
-              return <p>Loading...</p>;
-            }}
-          />
-        </main>
-      </section>
-    </section> */}
+    it('Should render a button with the text "Submit"', () => {});
+  });
+});
+// PERIQLES FORM COMPONENT FOR REFERENCE
