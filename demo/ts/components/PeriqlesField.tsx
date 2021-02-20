@@ -7,23 +7,16 @@ const PeriqlesField = ({
   formState,
   setFormState,
   handleChange,
-}: PeriqlesFieldProps) => {
-  // console.log(`Rendering PeriqlesField for ${field.name}`);
-  const renderField = () => {
-    if (!specs) {
-      return generateDefaultElement(field, formState, handleChange);
-    }
-
-    return generateSpecifiedElement(
-      field,
-      specs,
-      formState,
-      setFormState,
-      handleChange,
-    );
-  };
-
-  return renderField();
+}: PeriqlesFieldProps): JSX.Element => {
+  return (specs 
+    ? generateSpecifiedElement(
+        field,
+        specs,
+        formState,
+        setFormState,
+        handleChange,
+      ) 
+    : generateDefaultElement(field, formState, handleChange));
 };
 
 export default PeriqlesField;
