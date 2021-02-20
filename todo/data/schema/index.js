@@ -1,9 +1,7 @@
-import graphql from 'graphql';
-import {nodeField} from './nodes.js';
-import {demoUserQuery} from './queries/demoUserQuery.js';
-import {AddUserMutation} from './mutations/AddUserMutation.js';
-
-const {GraphQLObjectType, GraphQLSchema} = graphql;
+const {GraphQLObjectType, GraphQLSchema} = require('graphql');
+const {nodeField} = require('./nodes.js');
+const {demoUserQuery} = require('./queries/demoUserQuery.js');
+const {AddUserMutation} = require('./mutations/AddUserMutation.js');
 
 const Query = new GraphQLObjectType({
   name: 'Query',
@@ -20,7 +18,9 @@ const Mutation = new GraphQLObjectType({
   },
 });
 
-export const schema = new GraphQLSchema({
+const schema = new GraphQLSchema({
   query: Query,
   mutation: Mutation,
 });
+
+module.exports = {schema};

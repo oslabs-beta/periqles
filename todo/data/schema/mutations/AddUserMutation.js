@@ -1,7 +1,7 @@
-import graphqlRelay from 'graphql-relay';
-import graphql from 'graphql';
-import {GenderEnum, PizzaToppingEnum} from '../nodes.js';
-import {addUser, getDemoUserOrThrow} from '../../database.js';
+const graphqlRelay = require('graphql-relay');
+const graphql = require('graphql');
+const {GenderEnum, PizzaToppingEnum} = require('../nodes.js');
+const {addUser, getDemoUserOrThrow} = require('../../database.js');
 
 const {mutationWithClientMutationId} = graphqlRelay;
 const {GraphQLNonNull, GraphQLString, GraphQLInt} = graphql;
@@ -52,4 +52,4 @@ const AddUserMutation = mutationWithClientMutationId({
   },
 });
 
-export {AddUserMutation};
+module.exports = {AddUserMutation};

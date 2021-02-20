@@ -79,6 +79,5 @@
     "trailingComma": "all",
     "bracketSpacing": false,
     "jsxBracketSameLine": true
-  },
-  "type": "module"
+  }
 }

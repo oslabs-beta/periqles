@@ -1,7 +1,8 @@
-import jestConfig from 'jest-config';
-const {defaults} = jestConfig;
+// import jestConfig from 'jest-config';
+// const {defaults} = jestConfig;
+const {defaults} = require('jest-config');
 
-export default {
+module.exports = {
   roots: ['./__tests__'],
   globals: {
     'ts-jest': {
@@ -36,22 +37,6 @@ export default {
   },
   // Tells Jest what folders to ignore for tests
   testPathIgnorePatterns: [`node_modules`, `\\.cache`],
-  testURL: `http://localhost`,
-  moduleFileExtensions: [
-    ...defaults.moduleFileExtensions,
-    '.ts',
-    '.tsx',
-    '.js',
-    '.jsx',
-  ],
-  testURL: `http://localhost`,
-  moduleFileExtensions: [
-    ...defaults.moduleFileExtensions,
-    '.ts',
-    '.tsx',
-    '.js',
-    '.jsx',
-  ],
   testURL: `http://localhost`,
   moduleFileExtensions: [
     ...defaults.moduleFileExtensions,

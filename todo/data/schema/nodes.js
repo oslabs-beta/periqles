@@ -1,10 +1,15 @@
-// note: import statements must be single-line. Multiline import statements not yet supported by experimental ES6 module loader.
-import graphql from 'graphql';
-import graphqlRelay from 'graphql-relay';
-import {DemoUser, getDemoUserOrThrow} from '../database.js';
+const {
+  GraphQLNonNull,
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLEnumType,
+  GraphQLInt,
+} = require('graphql');
+const {fromGlobalId, globalIdField, nodeDefinitions} = require('graphql-relay');
+const {DemoUser, getDemoUserOrThrow} = require('../database.js');
 
-const {GraphQLNonNull, GraphQLObjectType, GraphQLString, GraphQLEnumType, GraphQLInt} = graphql;
-const {fromGlobalId, globalIdField, nodeDefinitions} = graphqlRelay;
+// const {GraphQLNonNull, GraphQLObjectType, GraphQLString, GraphQLEnumType, GraphQLInt} = graphql;
+// const {fromGlobalId, globalIdField, nodeDefinitions} = graphqlRelay;
 
 const {nodeInterface, nodeField} = nodeDefinitions(
   (globalId) => {
@@ -98,4 +103,4 @@ const demoGraphQLUser = new GraphQLObjectType({
   interfaces: [nodeInterface],
 });
 
-export {nodeField, demoGraphQLUser, GenderEnum, PizzaToppingEnum};
+module.exports = {nodeField, demoGraphQLUser, GenderEnum, PizzaToppingEnum};

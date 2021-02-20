@@ -1,7 +1,7 @@
-import path from 'path';
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
+const path = require('path');
+// const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
-module.e{
+module.exports = {
   mode: process.env.NODE_ENV,
   // entry: './dist/app.js',
   entry: './ts/app.tsx',
