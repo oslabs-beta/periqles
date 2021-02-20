@@ -169,4 +169,4 @@ return {
 // prettier-ignore
 (node/*: any*/).hash = '580eda27b22841abb40c50c703c7ed8d';
 
-export default node;
+module.exports = node;

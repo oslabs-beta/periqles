@@ -130,6 +130,7 @@ const PeriqlesForm = ({
 
   return (
     <form
+      role="form"
       className="PeriqlesForm"
       aria-labelledby="form"
       onSubmit={(e) => handleSubmit(e, fields)}>
