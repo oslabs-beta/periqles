@@ -1,7 +1,7 @@
 //DEMO USER CLASSES, FUNCTIONS AND INFO
 
 // DemoUser class:
-export class DemoUser {
+class DemoUser {
   constructor(userId, username, password, email, gender, pizzaTopping, age) {
     this.userId = userId;
     this.username = username;
@@ -25,7 +25,7 @@ let nextUserId = 1;
 function getDemoUser(userId) {
   return demoUsersById.get(userId);
 }
-export function getDemoUserOrThrow(userId) {
+function getDemoUserOrThrow(userId) {
   // console.log('hello from getDemoUserOrThrow');
   const demoUser = getDemoUser(userId);
 
@@ -36,7 +36,7 @@ export function getDemoUserOrThrow(userId) {
   return demoUser;
 }
 
-export function getLastDemoUserOrThrow() {
+function getLastDemoUserOrThrow() {
   // console.log('hello from getDemoUserOrThrow');
   let lastDemoUser;
   const demoUsersIterator = demoUsersById[Symbol.iterator]();
@@ -49,7 +49,7 @@ export function getLastDemoUserOrThrow() {
   return lastDemoUser;
 }
 
-export function getAllUsers() {
+function getAllUsers() {
   // console.log('hello from getDemoUserOrThrow');
   let demoUserList = [];
   const demoUsersIterator = demoUsersById[Symbol.iterator]();
@@ -63,7 +63,7 @@ export function getAllUsers() {
 }
 
 // addUser function
-export function addUser({
+function addUser({
   userId,
   username,
   password,
@@ -85,3 +85,11 @@ export function addUser({
   console.log('newUser is', newUser);
   return newUser.userId;
 }
+
+module.exports = {
+  DemoUser,
+  getDemoUserOrThrow,
+  getLastDemoUserOrThrow,
+  getAllUsers,
+  addUser,
+};

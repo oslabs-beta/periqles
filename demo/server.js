@@ -1,12 +1,10 @@
-import express from 'express';
-import expressGraphql from 'express-graphql';
-import path from 'path';
-import cors from 'cors';
-// import periqles from 'periqles';
-import {schema} from './data/schema/index.js';
+const express = require('express');
+const expressGraphql = require('express-graphql');
+const path = require('path');
+const cors = require('cors');
+// const periqles = require('periqles');
+const {schema} = require('./data/schema/index.js');
 const {graphqlHTTP} = expressGraphql;
-// must manually define __dirname b/c it is not included in ES6 modules, only in CommonJS.
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 const app = express();
 // var corsOptions = {
@@ -24,7 +22,10 @@ app.use('*', (req, res, next) => {
 
 // Serve static assets
 // only needed when in production mode
-if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === undefined) {
+if (
+  process.env.NODE_ENV === 'production' ||
+  process.env.NODE_ENV === undefined
+) {
   app.use('/', express.static(path.resolve(__dirname, 'public')));
   app.use('/dist/', express.static(path.join(__dirname, 'dist')));
 }

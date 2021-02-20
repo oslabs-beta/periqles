@@ -1,6 +1,10 @@
 // import {GraphQLString} from 'graphql';
-import {demoGraphQLUser} from '../nodes.js';
-import {DemoUser, getLastDemoUserOrThrow, getAllUsers} from '../../database.js';
+const {demoGraphQLUser} = require('../nodes.js');
+const {
+  DemoUser,
+  getLastDemoUserOrThrow,
+  getAllUsers,
+} = require('../../database.js');
 
 const demoUserQuery = {
   type: demoGraphQLUser,
@@ -14,4 +18,4 @@ const demoUserQuery = {
   },
 };
 
-export {demoUserQuery};
+module.exports = {demoUserQuery};
