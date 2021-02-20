@@ -1,9 +1,8 @@
-/* eslint-disable flowtype/object-type-delimiter */
 type Scalar = number | boolean | string;
 type FormState = Record<string, number | string>;
 
-// PROPS FOR PERIQLES COMPONENTS
 
+// PROPS FOR PERIQLES COMPONENTS
 interface PeriqlesSpecifications {
   fields: Record<string, PeriqlesFieldSpecs>;
 }
@@ -43,8 +42,6 @@ interface PeriqlesFieldOption {
   value: number | string;
   type: string;
 }
-
-// TODO: define callback function types, need to view response object from successful mutation & error object from failure
 interface PeriqlesCallbacks {
   onSuccess?: (response: object) => any;
   onFailure?: (err: object) => any;
@@ -76,6 +73,21 @@ interface PeriqlesFieldProps {
   setFormState: React.Dispatch<React.SetStateAction<FormState>>;
 }
 
+// PERIQLES HELPER FUNCTIONS
+type GenerateDefaultElement = (params: {
+  field: PeriqlesField,
+  formState: FormState,
+  handleChange: (e) => void,
+}) => JSX.Element;
+
+type GenerateSpecifiedElement = (params: {
+  field: PeriqlesField,
+  specs: PeriqlesFieldSpecs,
+  formState: FormState,
+  handleChange: (e) => void,
+  setFormState: React.Dispatch<React.SetStateAction<FormState>>,
+}) => JSX.Element;
+
 // RESULT OF INTROSPECTION QUERY
 
 interface InputType {
@@ -106,10 +118,8 @@ interface EnumValue {
   name: number | string;
 }
 
-type FlatObject = Record<string, string | boolean | number>;
-
 // commitMutation parameters
-type Input = FlatObject;
+type Input = Record<string, string | boolean | number>;
 interface Variables {
   input: Input;
 }

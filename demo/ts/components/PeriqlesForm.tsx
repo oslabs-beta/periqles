@@ -44,7 +44,7 @@ const PeriqlesForm = ({
         (fieldObj) => fieldObj.name === fieldNames[i],
       )[0];
       if (fieldObj.required && formState[fieldNames[i]] === '') {
-        window.alert(`The following field is REQUIRED: ${fieldObj.label}`);
+        window.alert(`The following field is required: ${fieldObj.label}`);
         return;
       }
     }
@@ -67,15 +67,16 @@ const PeriqlesForm = ({
   };
 
   const handleChange = (e): void => {
-    console.log('Handling change');
     const {name, value, type} = e.target;
     let useValue = value;
     // type-coerce values from number input elements before storing in state
-    if (type === 'number') {
+    if (type === 'number' && typeof value !== 'number') {
       useValue -= 0;
     }
 
-    setFormState({...formState, [name]: useValue});
+    const newState = Object.assign({}, formState);
+    newState[name] = useValue;
+    setFormState(newState);
   };
 
   const renderFields = (fields: PeriqlesField[]) => {
