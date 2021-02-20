@@ -2,7 +2,6 @@ const express = require('express');
 const expressGraphql = require('express-graphql');
 const path = require('path');
 const cors = require('cors');
-// const periqles = require('periqles');
 const {schema} = require('./data/schema/index.js');
 const {graphqlHTTP} = expressGraphql;
 
@@ -24,16 +23,8 @@ app.use('*', (req, res, next) => {
 app.use(express.static(path.join(__dirname, 'public')));
 
 // only needed when in production mode
-<<<<<<< HEAD:todo/server.js
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === undefined) {
   app.use('/', express.static(path.join(__dirname, 'public')));
-=======
-if (
-  process.env.NODE_ENV === 'production' ||
-  process.env.NODE_ENV === undefined
-) {
-  app.use('/', express.static(path.resolve(__dirname, 'public')));
->>>>>>> 30aa1a4f5279732b06dcdcbee34dd983dff29f3e:demo/server.js
   app.use('/dist/', express.static(path.join(__dirname, 'dist')));
 }
 
