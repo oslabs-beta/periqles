@@ -1,9 +1,12 @@
-import path from 'path';
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
+const path = require('path');
 
-export default {
+module.exports = {
   mode: 'production',
-  entry: './src/index.tsx',
+  entry: './src/PeriqlesForm.tsx',
+  // entry: {
+  //   'periqles-lib': './src/PeriqlesForm.tsx',
+  //   'periqles-lib.min': './src/PeriqlesForm.tsx'
+  // },
   output: {
     path: path.resolve(__dirname, '_bundles'),
     filename: 'periqles.js',
@@ -31,9 +34,6 @@ export default {
         use: ['style-loader', 'css-loader'],
       },
     ],
-  },
-  optimization: {
-    minimize: true,
   },
   devtool: 'source-map',
   externals: 'react',   // enables periqles to use host project's copy of React

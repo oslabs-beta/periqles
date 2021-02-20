@@ -27,7 +27,6 @@
   "files": [
     "./types/index.d.ts",
     "./src/functions.tsx",
-    "./src/index.tsx",
     "./src/PeriqlesField.tsx",
     "./src/PeriqlesForm.tsx",
   ]

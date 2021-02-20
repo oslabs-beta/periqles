@@ -87,6 +87,5 @@
   "jest": {
     "globalSetup": "./__tests__/jest-setup.js",
     "globalTeardown": "./__tests__/jest-teardown.js"
-  },
-  "type": "module"
+  }
 }
