@@ -150,7 +150,7 @@ export const fieldsArrayGenerator = (
 /* eslint-disable flowtype/no-types-missing-file-annotation */
 /**
  * Builds an HTML element to collect user input for a GraphQL mutation based on user-provided instructions.
- * @param {Object} field An object representing an input field for a GraphQL mutation. Example: {name: "name", type: "String"}
+ * @param {Object} field An object representing an input field for a GraphQL mutation.
  * @param {Object} specs An object representing developer-specified information to use for an HTML element representing this field. 
  * @param {Function} handleChange
  * @param {Object} formState
