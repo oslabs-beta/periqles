@@ -93,65 +93,62 @@ const UserProfile = (): JSX.Element => {
 
   return (
     <section className="UserProfile">
-      <h1>Periqles Demo</h1>
-      <section className="UserProfile-flex">
-        <PeriqlesForm
+      <PeriqlesForm
+        environment={modernEnvironment}
+        mutationName={'AddUser'}
+        mutationGQL={mutationGQL}
+        specifications={specifications}
+        args={args}
+        callbacks={{onSuccess, onFailure}}
+      />
+      <main className="UserProfile-main">
+        <h2>Most Recently Added User</h2>
+        <QueryRenderer
           environment={modernEnvironment}
-          mutationName={'AddUser'}
-          mutationGQL={mutationGQL}
-          specifications={specifications}
-          args={args}
-          callbacks={{onSuccess, onFailure}}
-        />
-        <main className="UserProfile-main">
-          <h2>Most Recently Added User</h2>
-          <QueryRenderer
-            environment={modernEnvironment}
-            query={graphql`
-              query UserProfileQuery {
-                demoUser {
-                  userId
-                  username
-                  password
-                  email
-                  gender
-                  pizzaTopping
-                  age
-                }
+          query={graphql`
+            query UserProfileQuery {
+              demoUser {
+                userId
+                username
+                password
+                email
+                gender
+                pizzaTopping
+                age
               }
-            `}
-            render={({error, props}: {error: Error; props: QueryResponse}) => {
-              if (props && !props.demoUser) {
-                return <p>Sign up...</p>;
-              }
-              if (props && props.demoUser) {
-                const {demoUser} = props;
-                console.log('Rendering DemoUser query response...');
-                return (
-                  <ul>
-                    <li className="userDisplayItem">
-                      Username: {demoUser.username}
-                    </li>
-                    <li className="userDisplayItem">Email: {demoUser.email}</li>
-                    <li className="userDisplayItem">
-                      Gender: {demoUser.gender}
-                    </li>
-                    <li className="userDisplayItem">
-                      Favorite Pizza Topping: {demoUser.pizzaTopping}
-                    </li>
-                    <li className="userDisplayItem">Age: {demoUser.age}</li>
-                  </ul>
-                );
-              } else if (error) {
-                // return <p>{error.message}</p>;
-                console.error(error.message);
-              }
+            }
+          `}
+          render={({error, props}: {error: Error; props: QueryResponse}) => {
+            if (props && !props.demoUser) {
+              return <p>Sign up...</p>;
+            }
+            if (props && props.demoUser) {
+              const {demoUser} = props;
+              console.log('Rendering DemoUser query response...');
+              return (
+                <ul>
+                  <li className="userDisplayItem">
+                    Username: {demoUser.username}
+                  </li>
+                  <li className="userDisplayItem">Email: {demoUser.email}</li>
+                  <li className="userDisplayItem">
+                    Gender: {demoUser.gender}
+                  </li>
+                  <li className="userDisplayItem">
+                    Favorite Pizza Topping: {demoUser.pizzaTopping}
+                  </li>
+                  <li className="userDisplayItem">Age: {demoUser.age}</li>
+                </ul>
+              );
+            } else if (error) {
+              // return <p>{error.message}</p>;
+              console.error(error.message);
+            }
 
-              return <p>Loading...</p>;
-            }}
-          />
-        </main>
-      </section>
+            return <p>Loading...</p>;
+          }}
+        />
+      </main>
     </section>
   );
 };
