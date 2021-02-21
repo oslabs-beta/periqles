@@ -11,11 +11,11 @@ const Demo = (): JSX.Element => {
       <h3>Choose your client:</h3>
       <div id="client-switch">
         Apollo
-        <label class="switch">
+        <label className="switch">
           <input type="checkbox" 
           checked={relay}
           onChange={(e) => setRelay(e.target.checked)}/>
-          <span class="slider round"></span>
+          <span className="slider round"></span>
         </label>
         Relay
       </div>

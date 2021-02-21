@@ -1,4 +1,5 @@
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: process.env.NODE_ENV,
@@ -40,7 +41,22 @@ module.exports = {
         test: /\.(css)$/,
         use: ['style-loader', 'css-loader'],
       },
+      // use this loader if you want to require assets into files where they are used
+      {
+        test: /\.(png|jpg|jpeg|gif|ttf|woff|woff2)$/,
+        loader: 'file-loader',
+        options: {
+            publicPath: 'dist'  // after build, static assets currently in ./public will be findable in ./dist/public
+        }
+      },
     ],
   },
+  plugins: [
+    new CopyWebpackPlugin({
+        patterns: [
+            { from: 'public/assets' }
+        ]
+    })
+  ],
   devtool: 'source-map',
 };

@@ -92,9 +92,9 @@ a:visited {
 }
 
 .LogoSection {
-  padding-top: 75px;
   background-color: black;
   color: white;
+  padding: 75px 30px 30px 30px;
   width: 100vw;
   height: 500px;
   display: flex;
@@ -105,6 +105,7 @@ a:visited {
 .LinksSection {
   background-color: #b1c955;
   color: white;
+  padding: 30px;
   width: 100vw;
   height: 400px;
   display: flex;
@@ -112,10 +113,24 @@ a:visited {
   align-items: center;
 }
 
+#long-pitch {
+  margin-top: 100px;
+}
+
+.repo-logos {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.marketing-logo {
+  margin: 0 10px;
+}
+
 .Demo {
   width: 100%;
   margin: 0 auto;
-  padding: 30px 0 30px 30px;
+  padding: 30px;
   text-align: center;
 }
 
@@ -226,12 +241,23 @@ input:checked + .slider:before {
 }
 
 @media (min-width: 1000px) {
-  .LogoSection, .LinksSection, .UserProfile {
+  .LogoSection, .LinksSection {
     flex-direction: row;
     justify-content: space-evenly;
+    padding: 30px 15%;
+  }
+
+  #long-pitch {
+    margin-top: 10px;
+  }
+
+  .marketing-logo {
+    margin: 0 20px;
   }
 
   .UserProfile {
+    flex-direction: row;
+    justify-content: space-evenly;
     align-items: flex-start;
   }
 
@@ -245,6 +271,7 @@ input:checked + .slider:before {
 
   footer {
     text-align: left;
+    padding-left: 15%;
   }
 
   #short-pitch, #long-pitch {
