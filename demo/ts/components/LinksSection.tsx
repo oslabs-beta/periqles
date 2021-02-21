@@ -12,9 +12,9 @@ const LinksSection = (): JSX.Element => {
       </a>
     
       {/* <div className="PitchArea"> */}
-      <p className="pitch" id="long-pitch">
+      <h3 className="pitch" id="long-pitch">
         Periqles is great! Periqles is awesome! Give periqles a try today!
-      </p>
+      </h3>
       {/* </div> */}
     </div>
   );
