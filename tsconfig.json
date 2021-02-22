@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": "./lib/", // path to output directory
     "sourceMap": true, // allow sourcemap support
-    "strictNullChecks": true, // enable strict null checks as a best practice
+    // "strictNullChecks": true, // enable strict null checks as a best practice
     "module": "es6", // syntax for generated modules
     "jsx": "react", // use typescript to transpile jsx to js
     "target": "es5", // specify ECMAScript target version

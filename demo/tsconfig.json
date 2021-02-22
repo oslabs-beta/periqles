@@ -17,7 +17,6 @@
     "esModuleInterop": true, //flag enabled for compatibility with Jest (and Babel):
     "typeRoots": [
       "./types",
-      "./types/periqles/index.d.ts",
       "node_modules/@types"
     ]
   },
