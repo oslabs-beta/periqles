@@ -1,17 +1,17 @@
-import * as 'react'
+import * as React from 'react'
 
 const LogoSection = (): JSX.Element => {
 
   return (
-    <><div className="LogoSection">
-      <img className = "MarketingLogo" src='/public/assets/npm-logo-black.svg' alt="NPM"><a href="" /></img>
-      <img className = "MarketingLogo" src='/public/assets/Github-Mark-64px.png' alt="Github"><a href='https://github.com/oslabs-beta/periqles' /></img>
+    <div className="LogoSection">
+      <img className="periqles-logo marketing-logo" 
+      src="../../public/assets/periqles-logo.png" alt="periqles" 
+      height="225"
+      width="250"/>
+      <h2 className="pitch" id="short-pitch">
+        Periqles is great!
+      </h2>
     </div>
-      <div className="PitchArea">
-        <textarea className = "MarketingPitch" >
-        
-        </textarea>
-      </div></>
   );
 };
 
