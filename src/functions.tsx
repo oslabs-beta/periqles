@@ -255,7 +255,6 @@ export const generateSpecifiedElement: GenerateSpecifiedElement = ({
         </div>
       );
 
-    // TODO: handle non-null/non-null-default selects
     case 'select':
       if (!field.options || !field.options.length) break;
 
@@ -285,8 +284,17 @@ export const generateSpecifiedElement: GenerateSpecifiedElement = ({
           <select
             className={field.name + '-select periqles-select'}
             name={field.name}
-            defaultValue={selectOptions[0].value}
+            // defaultValue={selectOptions[0].value}
+            defaultValue={''}
             onChange={handleChange}>
+            <option
+                key={`${field.name}selectnulloption`}
+                value={''}
+                className={
+                  field.name + '-select-option periqles-select-option'
+                }>
+                Choose one...
+            </option>
             {selectOptions.map((option) => {
               return (
                 <option
@@ -384,20 +392,29 @@ export const generateDefaultElement: GenerateDefaultElement = ({field, formState
           <select
             className={field.name + '-select periqles-select'}
             name={field.name}
-            defaultValue={selectOptions[0].value}
+            // defaultValue={selectOptions[0].value}
+            defaultValue={''}
             onChange={handleChange}>
-            {selectOptions.map((option) => {
-              return (
-                <option
-                  key={`${field.name}select${option.name}option`}
-                  value={option.value}
-                  className={
-                    field.name + '-select-option periqles-select-option'
-                  }>
-                  {option.label}
-                </option>
-              );
-            })}
+              <option
+                key={`${field.name}selectnulloption`}
+                value={''}
+                className={
+                  field.name + '-select-option periqles-select-option'
+                }>
+                Choose one...
+              </option>
+              {selectOptions.map((option) => {
+                return (
+                  <option
+                    key={`${field.name}select${option.name}option`}
+                    value={option.value}
+                    className={
+                      field.name + '-select-option periqles-select-option'
+                    }>
+                    {option.label}
+                  </option>
+                );
+              })}
           </select>
         </label>
       );

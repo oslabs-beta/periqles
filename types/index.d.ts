@@ -4,7 +4,8 @@ type FormState = Record<string, number | string>;
 
 // PROPS FOR PERIQLES COMPONENTS
 interface PeriqlesSpecifications {
-  fields: Record<string, PeriqlesFieldSpecs>;
+  header?: string;
+  fields?: Record<string, PeriqlesFieldSpecs>;
 }
 
 interface PeriqlesFieldSpecs {

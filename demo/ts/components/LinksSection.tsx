@@ -12,15 +12,13 @@ const LinksSection = (): JSX.Element => {
           <img className="marketing-logo" 
           src="../../public/assets/npm-logo-black.png" 
           alt="NPM" 
-          width="75"
-          height="50"/>
+          width="100"/>
         </a>
         <a href="https:\/\/github.com/oslabs-beta/periqles">
           <img className="marketing-logo" 
           src="../../public/assets/Github-Mark-64px.png" 
           alt="Github" 
-          width="75"
-          height="75"/>
+          width="75"/>
         </a>
       </div>
     </div>

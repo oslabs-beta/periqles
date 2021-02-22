@@ -15,11 +15,11 @@ const CreatorCard = ({author}: AuthorCardProps): JSX.Element => {
 
   return (
     <p className="AuthorCard">
-      <img className="author-img" 
+      {/* <img className="author-img" 
       src={img} 
       alt={name}
       width="75"
-      height="75"></img>
+      height="75"></img> */}
       <a href={link} className="author-link">{name}</a>
     </p>
   );

@@ -97,17 +97,12 @@ const PeriqlesForm = ({
     });
   };
 
-  let headerText: string = mutationName
-    .replace('Mutation', '')
-    .replace(/([a-z])([A-Z])/g, '$1 $2'); // add spaces before capital letters
-  headerText = headerText[0].toUpperCase() + headerText.slice(1);
-
   return (
     <form
       className="PeriqlesForm"
       aria-labelledby="form"
       onSubmit={(e) => handleSubmit(e, fields)}>
-      <h2>{headerText}</h2>
+        {specifications.header && <h2>{specifications.header}</h2>}
       {fields.length ? renderFields(fields) : <p>Loading form...</p>}
       <button
         className="periqles-submit"

@@ -45,18 +45,16 @@ const UserProfile = (): JSX.Element => {
   `;
 
   const specifications: PeriqlesSpecifications = {
+    header: 'Sign Up',
     fields: {
       gender: {
         element: 'radio',
         label: 'Gender',
         options: [
-          {label: 'nonbinary', value: 'NON_BINARY'},
-          {label: 'male', value: 'MALE'},
-          {label: 'female', value: 'FEMALE'},
+          {label: <span style={{color:'green'}}>non-binary</span>, value: 'NON_BINARY'},
+          {label: <span style={{color:'blue'}}>male</span>, value: 'MALE'},
+          {label: <span style={{color:'red'}}>female</span>, value: 'FEMALE'},
         ],
-        // render: (formState, setFormState, handleChange) => {
-        //  return <label>Gender:<input onChange={handleChange} /></label>
-        // }
       },
       pizzaTopping: {
         label: 'Favorite pizza topping:',
@@ -69,9 +67,6 @@ const UserProfile = (): JSX.Element => {
           {label: 'olives', value: 'OLIVES'},
           {label: 'hawaiian', value: 'HAWAIIAN'},
         ],
-        // render: (formState, setFormState, handleChange) => {
-        //  return <input onChange= {handleChange} />
-        // },
       },
     },
   };
@@ -136,8 +131,8 @@ const UserProfile = (): JSX.Element => {
                 </ul>
               );
             } else if (error) {
-              // return <p>{error.message}</p>;
-              console.error(error.message);
+              console.error(error);
+              return <p>Something went wrong...</p>;
             }
 
             return <p>Loading...</p>;
