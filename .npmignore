@@ -9,3 +9,5 @@ periqles-logo.png
 package-lock.json
 demo/**
 periqles-**.tgz
+Procfile
+.env

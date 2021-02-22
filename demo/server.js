@@ -6,6 +6,7 @@ const {schema} = require('./data/schema/index.js');
 const {graphqlHTTP} = expressGraphql;
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 // var corsOptions = {
 //   origin: 'http://localhost:8080', // TODO
 // };
@@ -26,6 +27,7 @@ app.use(express.static(path.resolve(__dirname, '/', 'public')));
 
 // only needed when in production mode
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === undefined) {
+  console.log('Serving /');
   app.use('/', express.static(path.join(__dirname, 'public/*')));
   app.use('/dist/', express.static(path.join(__dirname, 'dist')));
 }
@@ -67,7 +69,6 @@ app.use((err, req, res, next) => {
   res.status(error.status).send(error.message);
 });
 
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Backend server listening on port: ${PORT}`);
 });
