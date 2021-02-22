@@ -1,27 +1,25 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import UserProfile from './components/UserProfile';
-import {
-  ApolloClient,
-  NormalizedCacheObject,
-  ApolloProvider
-} from '@apollo/client';
-import { cache } from './apolloCache';
-import ApolloUserProfile from './components/ApolloUserProfile';
+
+import Demo from './components/Demo';
+import Creators from './components/Creators';
+import LogoSection from './components/LogoSection';
+import LinksSection from './components/LinksSection';
 
 const rootElement = document.getElementById('root');
-const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
-  cache,
-  uri: 'http://localhost:3000/graphql/apollo'
-});
+
 
 if (rootElement) {
   ReactDOM.render(
     <React.StrictMode>
-      <UserProfile />
-      <ApolloProvider client={client}>
-        <ApolloUserProfile />
-      </ApolloProvider>
+      <header>
+        {/* header returns user to top of page on click */}
+        <h1><a href="#">periqles</a></h1>
+      </header>
+      <LogoSection />
+      <LinksSection />
+      <Demo />
+      <Creators />
     </React.StrictMode>,
     rootElement,
   );

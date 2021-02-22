@@ -6,7 +6,7 @@ const {
   GraphQLInt,
 } = require('graphql');
 const {fromGlobalId, globalIdField, nodeDefinitions} = require('graphql-relay');
-const {DemoUser, getDemoUserOrThrow} = require('../database.js');
+const {DemoUser, getLastDemoUserOrThrow} = require('../database.js');
 
 // const {GraphQLNonNull, GraphQLObjectType, GraphQLString, GraphQLEnumType, GraphQLInt} = graphql;
 // const {fromGlobalId, globalIdField, nodeDefinitions} = graphqlRelay;
@@ -15,13 +15,13 @@ const {nodeInterface, nodeField} = nodeDefinitions(
   (globalId) => {
     const {type, id} = fromGlobalId(globalId);
     if (type === 'DemoUser') {
-      return getDemoUserOrThrow(id);
+      return getLastDemoUserOrThrow();
     }
     return null;
   },
   (obj) => {
     if (obj instanceof DemoUser) {
-      return demoGraphQLUser;
+      return obj;
     }
 
     return null;
@@ -100,7 +100,7 @@ const demoGraphQLUser = new GraphQLObjectType({
       resolve: (demoUser) => demoUser.age,
     },
   },
-  interfaces: [nodeInterface],
+  // interfaces: [nodeInterface],
 });
 
 module.exports = {nodeField, demoGraphQLUser, GenderEnum, PizzaToppingEnum};

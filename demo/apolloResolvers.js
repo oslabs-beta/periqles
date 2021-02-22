@@ -1,6 +1,6 @@
-import { getLastDemoUserOrThrow, addUser } from './data/database.js';
+const { getLastDemoUserOrThrow, addUser } = require('./data/database.js');
 
-export default {
+module.exports = {
   Query: {
    // demoUser: (_, __, { database }) => database.getLastDemoUserOrThrow(),
    demoUser: (_, __, ___) => getLastDemoUserOrThrow(),

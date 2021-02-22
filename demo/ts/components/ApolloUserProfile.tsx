@@ -1,17 +1,7 @@
 /* eslint-disable*/
 import React, {useState} from 'react';
 import { gql, useQuery, useMutation } from '@apollo/client';
-// import {createFragmentContainer, QueryRenderer, graphql} from 'react-relay';
-// import {
-//   Environment,
-//   Network,
-//   RecordSource,
-//   Store,
-//   type RequestNode,
-//   type Variables,
-// } from 'relay-runtime';
-// import AddUserMutation from '../mutations/AddUserMutation';
-import PeriqlesForm from './PeriqlesForm';
+import PeriqlesForm from 'periqles';
 
 // fragment variable name will be referenced in query
 // syntax: fragment [FRAGMENT_NAME] on [SCHEMA_TYPE_NAME]
@@ -53,14 +43,14 @@ mutation AddUser($input: AddUserInput!){
 
 const ApolloUserProfile = () => {
   const [updated, setUpdate] = useState(false);
-  // addUser function is returned from useMutaion hook given ADD_USER mutation string
+  // useQuery hook to call GET_USER query, returns object containing { data, loading, error }
   const {
     data,
     loading,
     error,
     refetch
   } = useQuery(GET_USER);
-
+  // addUser function is returned from useMutation hook given ADD_USER mutation string
   const [
     addUser,
     respObj // can pull data, loading & error from this obj
@@ -77,23 +67,34 @@ const ApolloUserProfile = () => {
     // }
   );
 
-  // test input
-  // const input = {
-  //   username: 'ian',
-  //   password: 'ian',
-  //   email: 'ian@ian.com',
-  //   gender: 'NON_BINARY',
-  //   pizzaTopping: 'BUFFALO_CHICKEN',
-  //   age: 1000
-  // };
+  const specifications: PeriqlesSpecifications = {
+    header: 'Sign Up',
+    fields: {
+      gender: {
+        element: 'radio',
+        label: 'Gender',
+        options: [
+          {label: <span style={{color:'green'}}>non-binary</span>, value: 'NON_BINARY'},
+          {label: <span style={{color:'blue'}}>male</span>, value: 'MALE'},
+          {label: <span style={{color:'red'}}>female</span>, value: 'FEMALE'},
+        ],
+      },
+      pizzaTopping: {
+        label: 'Favorite pizza topping:',
+        element: 'select',
+        options: [
+          {label: 'buffalo chicken', value: 'BUFFALO_CHICKEN'},
+          {label: 'pepperoni', value: 'PEPPERONI'},
+          {label: "meat lovers'", value: 'MEATLOVERS'},
+          {label: 'eggplant parmesan', value: 'EGGPLANT_PARM'},
+          {label: 'olives', value: 'OLIVES'},
+          {label: 'hawaiian', value: 'HAWAIIAN'},
+        ],
+      },
+    },
+  };
 
-  // actual invocation of addUser useMutation hook; if passing variables must be passed inside of variables object
-  // addUser({ variables: input })
-  // .then(resp => {
-  //   console.log('promised result:', resp.data); // useMutation hook returns mutation response fields on the data property of the response object
-  // }); 
-
-  // useQuery hook to call GET_USER query, returns object containing { data, loading, error }
+  const args = {clientMutationId: '0000'};
 
   const onSuccess = (response) => {
     refetch(GET_USER);
@@ -104,7 +105,6 @@ const ApolloUserProfile = () => {
   };
   
   const renderUser = (demoUser) => {
-    console.log('renderUser called');
     return (
       <ul>
         <li className="userDisplayItem">Username: {demoUser.username}</li>
@@ -116,21 +116,14 @@ const ApolloUserProfile = () => {
     )
   }
  
-  // conditional statements depending on query response
-  // if (loading) return <p>Loading...</p>;
-  // if (error) return <p>ERROR</p>;
-  // if (!data) {
-  //  return <p>Not found</p>;
-  // } else {
-  //   const demoUser = data.demoUser;
     return (
       <section className="UserProfile">
-        <h1>Periqles Apollo Demo</h1>
-        <section className="UserProfile-flex">
           {/*removed environment & args props */}
           <PeriqlesForm
             mutationName={'AddUser'}
             callbacks={{onSuccess, onFailure}}
+            specifications={specifications}
+            args={args}
             useMutation={addUser}
           />
           <main className="UserProfile-main">
@@ -138,139 +131,9 @@ const ApolloUserProfile = () => {
               {loading ? <p>Loading data...</p> : null}
               {error ? <p>ERROR: {JSON.stringify(error)}</p> : null}
               {data && data.demoUser ? renderUser(data.demoUser): <p>Sign up...</p>}
-              {/* <QueryRenderer
-                environment={modernEnvironment}
-                query={graphql`
-                  query UserProfileQuery {
-                    demoUser {
-                      username
-                      password
-                      email
-                      gender
-                      pizzaTopping
-                      age
-                    }
-                  }
-                `}
-                render={({error, props}: {error: ?Error, props: ?UserProfileQueryResponse}) => {
-                */}
-                {/* <Component render={(GET_USER) => {
-
-                  setUpdate(false);
-                  if (loading) return <p>Loading...</p>;
-                  if (error) return <p>ERROR: {error}</p>;
-                  if (!data) {
-                    return <p>Sign up...</p>;
-                  } else {
-                    const demoUser = data.demoUser;
-                    return (
-                      <ul>
-                        <li className="userDisplayItem">Username: {demoUser.username}</li>
-                        <li className="userDisplayItem">Email: {demoUser.email}</li>
-                        <li className="userDisplayItem">Gender: {demoUser.gender}</li>
-                        <li className="userDisplayItem">Favorite Pizza Topping: {demoUser.pizzaTopping}</li>
-                        <li className="userDisplayItem">Age: {demoUser.age}</li>
-                      </ul>
-                    )
-                  }
-                }}/> */}
-                  
-                    {/* ); */}
-                  {/* } else if (error) {
-                    return <p>{error.message}</p>;
-                  }
-                 }}
-              /> */}
           </main>
         </section>
-      </section>
     );
-  // if (props.UserData) {
-  //   console.log('UserData is:', props.UserData);
-  //   const demoUser = props.UserData.data;
-  // }
-  // async function fetchQuery(
-  //   operation: RequestNode,
-  //   variables: Variables,
-  // ): Promise<{}> {
-  //   const response = await fetch('/graphql', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       query: operation.text,
-  //       variables,
-  //     }),
-  //   });
-
-  //   return response.json();
-  // }
-
-  //   const modernEnvironment: Environment = new Environment({
-  //   network: Network.create(fetchQuery),
-  //   store: new Store(new RecordSource()),
-  // });
-
-  // const mutationGQL = graphql`
-  //   mutation UserProfile_AddUserMutation($input: AddUserInput!) {
-  //     addUser(input: $input) {
-  //       userId
-  //       username
-  //       password
-  //       email
-  //       gender
-  //       pizzaTopping
-  //       age
-  //     }
-  //   }
-  // `;
-
-  // const specifications = {
-  //   fields: {
-  //     gender: {
-  //       element: 'radio',
-  //       label: 'Gender',
-  //       options: [
-  //         {label: 'nonbinary', value: 'NON_BINARY'},
-  //         {label: 'male', value: 'MALE'},
-  //         {label: 'female', value: 'FEMALE'},
-  //       ],
-  //       // render: (formState, setFormState, handleChange) => {
-  //       //  return <label>Gender:<input onChange={handleChange} /></label>
-  //       // }
-  //     },
-  //     pizzaTopping: {
-  //       label: 'Favorite pizza topping:',
-  //       element: 'select',
-  //       options: [
-  //         {label: 'buffalo chicken', value: 'BUFFALO_CHICKEN'},
-  //         {label: 'pepperoni', value: 'PEPPERONI'},
-  //         {label: "meat lovers'", value: 'MEATLOVERS'},
-  //         {label: 'eggplant parmesan', value: 'EGGPLANT_PARM'},
-  //         {label: 'olives', value: 'OLIVES'},
-  //         {label: 'hawaiian', value: 'HAWAIIAN'},
-  //       ],
-  //       // render: (formState, setFormState, handleChange) => {
-  //       //  return <input onChange= {handleChange} />
-  //       // },
-  //     },
-  //   }
-  // };
-
-  // const onSuccess = (response) => {
-  //   setUpdate(true);
-  // };
-
-  // const onFailure = (errorMsg) => {
-  //   alert('Problem submitting form:', errorMsg);
-  // };
-
-  // const args = {clientMutationId: '0000'};
-
-
-  
-  
 };
 
 export default ApolloUserProfile;

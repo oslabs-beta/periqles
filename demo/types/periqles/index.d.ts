@@ -4,12 +4,13 @@ type FormState = Record<string, number | string>;
 
 // PROPS FOR PERIQLES COMPONENTS
 interface PeriqlesSpecifications {
-  fields: Record<string, PeriqlesFieldSpecs>;
+  header?: string;
+  fields?: Record<string, PeriqlesFieldSpecs>;
 }
 
 interface PeriqlesFieldSpecs {
   element: string;
-  label: string;
+  label: string | JSX.Element;
   options?: PeriqlesOptionSpec[];
   render?: (
     formState: FormState,
@@ -22,14 +23,14 @@ interface PeriqlesFieldSpecs {
 }
 
 interface PeriqlesOptionSpec {
-  label: string;
+  label: string | JSX.Element;
   value: number | string;
 }
 
 // objects returned by generateFieldsArray
 interface PeriqlesField {
   name: string;
-  label?: string;
+  label?: string | JSX.Element;
   type?: string;
   options?: PeriqlesFieldOption[];
   required?: boolean;
@@ -38,10 +39,11 @@ interface PeriqlesField {
 // options objects prepared for input fields represented by dropdowns/radios
 interface PeriqlesFieldOption {
   name: string;
-  label: string;
+  label: string | JSX.Element;
   value: number | string;
   type: string;
 }
+
 interface PeriqlesCallbacks {
   onSuccess?: (response: object) => any;
   onFailure?: (err: object) => any;
@@ -63,7 +65,7 @@ interface PeriqlesFormProps {
   specifications?: PeriqlesSpecifications;
   args?: PeriqlesMutationArgs;
   callbacks?: PeriqlesCallbacks;
-  useMutation?: any
+  useMutation?: any;
 }
 
 interface PeriqlesFieldProps {

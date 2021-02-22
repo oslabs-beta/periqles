@@ -5,6 +5,9 @@ _bundles
 .eslintrc.js
 .eslintignore
 **/package-lock.json
+**/yarn.lock
+.DS_Store
+ApolloPF.tsx
 
 # Logs
 logs
@@ -22,3 +25,4 @@ npm-debug.log*
 .env.test
 
 # demo
+.npmignore

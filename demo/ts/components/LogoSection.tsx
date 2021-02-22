@@ -1,17 +1,16 @@
-import * as 'react'
+import * as React from 'react'
 
 const LogoSection = (): JSX.Element => {
 
   return (
-    <><div className="LogoSection">
-      <img className = "MarketingLogo" src='/public/assets/npm-logo-black.svg' alt="NPM"><a href="" /></img>
-      <img className = "MarketingLogo" src='/public/assets/Github-Mark-64px.png' alt="Github"><a href='https://github.com/oslabs-beta/periqles' /></img>
+    <div className="LogoSection">
+      <img id="periqles-logo"
+      className="marketing-logo" 
+      src="../../public/assets/periqles-logo.png" alt="periqles"/>
+      <h2 className="pitch" id="short-pitch">
+        Painless forms for GraphQL.
+      </h2>
     </div>
-      <div className="PitchArea">
-        <textarea className = "MarketingPitch" >
-        
-        </textarea>
-      </div></>
   );
 };
 

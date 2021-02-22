@@ -21,13 +21,14 @@ app.use('*', (req, res, next) => {
   return next();
 });
 
+
+// console.log('assets path', __dirname + path.resolve('/', 'public', '/', 'assets'));
 // Serve static assets
+app.use(express.static(path.resolve(__dirname, '/', 'public')));
+
 // only needed when in production mode
-if (
-  process.env.NODE_ENV === 'production' ||
-  process.env.NODE_ENV === undefined
-) {
-  app.use('/', express.static(path.resolve(__dirname, 'public')));
+if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === undefined) {
+  app.use('/', express.static(path.join(__dirname, 'public/*')));
   app.use('/dist/', express.static(path.join(__dirname, 'dist')));
 }
 
