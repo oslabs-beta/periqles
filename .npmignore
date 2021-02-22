@@ -1,0 +1,11 @@
+.*
+**/tsconfig.json
+**/webpack.config.js
+node_modules
+src/
+server/
+__tests__/
+periqles-logo.png
+package-lock.json
+demo/**
+periqles-**.tgz

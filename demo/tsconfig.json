@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/", // path to output directory
+    "sourceMap": true, // allow sourcemap support
+    "strictNullChecks": true, // enable strict null checks as a best practice
+    "module": "commonjs", // specify module code generation
+    "jsx": "react", // use typescript to transpile jsx to js
+    "target": "es5", // specify ECMAScript target version
+    "allowJs": true, // allow a partial TypeScript and JavaScript codebase
+    "moduleResolution": "node", // use Node.js's module resolution strategy to resolve non-relative imports
+    "allowSyntheticDefaultImports": true,
+    // Ensure that .d.ts files are created by tsc, but not .js files
+    "declaration": true, // generate .d.ts automatically from types throughout project
+    "emitDeclarationOnly": true, // only generate .d.ts, not .js
+    // Ensure that Babel can safely transpile files in the TypeScript project
+    "isolatedModules": true,
+    "esModuleInterop": true, //flag enabled for compatibility with Jest (and Babel):
+    "typeRoots": [
+      "./types",
+      "node_modules/@types"
+    ]
+  },
+  "paths": {
+    "components/*": ["ts/components/*"]
+  },
+  "include": ["./ts/"]
+}
