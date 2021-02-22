@@ -15,10 +15,13 @@
     "jest": "node --experimental-vm-modules node_modules/.bin/jest"
   },
   "dependencies": {
+    "@babel/core": "^7.12.17",
     "@babel/node": "^7.12.6",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@babel/plugin-transform-runtime": "^7.12.1",
+    "@babel/preset-env": "^7.12.17",
     "@babel/preset-react": "^7.12.7",
+    "@babel/preset-typescript": "^7.12.17",
     "@babel/runtime": "^7.12.5",
     "@testing-library/jest-dom": "^5.11.9",
     "@types/react": "^17.0.2",
@@ -50,17 +53,13 @@
     "yarn": "^1.22.10"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.17",
     "@babel/eslint-parser": "^7.12.17",
-    "@babel/preset-env": "^7.12.17",
-    "@babel/preset-typescript": "^7.12.17",
     "@testing-library/dom": "^7.29.6",
     "@testing-library/react": "^11.2.5",
     "@types/jest": "^26.0.20",
     "@typescript-eslint/eslint-plugin": "^4.15.1",
     "@typescript-eslint/parser": "^4.15.1",
     "babel-jest": "^26.6.3",
-    "babel-plugin-macros": "^2.8.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
     "enzyme-to-json": "^3.6.1",
