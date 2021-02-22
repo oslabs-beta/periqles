@@ -1,7 +1,7 @@
-import * as React from 'react';
+import * as React from 'react'
 import {graphql} from 'react-relay';
 import { testSchema } from './testSchema';
-import {introspect, fieldsArrayGenerator, generateDefaultElement, generateSpecifiedElement} from '../ts/components/functions'
+import { introspect, fieldsArrayGenerator, generateDefaultElement, generateSpecifiedElement} from '../src/functions.tsx'
 import {
     render,
     screen,
@@ -14,8 +14,9 @@ import {
 const inputObj = testSchema;
 
 const args = {
-  'clientMutationId': 0
+  clientMutationId: '0000'
 };
+//{clientMutationId: '0000'}<-- args from userProfile
 
 const periqlesFieldArray = [{
   name: 'email',
@@ -70,7 +71,7 @@ describe('fieldsArrayGenerator Test', () => {
     const testReturnObj = testReturn[0]
     const testInputObj = testSchema.inputFields[0]
     expect (Array.isArray(testReturnObj)).toBe(false);
-    expect (typeof testReturnObj).toBe(object);
+    expect (typeof testReturnObj).toBe("object");
     expect (testReturnObj.name).toBe(testInputObj.name);
   })
 

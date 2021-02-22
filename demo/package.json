@@ -8,8 +8,7 @@
     "update-schema": "babel-node ./scripts/updateSchema.js",
     "install-periqles": "npm install ~/periqles-0.1.0.tgz",
     "lint": "eslint .",
-    "test": "jest --verbose ",
-    "jest": "node --experimental-vm-modules node_modules/.bin/jest"
+    "test": "jest --verbose "
   },
   "dependencies": {
     "@babel/node": "^7.12.6",

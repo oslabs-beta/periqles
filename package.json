@@ -48,12 +48,15 @@
     "@babel/plugin-proposal-class-properties": "^7.12.13",
     "@babel/plugin-proposal-object-rest-spread": "^7.12.13",
     "@babel/plugin-transform-runtime": "^7.12.17",
+    "@babel/plugin-transform-typescript": "^7.12.17",
     "@babel/preset-env": "^7.12.7",
     "@babel/preset-react": "^7.12.7",
+    "@babel/preset-typescript": "^7.12.17",
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.1",
     "@typescript-eslint/eslint-plugin": "^4.15.1",
     "@typescript-eslint/parser": "^4.15.1",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "^8.2.2",
     "css-loader": "^5.0.2",
     "eslint": "^7.14.0",
@@ -72,6 +75,7 @@
     "webpack-cli": "^4.5.0"
   },
   "dependencies": {
+    "react": "^17.0.1",
     "react-relay": "^10.1.0"
   },
   "peerDependencies": {
