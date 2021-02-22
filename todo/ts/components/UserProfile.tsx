@@ -87,7 +87,7 @@ const UserProfile = (): JSX.Element => {
     alert(`Problem submitting form: ${error.toString()}`);
   };
 
-  const args = {clientMutationId: '0000'};
+  // const args = {clientMutationId: '0000'};
 
   return (
     <section className="UserProfile">
@@ -98,7 +98,7 @@ const UserProfile = (): JSX.Element => {
           mutationName={'AddUser'}
           mutationGQL={mutationGQL}
           specifications={specifications}
-          args={args}
+          // args={args}
           callbacks={{onSuccess, onFailure}}
         />
         <main className="UserProfile-main">
