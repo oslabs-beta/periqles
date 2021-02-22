@@ -23,6 +23,7 @@ const PeriqlesForm = ({
   specifications,
   args,
   callbacks,
+  useMutation
 }: PeriqlesFormProps): JSX.Element => {
   const [formState, setFormState] = useState<FormState>({});
   const [fields, setFields] = useState<PeriqlesField[]>([]);
@@ -53,17 +54,33 @@ const PeriqlesForm = ({
     const variables: Variables = {
       input,
     };
-    commitMutation(environment, {
-      mutation: mutationGQL,
-      variables,
-      onCompleted: (response, errors): void => {
-        if (callbacks?.onSuccess) callbacks.onSuccess(response);
+    if (environment) {
+        // relay commit method
+        console.log('committing Relay mutation');
+        commitMutation(environment, {
+          mutation: mutationGQL,
+          variables,
+          onCompleted: (response, errors): void => {
+            if (callbacks?.onSuccess) callbacks.onSuccess(response);
+            setFormState({});
+          },
+          onError: (err): void => {
+            if (callbacks?.onFailure) callbacks.onFailure(err);
+          },
+        });
+    } else {
+      // apollo commit method
+      console.log('committing Apollo mutation');
+      // actual invocation of addUser useMutation mutate function; if passing variables must be passed inside of an object
+      useMutation({ variables })
+      .then(response => {
+        if (callbacks?.onSuccess) callbacks.onSuccess(response); // useMutation mutate function returns a promise of mutation result
         setFormState({});
-      },
-      onError: (err): void => {
-        if (callbacks?.onFailure) callbacks.onFailure(err);
-      },
-    });
+      })
+      .catch(err => {
+        if (callbacks?.onFailure) callbacks.onFailure(err); // if onFailure callback provided, invoke on useMutation mutate function promise error
+      })
+    }
   };
 
   const handleChange = (e): void => {

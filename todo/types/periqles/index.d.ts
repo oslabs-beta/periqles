@@ -60,12 +60,13 @@ interface RelayEnvironment {
 
 interface PeriqlesFormProps {
   // eventually: this environment will accept RelayEnvironment | ApolloClient
-  environment: RelayEnvironment;
+  environment?: RelayEnvironment;
   mutationName: string;
-  mutationGQL: string | object;
+  mutationGQL?: string | object;
   specifications?: PeriqlesSpecifications;
   args?: PeriqlesMutationArgs;
   callbacks?: PeriqlesCallbacks;
+  useMutation?: any
 }
 
 interface PeriqlesFieldProps {

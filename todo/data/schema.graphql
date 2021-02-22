@@ -2,14 +2,25 @@ type Query {
   demoUser: DemoUser
 
   """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
+  # node(
+  #   """The ID of an object"""
+  #   id: ID!
+  # ): Node
 }
 
-type DemoUser implements Node {
-  """The ID of an object"""
+# trying DemoUser without Node
+# type DemoUser implements Node {
+#   """The ID of an object"""
+#   id: ID!
+#   userId: String!
+#   username: String!
+#   password: String!
+#   email: String!
+#   gender: GenderEnum!
+#   pizzaTopping: PizzaToppingEnum!
+#   age: Int!
+# }
+type DemoUser {
   id: ID!
   userId: String!
   username: String!
@@ -20,11 +31,11 @@ type DemoUser implements Node {
   age: Int!
 }
 
-"""An object with an ID"""
-interface Node {
-  """The id of the object."""
-  id: ID!
-}
+# """An object with an ID"""
+# interface Node {
+#   """The id of the object."""
+#   id: ID!
+# }
 
 enum GenderEnum {
   NON_BINARY
@@ -41,20 +52,25 @@ enum PizzaToppingEnum {
   HAWAIIAN
 }
 
+# type Mutation {
+#   addUser(input: AddUserInput!): AddUserPayload
+# }
+
+# trying without the Relay payload type
 type Mutation {
-  addUser(input: AddUserInput!): AddUserPayload
+  addUser(input: AddUserInput!): DemoUser
 }
 
-type AddUserPayload {
-  userId: String!
-  username: String!
-  password: String!
-  email: String!
-  gender: GenderEnum!
-  pizzaTopping: PizzaToppingEnum!
-  age: Int!
-  clientMutationId: String
-}
+# type AddUserPayload {
+#   userId: String!
+#   username: String!
+#   password: String!
+#   email: String!
+#   gender: GenderEnum!
+#   pizzaTopping: PizzaToppingEnum!
+#   age: Int!
+#   clientMutationId: String
+# }
 
 input AddUserInput {
   username: String!
@@ -63,5 +79,5 @@ input AddUserInput {
   gender: GenderEnum!
   pizzaTopping: PizzaToppingEnum!
   age: Int!
-  clientMutationId: String
+  # clientMutationId: String
 }

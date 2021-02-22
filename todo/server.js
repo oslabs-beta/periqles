@@ -1,9 +1,12 @@
 import express from 'express';
 import expressGraphql from 'express-graphql';
+import { ApolloServer } from 'apollo-server-express';
 import path from 'path';
 import cors from 'cors';
 // import periqles from 'periqles';
 import {schema} from './data/schema/index.js';
+import apolloResolvers from './apolloResolvers.js';
+import typeDefs from './apolloSchema.js'
 const {graphqlHTTP} = expressGraphql;
 // must manually define __dirname b/c it is not included in ES6 modules, only in CommonJS.
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
@@ -18,7 +21,7 @@ app.use(cors());
 
 // console.log('checking environment variables', process.env.NODE_ENV);
 app.use('*', (req, res, next) => {
-  console.log('Incoming request:', req.method);
+  console.log('Incoming request:', req.method, req.baseUrl);
   return next();
 });
 
@@ -28,6 +31,8 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === undefined)
   app.use('/', express.static(path.resolve(__dirname, 'public')));
   app.use('/dist/', express.static(path.join(__dirname, 'dist')));
 }
+
+
 
 // Set up GraphQL endpoint for POSTs
 app.post(
@@ -49,7 +54,10 @@ app.get(
 );
 
 app.use(express.json());
-
+// Apollo endpoint
+// const apolloEndpoint = '/graphql/apollo';
+// const server = new ApolloServer({ typeDefs, apolloResolvers });
+// server.applyMiddleware({ app, apolloEndpoint });
 //ERROR HANDLING
 app.use((err, req, res, next) => {
   const error = {

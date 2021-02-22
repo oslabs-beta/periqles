@@ -21,7 +21,7 @@ export default {
     historyApiFallback: true, // if 404, serve index.html
     proxy: {
       // our backend; used to serve GraphQL API reqs
-      '/graphql': 'http://localhost:3000',
+      '/graphql/*': 'http://localhost:3000',
       // '/graphql': {
       //   target: 'http://localhost:3000',
       //   secure: false,

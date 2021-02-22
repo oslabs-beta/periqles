@@ -91,7 +91,7 @@ const UserProfile = (): JSX.Element => {
 
   return (
     <section className="UserProfile">
-      <h1>Periqles Demo</h1>
+      <h1>Periqles Relay Demo</h1>
       <section className="UserProfile-flex">
         <PeriqlesForm
           environment={modernEnvironment}
