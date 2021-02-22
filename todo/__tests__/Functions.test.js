@@ -61,7 +61,12 @@ describe('fieldsArrayGenerator Test', => {
   it('It returns an array', () => {
 
   })
-  it('It returns an array', () => {
+  
+  it('Returned array length matches input field array length', () => {
+    
+  })
+
+  it('array el names ', () => {
     
   })
 })
@@ -85,7 +90,7 @@ describe('generateDefaultElement Test', => {
   })
 })
 
-// generateSpecifiedElement
+// generateSpecifiedElement <-- Cam 
 describe('generateSpecifiedElement Test', => {
   it('', () => {
 

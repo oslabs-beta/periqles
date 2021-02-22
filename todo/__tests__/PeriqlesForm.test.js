@@ -12,6 +12,7 @@ import App from '../testing.jsx';
 //components to test
 import PeriqlesForm from '../ts/components/PeriqlesForm.tsx';
 // import UserProfile from '../ts/components/UserProfile.tsx';
+import PeriqlesField from '../ts/components/PeriqlesField.tsx'
 
 // //React Component Tests
 const defaultProps = {
@@ -28,7 +29,7 @@ const defaultProps = {
   handleSubmit: () => {},
   fieldNames: [],
   input: {},
-  variables: {input},
+  variables: {},
   handleChange: () => {},
   headerText: 'I am a header',
   loadingTest: 'Loading form...',
@@ -54,8 +55,8 @@ const defaultProps = {
 describe('Periqles Test', () => {
   it('Should render a form tag with a className of PeriqlesForm', () => {
     // render(<PeriqlesForm {...defaultProps} />);
-
-    render(<PeriqlesForm {...defaultProps} />);
+    const fetch = () => {}
+    render(<PeriqlesForm fetch ={fetch} {...defaultProps} />);
   });
 });
 
