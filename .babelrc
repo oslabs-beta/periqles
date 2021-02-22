@@ -7,8 +7,6 @@
     "@babel/plugin-transform-typescript"
   ],
   "presets": ["@babel/preset-react", "@babel/preset-env","@babel/preset-typescript"]
-  
-  
 }
 
 // optional alternative to ts-loader: "@babel/preset-typescript"

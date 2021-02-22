@@ -10,7 +10,7 @@ interface PeriqlesSpecifications {
 
 interface PeriqlesFieldSpecs {
   element: string;
-  label: string;
+  label?: string;
   options?: PeriqlesOptionSpec[];
   render?: (
     formState: FormState,
@@ -124,3 +124,4 @@ type Input = Record<string, string | boolean | number>;
 interface Variables {
   input: Input;
 }
+h

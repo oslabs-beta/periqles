@@ -170,8 +170,8 @@ export const generateSpecifiedElement: GenerateSpecifiedElement = ({
   }
   //If label isn't given, set it as field.name w/ spaces & 1st letter capitalized
   if (!specs.label) {
-    specs.label = field.name.replace(/([a-z])([A-Z])/g, '$1 $2');
-    specs.label = specs.label[0].toUpperCase() + specs.label.slice(1);
+    specs.label = field.name.replace(/([a-z])([A-Z])/g, '$1 $2'); // put spaces before capital letters
+    specs.label = specs.label[0].toUpperCase() + specs.label.slice(1);  // capitalize first letter
   }
 
   switch (specs.element) {
