@@ -2,8 +2,8 @@
   "private": true,
   "scripts": {
     "tsc": "tsc --watch",
-    "start": "NODE_ENV='development' webpack serve & nodemon -r dotenv/config server.js --es-module-specifier-resolution=node",
-    "start-prod": "NODE_ENV='production' webpack & node -r dotenv/config server.js --es-module-specifier-resolution=node",
+    "start": "NODE_ENV='development' webpack serve & nodemon -r dotenv/config server.js",
+    "start-prod": "NODE_ENV='production' webpack & node -r dotenv/config server.js",
     "build": "relay-compiler --src ./ts/ --schema ./data/schema.graphql --artifactDirectory ./__generated__/relay --extensions js jsx ts tsx --exclude ./__generated__/",
     "update-schema": "babel-node ./scripts/updateSchema.js",
     "lint": "eslint .",
@@ -76,6 +76,5 @@
     "trailingComma": "all",
     "bracketSpacing": false,
     "jsxBracketSameLine": true
-  },
-  "type": "module"
+  }
 }
