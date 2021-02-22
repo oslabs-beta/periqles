@@ -1,11 +1,12 @@
 node_modules
-# lib-esm
-# lib
-# _bundles
+lib-esm
+lib
+_bundles
 .eslintrc.js
 .eslintignore
 **/package-lock.json
 **/yarn.lock
+.DS_Store
 
 # Logs
 logs
