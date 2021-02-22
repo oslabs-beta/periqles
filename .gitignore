@@ -4,10 +4,10 @@ lib
 _bundles
 .eslintrc.js
 .eslintignore
-**/package-lock.json
+package-lock.json
 **/yarn.lock
 .DS_Store
-.env
+.npmignore
 
 # Logs
 logs
@@ -25,4 +25,4 @@ npm-debug.log*
 .env.test
 
 # demo
-.npmignore
+demo/dist/

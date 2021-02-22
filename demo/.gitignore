@@ -1,6 +1,5 @@
 .DS_Store
 .eslintcache
-node_modules/
 
 # react-relay-app 
 # /react-relay-app/vanilla-gql-example.js
