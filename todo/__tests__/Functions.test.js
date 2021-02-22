@@ -14,25 +14,23 @@ import {
 const inputObj = testSchema;
 
 const args = {
-  'clientMutationId': 000
-}
+  'clientMutationId': 0
+};
 
-const
-periqlesFieldr
-[]{
+const periqlesFieldArray = [{
   name: 'email',
   label: 'email',
   value: '',
   type: 'text'
-}
+}];
 
-const emptyFieldsArray = []
+const emptyFieldsArray = [];
 const fieldsArrayWithFieldsObj = [
   {
     name: 'email',
     type: 'string'
   }
-]
+];
 
 const fieldObj = {
   name: "pizzaTopping"
@@ -47,31 +45,47 @@ const fieldTypeEnumOptionsArr = [
 const fieldTypeOfTypeEnumOptionsArr = [{
   name: 'boolean',
   option: 'testOption'
-}]
+}];
 
 const mappedOption = {
   name: 'boolean',
   label: 'boolean',
   value: false,
   type: "boolean"
-}
+};
 describe('Functions file test', () => {
 
-describe('fieldsArrayGenerator Test', => {
+describe('fieldsArrayGenerator Test', () => {
+  const testReturn = fieldsArrayGenerator(testSchema, args)
+  console.log(testReturn);
   it('It returns an array', () => {
-
+    expect (Array.isArray(testReturn)).toBe(true);
   })
   
   it('Returned array length matches input field array length', () => {
-    
+    expect(testReturn.length).toBe(testSchema.inputFields.length - 1);
   })
 
-  it('array el names ', () => {
-    
+  it('Returns objects in an array that match fieldObj', () => {
+    const testReturnObj = testReturn[0]
+    const testInputObj = testSchema.inputFields[0]
+    expect (Array.isArray(testReturnObj)).toBe(false);
+    expect (typeof testReturnObj).toBe(object);
+    expect (testReturnObj.name).toBe(testInputObj.name);
   })
+
+  it('The name value in the fieldObj should not be a property of args', () => {
+    const fieldObjName = testReturn[0].name
+    expect (args.fieldObjName).toBe(undefined);
+  })
+
+  //If we have time:
+  // xit('Should include a property options on the fieldObj if the field type or ofType has a property of ENUM', () => {
+    
+  // })
 })
 // introspect
-describe('Introspect Test', => {
+xdescribe('Introspect Test', () => {
   it('', () => {
 
   })
@@ -81,7 +95,7 @@ describe('Introspect Test', => {
 })
 
 // generateDefaultElement
-describe('generateDefaultElement Test', => {
+xdescribe('generateDefaultElement Test', () => {
   it('', () => {
 
   })
@@ -91,7 +105,7 @@ describe('generateDefaultElement Test', => {
 })
 
 // generateSpecifiedElement <-- Cam 
-describe('generateSpecifiedElement Test', => {
+xdescribe('generateSpecifiedElement Test', () => {
   it('', () => {
 
   })
