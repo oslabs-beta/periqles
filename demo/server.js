@@ -1,9 +1,11 @@
+const  { ApolloServer } = require('apollo-server-express');
+const apolloResolvers = require('./apolloResolvers.js');
+const typeDefs = require('./apolloSchema.js');
 const express = require('express');
-const expressGraphql = require('express-graphql');
+const {graphqlHTTP}  = require('express-graphql');
 const path = require('path');
 const cors = require('cors');
 const {schema} = require('./data/schema/index.js');
-const {graphqlHTTP} = expressGraphql;
 
 const app = express();
 // var corsOptions = {
@@ -15,7 +17,7 @@ app.use(cors());
 
 // console.log('checking environment variables', process.env.NODE_ENV);
 app.use('*', (req, res, next) => {
-  console.log('Incoming request:', req.method);
+  console.log('Incoming request:', req.method, req.baseUrl);
   return next();
 });
 
@@ -29,6 +31,8 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === undefined)
   app.use('/', express.static(path.join(__dirname, 'public/*')));
   app.use('/dist/', express.static(path.join(__dirname, 'dist')));
 }
+
+
 
 // Set up GraphQL endpoint for POSTs
 app.post(
@@ -50,7 +54,10 @@ app.get(
 );
 
 app.use(express.json());
-
+// Apollo endpoint
+// const apolloEndpoint = '/graphql/apollo';
+// const server = new ApolloServer({ typeDefs, apolloResolvers });
+// server.applyMiddleware({ app, apolloEndpoint });
 //ERROR HANDLING
 app.use((err, req, res, next) => {
   const error = {

@@ -200,7 +200,7 @@ export const generateSpecifiedElement: GenerateSpecifiedElement = ({
             className={field.name + '-image periqles-image'}
             name={field.name}
             src={specs.src}
-            alt={specs.label}
+            alt={field.name}
             value={formState[field.name]}
             onChange={handleChange}
           />

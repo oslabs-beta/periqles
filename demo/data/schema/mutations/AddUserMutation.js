@@ -47,8 +47,8 @@ const AddUserMutation = mutationWithClientMutationId({
     },
   },
   mutateAndGetPayload: (input) => {
-    const userId = addUser(input);
-    return getDemoUserOrThrow(userId);
+    const newUser = addUser(input);
+    return newUser;
   },
 });
 

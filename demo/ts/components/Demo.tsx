@@ -1,14 +1,27 @@
 import React, {useState} from 'react';
-import UserProfile from './UserProfile';
-import UserProfileApollo from './UserProfileApollo';
+import UserProfile from './relay/UserProfile';
+import ApolloUserProfile from './ApolloUserProfile';
+import {
+  ApolloClient,
+  NormalizedCacheObject,
+  ApolloProvider
+} from '@apollo/client';
+import { cache } from '../apolloCache';
+
+const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
+  cache,
+  uri: 'http://localhost:3000/graphql'
+});
 
 const Demo = (): JSX.Element => {
   const [relay, setRelay] = useState(true);
 
   return (
     <main className="Demo">
-      <h1>Demo</h1>
-      <h3>Choose your client:</h3>
+      {relay 
+        ? <h1>Relay Demo</h1> 
+        : <h1>Apollo Demo</h1>
+      }
       <div id="client-switch">
         Apollo
         <label className="switch">
@@ -21,7 +34,9 @@ const Demo = (): JSX.Element => {
       </div>
       {relay
         ? <UserProfile />
-        : <UserProfileApollo />
+        : (<ApolloProvider client={client}>
+              <ApolloUserProfile />
+            </ApolloProvider>)
       }
     </main>
   )
