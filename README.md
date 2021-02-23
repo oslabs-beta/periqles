@@ -1,9 +1,18 @@
 <p align="center">
-<img src="/periqles-logo.png" alt="logo" width="300"/>
-<br />
-<a href="https://github.com/oslabs-beta/periqles/graphs/contributors"><img src="https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge" alt="Contributors"></a>
-<a href="https://github.com/oslabs-beta/periqles/stargazers"><img src="https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge" alt="Stargazers"></a>
-<a href="https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge"><img src="https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge" alt="MIT License"></a>
+  <img src="/periqles-logo.png" alt="logo" width="300"/>
+  <br />
+  <a href="https://github.com/oslabs-beta/periqles/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge" alt="Contributors">
+  </a>
+  <a href="https://github.com/oslabs-beta/periqles/stargazers">
+    <img src="https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge" alt="Stargazers">
+  </a>
+  <a href="https://www.npmjs.com/package/periqles">
+    <img alt="npm" src="https://img.shields.io/npm/v/periqles?style=flat-square">
+  </a>
+  <a href="https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge">
+    <img src="https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge" alt="MIT License">
+  </a>
 </p>
 
 <h1 align="center">periqles</h1>
@@ -281,7 +290,7 @@ const MyComponent = () => {
 
 ## Styles
 
-Periqles comes with its own basic [stylesheet](https://github.com/oslabs-beta/periqles/blob/main/periqles.css), but it also attaches class names to each of its HTML elements that you can target in CSS for addtional styling. We've tried to keep our default styles in that sweet spot between "enough to be presentable" and "adaptable to any design scheme." If you think we should provide more or less CSS, give us a shout in the [issues](https://github.com/oslabs-beta/periqles/issues).
+Periqles comes with its own basic [stylesheet](https://github.com/oslabs-beta/periqles/blob/main/periqles.css), but it also attaches class names to each of its HTML elements that you can target in CSS for additional styling. We've tried to keep our default styles in that sweet spot between "enough to be presentable" and "adaptable to any design scheme." If you think we should provide more or less CSS, give us a shout in the [issues](https://github.com/oslabs-beta/periqles/issues).
 
 Each element has two class names which follow this format:
 
