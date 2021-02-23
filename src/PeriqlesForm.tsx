@@ -22,6 +22,7 @@ const PeriqlesForm = ({
   specifications,
   args = {},
   callbacks,
+  useMutation
 }: PeriqlesFormProps): JSX.Element => {
   const [formState, setFormState] = useState<FormState>({});
   const [fields, setFields] = useState<PeriqlesField[]>([]);
@@ -54,29 +55,47 @@ const PeriqlesForm = ({
     const variables: Variables = {
       input,
     };
-    commitMutation(environment, {
-      mutation: mutationGQL,
-      variables,
-      onCompleted: (response, errors): void => {
-        if (callbacks?.onSuccess) callbacks.onSuccess(response);
+
+    if (environment) {
+      // relay commit method
+      console.log('committing Relay mutation');
+      commitMutation(environment, {
+        mutation: mutationGQL,
+        variables,
+        onCompleted: (response, errors): void => {
+          if (callbacks?.onSuccess) callbacks.onSuccess(response);
+          setFormState({});
+        },
+        onError: (err): void => {
+          if (callbacks?.onFailure) callbacks.onFailure(err);
+        },
+      });
+    } else {
+      // apollo commit method
+      console.log('committing Apollo mutation');
+      // actual invocation of addUser useMutation mutate function; if passing variables must be passed inside of an object
+      useMutation({ variables })
+      .then(response => {
+        if (callbacks?.onSuccess) callbacks.onSuccess(response); // useMutation mutate function returns a promise of mutation result
         setFormState({});
-      },
-      onError: (err): void => {
-        if (callbacks?.onFailure) callbacks.onFailure(err);
-      },
-    });
+      })
+      .catch(err => {
+        if (callbacks?.onFailure) callbacks.onFailure(err); // if onFailure callback provided, invoke on useMutation mutate function promise error
+      })
+    }
   };
 
   const handleChange = (e): void => {
-    console.log('Handling change');
     const {name, value, type} = e.target;
     let useValue = value;
     // type-coerce values from number input elements before storing in state
-    if (type === 'number') {
+    if (type === 'number' && typeof value !== 'number') {
       useValue -= 0;
     }
 
-    setFormState({...formState, [name]: useValue});
+    const newState = Object.assign({}, formState);
+    newState[name] = useValue;
+    setFormState(newState);
   };
 
   const renderFields = (fields: PeriqlesField[]) => {
@@ -102,7 +121,7 @@ const PeriqlesForm = ({
       className="PeriqlesForm"
       aria-labelledby="form"
       onSubmit={(e) => handleSubmit(e, fields)}>
-        {specifications.header && <h2>{specifications.header}</h2>}
+        {specifications && specifications.header && <h2>{specifications.header}</h2>}
       {fields.length ? renderFields(fields) : <p>Loading form...</p>}
       <button
         className="periqles-submit"

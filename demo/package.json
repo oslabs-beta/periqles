@@ -15,7 +15,8 @@
     "jest": "node --experimental-vm-modules node_modules/.bin/jest"
   },
   "dependencies": {
-    "@babel/core": "^7.12.17",
+    "@apollo/client": "^3.3.11",
+    "@babel/core": "^7.12.9",
     "@babel/node": "^7.12.6",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@babel/plugin-transform-runtime": "^7.12.1",
@@ -26,6 +27,7 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.1",
+    "apollo-server-express": "^2.21.0",
     "babel-loader": "^8.2.2",
     "babel-plugin-relay": "^10.1.0",
     "babel-plugin-transform-react-jsx-img-import": "^0.1.4",
@@ -40,7 +42,7 @@
     "graphql": "^15.4.0",
     "graphql-relay": "^0.6.0",
     "graphql-tag": "^2.11.0",
-    "periqles": "file:../../../../../periqles-0.1.0.tgz",
+    "periqles": "file:../../../periqles-0.1.0.tgz",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-relay": "^10.1.0",

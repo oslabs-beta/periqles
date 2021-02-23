@@ -19,7 +19,7 @@ module.exports = {
     headers: {'Access-Control-Allow-Origin': '*'}, // allow cors from any host
     historyApiFallback: true, // if 404, serve index.html
     proxy: {
-      '/graphql': 'http://localhost:3000',
+      '/graphql/*': 'http://localhost:3000',
     },
     onListening: function (server) {
       const port = server.listeningApp.address().port;

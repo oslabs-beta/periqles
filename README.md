@@ -13,7 +13,7 @@
     <a href="">Demo →</a>
 </p>
 
-<p>periqles is a component library that makes collecting user input to commit mutations in a GraphQL API easy, fast, and DRY. Periqles introspects the project's schema and intuits the input fields, data types, and optimal UI for a given mutation, abstracting away the UI, state management, and API calls needed to create a form so that you can be free to focus on the business logic of your application. Supports Relay and Apollo clients.</p>
+<p>periqles is a form component library that makes collecting user input to commit mutations in a GraphQL API easy, fast, and DRY. Periqles introspects the project's schema and intuits the input fields, data types, and optimal UI for a given mutation, abstracting away the input element organization, state management, and API calls needed to create a form so that you can be free to focus on the business logic of your application. Supports Relay and Apollo clients.</p>
 
 >*“Having knowledge but lacking the power to express it clearly is no better than never having any ideas at all.”  
 -- Pericles*

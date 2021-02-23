@@ -8,7 +8,7 @@ type Query {
   ): Node
 }
 
-type DemoUser implements Node {
+type DemoUser {
   """The ID of an object"""
   id: ID!
   userId: String!
@@ -18,12 +18,6 @@ type DemoUser implements Node {
   gender: GenderEnum!
   pizzaTopping: PizzaToppingEnum!
   age: Int!
-}
-
-"""An object with an ID"""
-interface Node {
-  """The id of the object."""
-  id: ID!
 }
 
 enum GenderEnum {
@@ -39,6 +33,12 @@ enum PizzaToppingEnum {
   EGGPLANT_PARM
   OLIVES
   HAWAIIAN
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
 }
 
 type Mutation {

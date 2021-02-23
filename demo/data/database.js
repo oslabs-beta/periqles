@@ -83,7 +83,7 @@ function addUser({
   );
   demoUsersById.set(newUser.userId, newUser);
   console.log('newUser is', newUser);
-  return newUser.userId;
+  return newUser;
 }
 
 module.exports = {

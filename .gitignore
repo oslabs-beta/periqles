@@ -8,6 +8,7 @@ _bundles
 **/yarn.lock
 .DS_Store
 .npmignore
+ApolloPF.tsx
 
 # Logs
 logs

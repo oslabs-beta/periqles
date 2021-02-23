@@ -83,31 +83,31 @@ const UserProfile = (): JSX.Element => {
 
   return (
     <section className="UserProfile">
-      <PeriqlesForm
-        environment={modernEnvironment}
-        mutationName={'AddUser'}
-        mutationGQL={mutationGQL}
-        specifications={specifications}
-        args={args}
-        callbacks={{onSuccess, onFailure}}
-      />
-      <main className="UserProfile-main">
-        <h2>Most Recently Added User</h2>
-        <QueryRenderer
+        <PeriqlesForm
           environment={modernEnvironment}
-          query={graphql`
-            query UserProfileQuery {
-              demoUser {
-                userId
-                username
-                password
-                email
-                gender
-                pizzaTopping
-                age
+          mutationName={'AddUser'}
+          mutationGQL={mutationGQL}
+          specifications={specifications}
+          args={args}
+          callbacks={{onSuccess, onFailure}}
+        />
+        <main className="UserProfile-main">
+          <h2>Most Recently Added User</h2>
+          <QueryRenderer
+            environment={modernEnvironment}
+            query={graphql`
+              query UserProfileQuery {
+                demoUser {
+                  userId
+                  username
+                  password
+                  email
+                  gender
+                  pizzaTopping
+                  age
+                }
               }
-            }
-          `}
+            `}
           render={({error, props}: {error: Error; props: QueryResponse}) => {
             if (props && !props.demoUser) {
               return <p>Sign up...</p>;
