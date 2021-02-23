@@ -149,16 +149,15 @@ type Mutation {
 
 This is a high-priority area of improvement for us. We welcome PRs and other contributions.
 
-
 ---
 
 ## Usage
 
-`<PeriqlesForm />` takes a number of props, including optional props to override its default logic for more fine-grained control over the apperance and composition of the form, the data sent to the API on submit, and state-management behavior, including optimistic updating.
+`<PeriqlesForm />` takes a number of props, including optional props to override its default logic for more fine-grained control over the apperance and composition of the form, the data sent to the API on submit, and state-management behavior.
 
 ### PeriqlesForm Props
 
-**These are the props available to all clients. See below for more usage information specific to your client.**
+These are the props available to all clients. See below for more usage information specific to your client.
 
 - `mutationName`: string _(required)_ — The name of a mutation as it appears on your GraphQL schema, e.g. 'AddUser' or 'AddUserMutation'.
   - If this is the only prop provided, periqles will render a form with default HTML intuited based on the name and scalar data type of each input field. E.g., an input field of type 'String' will result in `<input type="text">`. If the name of the input field appears in periqles' dictionary of common input fields, it will render a more specifically appropriate element. For example, a string-type field with the name 'password' will result in `<input type="password">`, and a field named 'mobile' will result in `<input type="tel">`.
@@ -186,7 +185,9 @@ This is a high-priority area of improvement for us. We welcome PRs and other con
     - `onSuccess`: function(response) _(optional)_ — Invoked if the mutation is successfully submitted to the API. In our demo ([Relay](https://github.com/oslabs-beta/periqles-demo/blob/main/ts/components/relay/UserProfile.tsx), [Apollo](https://github.com/oslabs-beta/periqles-demo/blob/main/ts/components/ApolloUserProfile.tsx)), we use onSuccess to trigger a very simple re-fetch and re-render of a component which displays `<PeriqlesForm />`'s output.
     - `onFailure`: function(error) _(optional)_ — Invoked if the mutation fails to fire or the API sends back an error message. Use this to display meaningful error messages to the user.
 
-### Relay
+---
+
+## Relay
 
 In addition to the optional and required props listed above, `<PeriqlesForm />` requires the following props when used in a Relay client:
 
@@ -234,7 +235,9 @@ const MyComponent = ({relay}) => {
 
 **[Full Code Sample](https://github.com/oslabs-beta/periqles-demo/blob/main/ts/components/relay/UserProfile.tsx)**
 
-### Apollo
+---
+
+## Apollo
 
 In addition to the optional and required props listed above, `<PeriqlesForm />` requires one additional prop when used in an Apollo client:
 
@@ -274,7 +277,9 @@ const MyComponent = () => {
 
 **[Full Code Sample](https://github.com/oslabs-beta/periqles-demo/blob/main/ts/components/ApolloUserProfile.tsx)**
 
-### Styles
+---
+
+## Styles
 
 Periqles comes with its own basic [stylesheet](https://github.com/oslabs-beta/periqles/blob/main/periqles.css), but it also attaches class names to each of its HTML elements that you can target in CSS for addtional styling. We've tried to keep our default styles in that sweet spot between "enough to be presentable" and "adaptable to any design scheme." If you think we should provide more or less CSS, give us a shout in the [issues](https://github.com/oslabs-beta/periqles/issues).
 
@@ -287,7 +292,7 @@ Each element has two class names which follow this format:
 
 <!-- See the [open issues](https://github.com/oslabs-beta/periqles/issues) for a list of proposed features and known issues. -->
 
-
+---
 
 ## Contributing
 
