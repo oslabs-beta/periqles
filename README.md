@@ -80,6 +80,7 @@ In our [demo](https://github.com/oslabs-beta/periqles-demo), we use the client-a
 
 ```
 //server.js
+
 const express = require('express');
 const {graphqlHTTP}  = require('express-graphql');
 const app = express();
@@ -100,10 +101,11 @@ If you are not using the `/graphql` endpoint to serve your API, options include 
 
 Currently, the introspection query used by periqles expects to find named input types on the schema. I.e., if you tell a `<PeriqlesForm />` to generate a UI for your `AddUser` mutation, it will query your schema for a type called `AddUserInput`. Then it will render an input element for each input field listed on the `AddUserInput` type. 
 
-This means that periqles will successfully introspect this mutation:
+This means that periqles can successfully introspect this mutation:
 
 ```
 #schema.graphql
+
 type Mutation {
   addUser(input: AddUserInput!): AddUserPayload
 }
@@ -123,6 +125,7 @@ input AddUserInput {
 
 ```
 #schema.graphql
+
 # The mutation input is not named and is defined in-line.
 type Mutation {
   addUser(input: {
@@ -145,25 +148,33 @@ This is a high-priority area of improvement for us. We welcome PRs and other con
 
 `<PeriqlesForm />` takes a number of props, including optional props to override its default logic for more fine-grained control over the apperance and composition of the form, the data sent to the API on submit, and state-management behavior, including optimistic updating.
 
-**Props available to all clients:**
+**These are the props available to all clients. See below for more usage information specific to your client.**
 
-- `mutationName`: string _(required)_ The name of a mutation as it appears on your GraphQL schema, e.g. 'AddUser' or 'AddUserMutation'.
+- `mutationName`: string _(required)_ — The name of a mutation as it appears on your GraphQL schema, e.g. 'AddUser' or 'AddUserMutation'.
   - If this is the only prop provided, periqles will render a form with default HTML intuited based on the name and scalar data type of each input field. E.g., an input field of type 'String' will result in `<input type="text">`. If the name of the input field appears in periqles' dictionary of common input fields, it will render a more specifically appropriate element. For example, a string-type field with the name 'password' will result in `<input type="password">`, and a field named 'mobile' will result in `<input type="tel">`.
-- `specifications`: object _(optional)_ If you wish to control the HTML or state management of a particular field, provide the instructions here. Periqles will fall back to its default logic for any fields or details not specified here.
-  - `header`: string _(optional)_ If you wish to put a header on your form, e.g. "Sign up!", pass it here. 
-  - `fields`: object _(optional)_ Each key on `fields` should correspond to the name of an input field exactly as it appears on the schema. (E.g., based on the schema example above, 'pizzaTopping' is a valid key to use.) You can override defaults for as many or as few fields as you wish.
-    - `element`: string _(required)_ The HTML element you wish to use for this field, e.g. 'textarea', 'radio', 'datetime', etc. 
-    - `label`: string or element _(required)_ The text, HTML, or JSX you wish to appear as a label for this field.
-    - `options`: array _(optional)_ Whether or not this field is listed as an enumerated type on the schema, you may constrain valid user input on the frontend by using 'select' or 'radio' for the `element` field and providing a list of options here. 
-        - `option`: object _(optional)_ Specifies an option for this dropdown or group of radio buttons.
-          - `label`: string or element _(required)_ The label you wish to appear for this option.
-          - `value`: string or number _(required)_ The value to be submitted to the API. 
-- `args`: object _(optional)_ If there are any variables that you want to submit as input for the mutation but don't want to render as elements on the form, pass them here as key-value pairs. Example use cases include client-side authentication information or the `clientMutationId` in Relay. E.g.: `const args = {userId: '001', clientMutationId: ${mutationId++}}`. Fields included here will be excluded from the rendered form.  
-- `callbacks`: object _(optional)_ Developer-defined functions to be invoked when the form is submitted.  
-    - `onSuccess`: function _(optional)_ Invoked if the mutation is successfully submitted to the API. In our demo ([Relay](https://github.com/oslabs-beta/periqles-demo/blob/main/ts/components/relay/UserProfile.tsx), [Apollo](https://github.com/oslabs-beta/periqles-demo/blob/main/ts/components/ApolloUserProfile.tsx)), we use onSuccess to trigger a very simple re-fetch and re-render of a component which displays `<PeriqlesForm />`'s output.
-    - `onFailure`: function _(optional)_ Invoked if the mutation fails to fire or the API sends back an error message. Use this to display meaningful error messages to the user.
 
-See below for more usage information specific to your client.
+- `specifications`: object _(optional)_ — If you wish to control the HTML or state management of a particular field, provide the instructions here. Periqles will fall back to its default logic for any fields or details not specified here.
+  - `header`: string _(optional)_ — If you wish to put a header on your form, e.g. "Sign up!", pass it here. 
+  - `fields`: object _(optional)_ — Each key on `fields` should correspond to the name of an input field exactly as it appears on the schema. (E.g., based on the schema example above, 'pizzaTopping' is a valid key to use.) You can override defaults for as many or as few fields as you wish.
+    - `element`: string _(required)_ — The HTML element you wish to use for this field, e.g. 'textarea', 'radio', 'datetime', etc. 
+    - `label`: string or element _(required)_ — The text, HTML, or JSX you wish to appear as a label for this field.
+    - `options`: array _(optional)_ — Whether or not this field is listed as an enumerated type on the schema, you may constrain valid user input on the frontend by using 'select' or 'radio' for the `element` field and providing a list of options here. 
+        - `option`: object _(optional)_ — Specifies an option for this dropdown or group of radio buttons.
+          - `label`: string or element _(required)_ — The label you wish to appear for this option.
+          - `value`: string or number _(required)_ — The value to be submitted to the API.
+    - `render`: function({formState, setFormState, handleChange}) _(optional)_ If you wish to completely circumvent periqles' logic for rendering input fields, you may provide your own rendering function or functional component here. Parameters:
+      - `formState`: object _(optional)_ — The name and current value of each input field as key-value pairs.
+      - `setFormState`: function(newFormState) _(optional)_ — A React setState [hook](https://reactjs.org/docs/hooks-reference.html#usestate).
+      - `handleChange`: function(event) _(optional)_ — Destructures the input field's name and value off event.target to pass them as arguments to setFormState.
+    - `src`: string _(optional)_ — When `element` is 'img', the URL to use for the `src` attribute.
+    - `min`: number _(optional)_ — When `element` is 'range,' the number to use for the `min` attribute.
+    - `max`: number _(optional)_ — When `element` is 'range,' the number to use for the `max` attribute.
+
+- `args`: object _(optional)_ — If there are any variables that you want to submit as input for the mutation but don't want to render as elements on the form, pass them here as key-value pairs. Example use cases include client-side authentication information or the `clientMutationId` in Relay. E.g.: `const args = {userId: '001', clientMutationId: ${mutationId++}}`. Fields included here will be excluded from the rendered form.  
+
+- `callbacks`: object _(optional)_ — Developer-defined functions to be invoked when the form is submitted.  
+    - `onSuccess`: function(response) _(optional)_ — Invoked if the mutation is successfully submitted to the API. In our demo ([Relay](https://github.com/oslabs-beta/periqles-demo/blob/main/ts/components/relay/UserProfile.tsx), [Apollo](https://github.com/oslabs-beta/periqles-demo/blob/main/ts/components/ApolloUserProfile.tsx)), we use onSuccess to trigger a very simple re-fetch and re-render of a component which displays `<PeriqlesForm />`'s output.
+    - `onFailure`: function(error) _(optional)_ — Invoked if the mutation fails to fire or the API sends back an error message. Use this to display meaningful error messages to the user.
 
 ### Relay
 
