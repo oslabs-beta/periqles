@@ -303,7 +303,7 @@ Each element has two class names which follow this format:
 
 ## Contributing
 
-If you would like to contribute to periqles, please fork this repo. Commit your changes to a feature branch and open a pull request. We appreciate your contributions to this open-source project!
+If you would like to contribute to periqles, please [fork this repo](https://github.com/oslabs-beta/periqles). Commit your changes to a feature branch and open a pull request. We appreciate your contributions to this open-source project!
 
 
 ## License
