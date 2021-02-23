@@ -15,7 +15,7 @@
 
 <p>Periqles is a React component library for Relay and Apollo that makes it easy to collect user input.</p>
 
-<p>Periqles abstracts away the dirty work of form creation — with override switches built in for the design-conscious developer — so you can be free to focus on business logic. Given the name of a GraphQL mutation, periqles introspects the project's schema and intuits a form to match it. No more fussing with React state management or HTML/CSS — just drop in a `<PeriqlesForm />` tag and go on with your life.</p>
+<p>Periqles abstracts away the dirty work of form creation — with override switches built in for the design-conscious developer — so you can be free to focus on business logic. Given the name of a GraphQL mutation, periqles introspects the project's schema and intuits a form to match it. No need to waste time debugging React state management or fussing with flexbox — just drop in a <PeriqlesForm /> tag and go on with your life.</p>
 
 >*“Having knowledge but lacking the power to express it clearly is no better than never having any ideas at all.”  
 -- Pericles*
@@ -33,6 +33,7 @@
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
+        <li><a href="#installation">Server</a></li>
         <li><a href="#installation">Schema</a></li>
       </ul>
     </li>
@@ -49,6 +50,7 @@
 * [GraphQL](https://graphql.org/)
 * the support of [OSLabs](https://github.com/open-source-labs)
 
+---
 
 ## Getting Started
 
@@ -56,10 +58,6 @@ To add a `<PeriqlesForm />` to your Apollo or Relay client, follow these steps.
 
 ### Prerequisites
 
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
 * React (v. 16.8.0 and up)
   ```sh
   npm install react
@@ -71,7 +69,7 @@ To add a `<PeriqlesForm />` to your Apollo or Relay client, follow these steps.
    ```sh
    npm install periqles
    ```
-2. For TypeScript projects: install @types/periqles.
+2. Optional, for TypeScript projects: install @types/periqles.
   ```sh
   npm install @types/periqles
   ```
@@ -80,7 +78,7 @@ To add a `<PeriqlesForm />` to your Apollo or Relay client, follow these steps.
    import PeriqlesForm from 'periqles';
    ```
 
-### Schema
+### Server
 
 Periqles relies on introspection queries to intuit the optimal form UI from your project's GraphQL schema. These queries will hit your server in the form of POST requests to `/graphql`. To use periqles, you must expose your schema at that `/graphql` endpoint. 
 
@@ -102,6 +100,49 @@ app.post(
 ```
 
 If you are not using the `/graphql` endpoint to serve your API, options include configuring your server to redirect requests to `/graphql` to the correct endpoint or using a build tool like Webpack to proxy requests to `/graphql` to the correct address.
+
+### Schema 
+
+Currently, the introspection query used by periqles expects to find named input types on the schema. I.e., if you tell a `<PeriqlesForm />` to generate a UI for your `AddUser` mutation, it will query your schema for a type called `AddUserInput`. Then it will render an input element for each input field listed on the `AddUserInput` type. 
+
+This means that periqles will successfully introspect this mutation:
+
+```schema.graphql
+type Mutation {
+  addUser(input: AddUserInput!): AddUserPayload
+}
+
+# The mutation input is named and defined separately from the mutation.
+input AddUserInput {
+  username: String!
+  password: String!
+  email: String!
+  gender: GenderEnum!
+  pizzaTopping: PizzaToppingEnum!
+  age: Int!
+}
+```
+
+... but trying to introspect this mutation will cause your GraphQL server to throw back a `400 Bad Request` error:
+
+```schema.graphql
+# The mutation input is not named and is defined in-line.
+type Mutation {
+  addUser(input: {
+    username: String!
+    password: String!
+    email: String!
+    gender: GenderEnum!
+    pizzaTopping: PizzaToppingEnum!
+    age: Int!
+  }!): AddUserPayload
+}
+```
+
+This is a high-priority area of improvement for us. We welcome PRs and other contributions.
+
+
+---
 
 ## Usage
 
