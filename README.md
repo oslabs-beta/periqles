@@ -26,9 +26,6 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#built-with">Built With</a>
-    </li>
-    <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
@@ -41,14 +38,10 @@
 <!--     <li><a href="#roadmap">Roadmap</a></li> -->
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
+    <li><a href="#built-with">Maintainers</a></li>
+    <li><a href="#built-with">Acknowledgements</a></li>
   </ol>
 </details>
-
-### Built With
-
-* [React (Hooks)](https://reactjs.org/)
-* [GraphQL](https://graphql.org/)
-* the support of [OSLabs](https://github.com/open-source-labs)
 
 ---
 
@@ -66,17 +59,18 @@ To add a `<PeriqlesForm />` to your Apollo or Relay client, follow these steps.
 ### Installation
 
 1. Install periqles from the terminal.
-   ```sh
-   npm install periqles
-   ```
-2. Optional, for TypeScript projects: install @types/periqles.
-  ```sh
-  npm install @types/periqles
-  ```
-4. Import a PeriqlesForm into your frontend.
-   ```MyReactComponent.jsx
-   import PeriqlesForm from 'periqles';
-   ```
+    ```
+    npm install periqles
+    ```
+2. Optionally, for TypeScript projects, install @types/periqles.
+    ```
+    npm install @types/periqles
+    ```
+4. Import PeriqlesForm into your frontend.
+    ```
+    // MyReactComponent.jsx
+    import PeriqlesForm from 'periqles';
+    ```
 
 ### Server
 
@@ -84,7 +78,8 @@ Periqles relies on introspection queries to intuit the optimal form UI from your
 
 In our [demo](https://github.com/oslabs-beta/periqles-demo), we use the client-agnostic `express-graphql` package to spin up a server in Node for our GraphQL API. See the documentation [here](https://graphql.org/graphql-js/express-graphql/) and our code [here](https://github.com/oslabs-beta/periqles-demo/blob/main/server.js). Apollo projects may use the Apollo Server without problems.
 
-```server.js
+```
+//server.js
 const express = require('express');
 const {graphqlHTTP}  = require('express-graphql');
 const app = express();
@@ -107,7 +102,8 @@ Currently, the introspection query used by periqles expects to find named input 
 
 This means that periqles will successfully introspect this mutation:
 
-```schema.graphql
+```
+#schema.graphql
 type Mutation {
   addUser(input: AddUserInput!): AddUserPayload
 }
@@ -125,7 +121,8 @@ input AddUserInput {
 
 ... but trying to introspect this mutation will cause your GraphQL server to throw back a `400 Bad Request` error:
 
-```schema.graphql
+```
+#schema.graphql
 # The mutation input is not named and is defined in-line.
 type Mutation {
   addUser(input: {
@@ -146,9 +143,31 @@ This is a high-priority area of improvement for us. We welcome PRs and other con
 
 ## Usage
 
+`<PeriqlesForm />` takes a number of props, including optional props to override its default logic for more fine-grained control over the apperance and composition of the form, the data sent to the API on submit, and state-management behavior, including optimistic updating.
+
+**Props available to all clients:**
+
+- `mutationName`: string _(required)_ The name of a mutation as it appears on your GraphQL schema, e.g. 'AddUser' or 'AddUserMutation'.
+- - If this is the only prop provided, periqles will render a form with default HTML intuited based on the name and scalar data type of each input field. E.g., an input field of type 'String' will result in `<input type="text">`. If the name of the input field appears in periqles' dictionary of common input fields, it will render a more specifically appropriate element. For example, a string-type field with the name 'password' will result in `<input type="password">`, and a field named 'mobile' will result in `<input type="tel">`.
+- `specifications`: object _(optional)_ If you wish to control the HTML or state management of a particular field, provide the instructions here. Periqles will fall back to its default logic for any details not specified here.
+- - `header`: string _(optional)_ If you wish to put a header on your form, e.g. "Sign up!", pass it here. 
+- - `fields`: object _(optional)_ Each key on `fields` should correspond to the name of an input field exactly as it appears on the schema. (E.g., based on the schema example above, 'pizzaTopping' is a valid key to use to provide specifications for this input field.)
+- - - `element`: string _(required)_ The HTML element you wish to use for this field, e.g. 'textarea', 'radio', 'datetime', etc. 
+- `args`: object _(optional)_
+- `callbacks`: object _(optional)_
+- - `onSuccess`: function _(optional)_
+- - `onFailure`: function _(optional)_
+
+
+See below for more usage information specific to your client.
+
 ### Relay
 
+We plan to add support for passing any or all of commitMutation's callback parameters on `<PeriqlesForm />`'s `callbacks` prop. (i.e., `updater`, `optimisticResponse`, `optimisticUpdater`, `configs`, and `cacheConfigs`). If this is a high priority for your use case, please let us know by opening an issue, or submit a PR.
+
 ### Apollo
+
+### Styles
 
 
 <!-- ## Roadmap -->
@@ -173,3 +192,11 @@ Distributed under the MIT License. See `LICENSE` for more information.
 - [Ian Garrett](https://github.com/eeeeean)
 - [Joe Toledano](https://github.com/JosephToledano)
 - [Kelly Porter](https://github.com/kporter101)
+
+## Built with:
+
+* [React (Hooks)](https://reactjs.org/)
+* [GraphQL](https://graphql.org/)
+* [Relay](https://relay.dev/)
+* [Apollo](https://www.apollographql.com/)
+* the support of [OSLabs](https://github.com/open-source-labs)
