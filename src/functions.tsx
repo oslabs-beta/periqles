@@ -166,7 +166,7 @@ export const generateSpecifiedElement: GenerateSpecifiedElement = ({
   setFormState,
 }) => {
   if (specs.render) {
-    return specs.render(formState, setFormState, handleChange);
+    return specs.render({formState, setFormState, handleChange});
   }
   //If label isn't given, set it as field.name w/ spaces & 1st letter capitalized
   if (!specs.label) {
