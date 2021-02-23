@@ -20,7 +20,7 @@ module.exports = {
   // .ts and .tsx files.  You *can* just use babel-jest for both, if
   // you already have babel set up to compile typescript files.
   transform: {
-    // '^.+\\.jsx?$': 'babel-jest',
+    // '^.+\\.tsx?$': 'babel-jest',
     // '^.+\\.tsx?$': 'ts-jest',
     // If you're using babel for both:
     '^.+\\.[jt]sx?$': 'babel-jest',
@@ -31,9 +31,9 @@ module.exports = {
   // to import these, so this tells jest what to do for these.
   moduleNameMapper: {
     // Resolve .css and similar files to identity-obj-proxy instead.
-    '.+\\.(css|styl|less|sass|scss)$': `identity-obj-proxy`,
+    '\\.(css|less)$': "identity-obj-proxy" ,
     // Resolve .jpg and similar files to __mocks__/file-mock.js
-    '.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': `<rootDir>/__mocks__/file-mock.js`,
+    '.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': `./__tests__/mockFile.js`,
   },
   // Tells Jest what folders to ignore for tests
   testPathIgnorePatterns: [`node_modules`, `\\.cache`],
@@ -45,4 +45,6 @@ module.exports = {
     '.js',
     '.jsx',
   ],
+  setupFiles: ['./__tests__/jest-setup.js'],
+
 };

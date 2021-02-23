@@ -1,5 +1,6 @@
 /* eslint-disable no-lone-blocks */
 import * as React from 'react';
+import ReactDOMServer from 'react-dom/server';
 import {
   render,
   screen,
@@ -7,15 +8,16 @@ import {
   waitForElement,
 } from '@testing-library/react';
 // import '../setupTests';
-import App from '../testing.jsx';
+import '@testing-library/jest-dom/extend-expect';
+
 
 //components to test
 import PeriqlesForm from '../src/PeriqlesForm.tsx';
 // import UserProfile from '../ts/components/UserProfile.tsx';
-import PeriqlesField from '../src/components/PeriqlesField.tsx'
+import PeriqlesField from '../src/PeriqlesField.tsx'
 
 // //React Component Tests
-const defaultProps = {
+const props = {
   environment: 'modernEnvironment',
   mutationName: 'AddUser',
   mutationGQL: 'mutationGQL',
@@ -25,22 +27,22 @@ const defaultProps = {
     onSuccess: () => {},
     onFailure: () => {},
   },
-  className: 'PeriqlesForm',
-  handleSubmit: () => {},
-  fieldNames: [],
-  input: {},
-  variables: {},
-  handleChange: () => {},
-  headerText: 'I am a header',
-  loadingTest: 'Loading form...',
-  fields: ['Fields'],
-  PeriqlesField: {},
-  renderFields: () => {},
-  // className: 'periqles-submit',
-  buttonText: 'Submit',
-  fetch: () => {},
 };
 
+  // const className: 'PeriqlesForm',
+  // const handleSubmit: () => {},
+  // fieldNames: [],
+  // input: {},
+  // variables: {},
+  // handleChange: () => {},
+  // headerText: 'I am a header',
+  // loadingTest: 'Loading form...',
+  // fields: ['Fields'],
+  // PeriqlesField: {},
+  // renderFields: () => {},
+  // // className: 'periqles-submit',
+  // buttonText: 'Submit',
+  // fetch: () => {}
 // console.log('This is the App Component: ', App);
 // console.log('This is the PF Component: ', PeriqlesForm);
 // console.log('This is the UP Component: ', UserProfile);
@@ -53,9 +55,29 @@ const defaultProps = {
 
 //PeriqlesForm Tests
 describe('Periqles Test', () => {
-  it('Should render a form tag with a className of PeriqlesForm', () => {
-    // render(<PeriqlesForm {...defaultProps} />);
-    render(<PeriqlesForm  {...defaultProps} />);
+  it('Should render a Form with the class of PeriqlesForm', () => {
+    const {container} = render(<PeriqlesForm {...props} />);
+    expect(container.querySelector('form')).toBeInTheDocument()
+    expect(container.querySelector('form').getAttribute('class')).toBe('PeriqlesForm')
+
+    // screen.debug()
+  });
+
+  it('Should return the correct PeriqlesField when renderFields is passed in a fields argument', () => {
+    const fields = [
+      {
+        name: 'email',
+        label: 'email',
+        type: 'string'
+      },
+      {
+        name: 'age',
+        label: 'age',
+        type: 'Int',
+      }
+    ]
+    render(<PeriqlesForm {...props} />);
+    screen.debug()
   });
 });
 
