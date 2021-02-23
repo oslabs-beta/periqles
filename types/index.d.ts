@@ -12,11 +12,11 @@ interface PeriqlesFieldSpecs {
   element: string;
   label: string | JSX.Element;
   options?: PeriqlesOptionSpec[];
-  render?: (
-    formState: FormState,
-    setFormState: React.Dispatch<React.SetStateAction<FormState>>,
-    handleChange: (e) => void,
-  ) => JSX.Element;
+  render?: (params: {
+    formState?: FormState,
+    setFormState?: React.Dispatch<React.SetStateAction<FormState>>,
+    handleChange?: (e) => void,
+  }) => JSX.Element;
   src?: string;
   min?: number;
   max?: number;

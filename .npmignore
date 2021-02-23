@@ -1,7 +1,6 @@
 .*
 **/tsconfig.json
 **/webpack.config.js
-node_modules
 src/
 server/
 __tests__/
@@ -11,3 +10,4 @@ demo/**
 periqles-**.tgz
 Procfile
 .env
+.github/
