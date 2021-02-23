@@ -8,6 +8,7 @@
 
 .PeriqlesForm, .PeriqlesForm * {
   box-sizing: border-box;
+  outline: none;
 }
 
 .PeriqlesForm label, .periqles-radio {

@@ -9,6 +9,7 @@ _bundles
 .DS_Store
 .npmignore
 ApolloPF.tsx
+demo/
 
 # Logs
 logs

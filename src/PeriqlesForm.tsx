@@ -39,12 +39,11 @@ const PeriqlesForm = ({
 
     // validate non-null text fields
     const fieldNames = Object.keys(formState);
-    console.log('fieldNames', fieldNames);
     for (let i = 0; i < fieldNames.length; i += 1) {
       const fieldObj = fields.filter(
         (fieldObj) => fieldObj.name === fieldNames[i],
       )[0];
-      console.log('this fieldObj:', fieldObj);
+
       if (fieldObj.required && formState[fieldNames[i]] === '') {
         window.alert(`The following field is required: ${fieldObj.label}`);
         return;
@@ -58,7 +57,6 @@ const PeriqlesForm = ({
 
     if (environment) {
       // relay commit method
-      console.log('committing Relay mutation');
       commitMutation(environment, {
         mutation: mutationGQL,
         variables,
@@ -72,7 +70,6 @@ const PeriqlesForm = ({
       });
     } else {
       // apollo commit method
-      console.log('committing Apollo mutation');
       // actual invocation of addUser useMutation mutate function; if passing variables must be passed inside of an object
       useMutation({ variables })
       .then(response => {
