@@ -6,6 +6,7 @@ const LinksSection = (): JSX.Element => {
     <div className="LinksSection">
       <h3 className="pitch" id="long-pitch">
         Periqles is a component library for Relay and Apollo that makes collecting user input easy, fast, and DRY. 
+        <br/>
         <br/>Periqles abstracts away the dirty work of form creation — with override switches built in for the design-conscious developer — so you can be free to focus on business logic.
       </h3>
       <div className="repo-logos">
