@@ -47,7 +47,7 @@
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#maintainers">Maintainers</a></li>
-    <li><a href="#built-with">Acknowledgements</a></li>
+    <li><a href="#built-with">Built with:</a></li>
   </ol>
 </details>
 
@@ -276,6 +276,12 @@ const MyComponent = () => {
 
 ### Styles
 
+Periqles comes with its own basic [stylesheet](https://github.com/oslabs-beta/periqles/blob/main/periqles.css), but it also attaches class names to each of its HTML elements that you can target in CSS for addtional styling. We've tried to keep our default styles in that sweet spot between "enough to be presentable" and "adaptable to any design scheme." If you think we should provide more or less CSS, give us a shout in the [issues](https://github.com/oslabs-beta/periqles/issues).
+
+Each element has two class names which follow this format:
+
+- "periqles-[element type]": e.g., 'periqles-textarea', 'periqles-radio-option'
+- "[field name]-[element type]": e.g., 'biography-textarea', 'gender-radio-option'
 
 <!-- ## Roadmap -->
 
@@ -293,7 +299,7 @@ If you would like to contribute to periqles, please fork this repo. Commit your 
 Distributed under the MIT License. See `LICENSE` for more information.
 
 
-## Maintained by:
+## Maintainers
 
 - [Cameron Baumgartner](https://github.com/cameronbaumgartner)
 - [Ian Garrett](https://github.com/eeeeean)
