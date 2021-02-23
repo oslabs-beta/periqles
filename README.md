@@ -34,11 +34,19 @@
         <li><a href="#installation">Schema</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
+    <li>
+      <a href="#usage">Usage</a>
+      <ul>
+        <li><a href="#periqlesform-props">PeriqlesForm Props</a></li>
+        <li><a href="#relay">Relay</a></li>
+        <li><a href="#apollo">Apollo</a></li>
+        <li><a href="#styles">Styles</a></li>
+      </ul>
+    </li>
 <!--     <li><a href="#roadmap">Roadmap</a></li> -->
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
-    <li><a href="#built-with">Maintainers</a></li>
+    <li><a href="#maintainers">Maintainers</a></li>
     <li><a href="#built-with">Acknowledgements</a></li>
   </ol>
 </details>
@@ -148,6 +156,8 @@ This is a high-priority area of improvement for us. We welcome PRs and other con
 
 `<PeriqlesForm />` takes a number of props, including optional props to override its default logic for more fine-grained control over the apperance and composition of the form, the data sent to the API on submit, and state-management behavior, including optimistic updating.
 
+### PeriqlesForm Props
+
 **These are the props available to all clients. See below for more usage information specific to your client.**
 
 - `mutationName`: string _(required)_ — The name of a mutation as it appears on your GraphQL schema, e.g. 'AddUser' or 'AddUserMutation'.
@@ -162,7 +172,7 @@ This is a high-priority area of improvement for us. We welcome PRs and other con
         - `option`: object _(optional)_ — Specifies an option for this dropdown or group of radio buttons.
           - `label`: string or element _(required)_ — The label you wish to appear for this option.
           - `value`: string or number _(required)_ — The value to be submitted to the API.
-    - `render`: function({formState, setFormState, handleChange}) _(optional)_ If you wish to completely circumvent periqles' logic for rendering input fields, you may provide your own rendering function or functional component here. Parameters:
+    - `render`: function({formState, setFormState, handleChange}) _(optional)_ — If you wish to completely circumvent periqles' logic for rendering input fields, you may provide your own rendering function or functional component here. The component you specify will completely replace the field `<PeriqlesForm />` would have otherwise rendered. Parameters:
       - `formState`: object _(optional)_ — The name and current value of each input field as key-value pairs.
       - `setFormState`: function(newFormState) _(optional)_ — A React setState [hook](https://reactjs.org/docs/hooks-reference.html#usestate).
       - `handleChange`: function(event) _(optional)_ — Destructures the input field's name and value off event.target to pass them as arguments to setFormState.
@@ -178,9 +188,20 @@ This is a high-priority area of improvement for us. We welcome PRs and other con
 
 ### Relay
 
-We plan to add support for passing any or all of commitMutation's callback parameters on `<PeriqlesForm />`'s `callbacks` prop. (i.e., `updater`, `optimisticResponse`, `optimisticUpdater`, `configs`, and `cacheConfigs`). If this is a high priority for your use case, please let us know by opening an issue, or submit a PR.
+In addition to the optional and required props listed above, `<PeriqlesForm />` requires the following props when used in a Relay client:
+
+- `environment`: RelayEnvironment _(required)_ — Your client's RelayEnvironment instance.
+- `mutationGQL`: GraphQLTaggedNode _(required)_ — Your mutation, formatted as a tagged template literal using the `graphql` tag imported from `react-relay`. (NOT the version provided by `graphql-tag`.)
+
+`<PeriqlesForm />` uses the commitMutation function imported from Relay to fire off mutations when the form is submitted. If you pass an onSuccess and/or an onFailure callback on the `callbacks` prop, they will be invoked by commitMutation's onCompleted and onError callbacks, respectively. 
+
+CommitMutation takes additional callback parameters that are not currently included on `<PeriqlesForm />`'s `callbacks` prop, namely `updater`, `optimisticResponse`, `optimisticUpdater`, `configs`, and `cacheConfigs`. We plan to support these callbacks soon. If this is a high priority for your use case, please let us know by opening an issue, or submit a PR.
+
+**[Code Sample](https://github.com/oslabs-beta/periqles-demo/blob/main/ts/components/relay/UserProfile.tsx)**
 
 ### Apollo
+
+**[Code Sample](https://github.com/oslabs-beta/periqles-demo/blob/main/ts/components/ApolloUserProfile.tsx)**
 
 ### Styles
 
