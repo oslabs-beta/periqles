@@ -8,12 +8,14 @@
 
 <h1 align="center">periqles</h1>
 <p align="center">
-  A React form library for GraphQL.
+  Painless forms for GraphQL.
   <br />
     <a href="">Demo →</a>
 </p>
 
-<p>periqles is a form component library that makes collecting user input to commit mutations in a GraphQL API easy, fast, and DRY. Periqles introspects the project's schema and intuits the input fields, data types, and optimal UI for a given mutation, abstracting away the input element organization, state management, and API calls needed to create a form so that you can be free to focus on the business logic of your application. Supports Relay and Apollo clients.</p>
+<p>Periqles is a React component library for Relay and Apollo that makes it easy to collect user input.</p>
+
+<p>Periqles abstracts away the dirty work of form creation — with override switches built in for the design-conscious developer — so you can be free to focus on business logic. Given the name of a GraphQL mutation, periqles introspects the project's schema and intuits a form to match it. No more fussing with React state management or HTML/CSS — just drop in a `<PeriqlesForm />` tag and go on with your life.</p>
 
 >*“Having knowledge but lacking the power to express it clearly is no better than never having any ideas at all.”  
 -- Pericles*
@@ -24,16 +26,14 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
+      <a href="#built-with">Built With</a>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
+        <li><a href="#installation">Schema</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
@@ -43,19 +43,16 @@
   </ol>
 </details>
 
-## About The Project
-
-
-
 ### Built With
 
 * [React (Hooks)](https://reactjs.org/)
 * [GraphQL](https://graphql.org/)
+* the support of [OSLabs](https://github.com/open-source-labs)
 
 
 ## Getting Started
 
-To add periqles forms to your Apollo or Relay client, follow these steps.
+To add a `<PeriqlesForm />` to your Apollo or Relay client, follow these steps.
 
 ### Prerequisites
 
@@ -70,15 +67,41 @@ To add periqles forms to your Apollo or Relay client, follow these steps.
 
 ### Installation
 
-1. Install periqles from the terminal:
+1. Install periqles from the terminal.
    ```sh
    npm install periqles
    ```
-2. Import a PeriqlesForm into your frontend.
+2. For TypeScript projects: install @types/periqles.
+  ```sh
+  npm install @types/periqles
+  ```
+4. Import a PeriqlesForm into your frontend.
    ```MyReactComponent.jsx
    import PeriqlesForm from 'periqles';
    ```
 
+### Schema
+
+Periqles relies on introspection queries to intuit the optimal form UI from your project's GraphQL schema. These queries will hit your server in the form of POST requests to `/graphql`. To use periqles, you must expose your schema at that `/graphql` endpoint. 
+
+In our [demo](https://github.com/oslabs-beta/periqles-demo), we use the client-agnostic `express-graphql` package to spin up a server in Node for our GraphQL API. See the documentation [here](https://graphql.org/graphql-js/express-graphql/) and our code [here](https://github.com/oslabs-beta/periqles-demo/blob/main/server.js). Apollo projects may use the Apollo Server without problems.
+
+```server.js
+const express = require('express');
+const {graphqlHTTP}  = require('express-graphql');
+const app = express();
+const {schema} = require('./data/schema/index.js');
+
+app.post(
+  '/graphql',
+  graphqlHTTP({
+    schema: schema,
+    pretty: true,   // pretty-print JSON responses
+  }),
+);
+```
+
+If you are not using the `/graphql` endpoint to serve your API, options include configuring your server to redirect requests to `/graphql` to the correct endpoint or using a build tool like Webpack to proxy requests to `/graphql` to the correct address.
 
 ## Usage
 
