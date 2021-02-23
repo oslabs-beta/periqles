@@ -29,8 +29,6 @@
 >*“Having knowledge but lacking the power to express it clearly is no better than never having any ideas at all.”  
 -- Pericles*
 
-<h2>🚧 periqles is not yet ready for deployment. Stay tuned! 🚧</h2>
-
 <details open="open">
   <summary>Table of Contents</summary>
   <ol>
