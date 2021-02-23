@@ -1,1 +1,1 @@
-web: cd ./demo && npm run start:prod
+web: cd ./demo && npm install && npm run start:prod
