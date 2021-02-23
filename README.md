@@ -190,18 +190,89 @@ This is a high-priority area of improvement for us. We welcome PRs and other con
 
 In addition to the optional and required props listed above, `<PeriqlesForm />` requires the following props when used in a Relay client:
 
-- `environment`: RelayEnvironment _(required)_ — Your client's RelayEnvironment instance.
+- `environment`: RelayEnvironment _(required)_ — Your client's RelayEnvironment instance; necessary to send a mutation.
 - `mutationGQL`: GraphQLTaggedNode _(required)_ — Your mutation, formatted as a tagged template literal using the `graphql` tag imported from `react-relay`. (NOT the version provided by `graphql-tag`.)
 
 `<PeriqlesForm />` uses the commitMutation function imported from Relay to fire off mutations when the form is submitted. If you pass an onSuccess and/or an onFailure callback on the `callbacks` prop, they will be invoked by commitMutation's onCompleted and onError callbacks, respectively. 
 
 CommitMutation takes additional callback parameters that are not currently included on `<PeriqlesForm />`'s `callbacks` prop, namely `updater`, `optimisticResponse`, `optimisticUpdater`, `configs`, and `cacheConfigs`. We plan to support these callbacks soon. If this is a high priority for your use case, please let us know by opening an issue, or submit a PR.
 
-**[Code Sample](https://github.com/oslabs-beta/periqles-demo/blob/main/ts/components/relay/UserProfile.tsx)**
+Here is a basic example of how to use `<PeriqlesForm />` in Relay:
+
+```
+// MyComponent.jsx
+
+import React, {useState} from 'react';
+import {graphql} from 'react-relay';
+import PeriqlesForm from 'periqles';
+
+const ADD_USER =  graphql`
+  mutation UserProfile_AddUserMutation($input: AddUserInput!) {
+    addUser(input: $input) {
+      username
+      password
+      email
+      gender
+      pizzaTopping
+      age
+    }
+  }`;
+
+const [addUserMutation, response] = useMutation(ADD_USER);
+
+const MyComponent = ({relay}) => {
+  return (<div>
+     <h1>Sign Up</h1>
+     <PeriqlesForm
+      mutationName={'AddUser'}
+      mutationGQL={ADD_USER}
+      environment={relay.environment}
+     />
+  </div>);
+};
+```
+
+**[Full Code Sample](https://github.com/oslabs-beta/periqles-demo/blob/main/ts/components/relay/UserProfile.tsx)**
 
 ### Apollo
 
-**[Code Sample](https://github.com/oslabs-beta/periqles-demo/blob/main/ts/components/ApolloUserProfile.tsx)**
+In addition to the optional and required props listed above, `<PeriqlesForm />` requires one additional prop when used in an Apollo client:
+
+- `useMutation`: function _(required)_ — Your custom mutation hook, built using the useMutation hook imported from `@apollo/client`.
+
+Here is a basic example of how to use `<PeriqlesForm />` in Apollo:
+
+```
+// MyComponent.jsx
+
+import React, {useState} from 'react';
+import { gql, useMutation } from '@apollo/client';
+import PeriqlesForm from 'periqles';
+
+const ADD_USER = gql`
+  mutation AddUser($input: AddUserInput!){
+    addUser(input: $input){
+        username
+        password
+        email
+        gender
+        pizzaTopping
+        age
+      }
+  }`;
+
+const MyComponent = () => {
+  return (<div>
+     <h1>Sign Up</h1>
+     <PeriqlesForm
+      mutationName={'AddUser'}
+      useMutation={addUser}
+     />
+  </div>);
+};
+```
+
+**[Full Code Sample](https://github.com/oslabs-beta/periqles-demo/blob/main/ts/components/ApolloUserProfile.tsx)**
 
 ### Styles
 
