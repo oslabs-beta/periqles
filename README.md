@@ -1,9 +1,18 @@
 <p align="center">
-<img src="/periqles-logo.png" alt="logo" width="300"/>
-<br />
-<a href="https://github.com/oslabs-beta/periqles/graphs/contributors"><img src="https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge" alt="Contributors"></a>
-<a href="https://github.com/oslabs-beta/periqles/stargazers"><img src="https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge" alt="Stargazers"></a>
-<a href="https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge"><img src="https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge" alt="MIT License"></a>
+  <img src="/periqles-logo.png" alt="logo" width="300"/>
+  <br />
+  </a>
+  <a href="https://github.com/oslabs-beta/periqles/stargazers">
+    <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/oslabs-beta/periqles?color=%23C9E465&style=for-the-badge">
+  </a>
+  <a href="https://www.npmjs.com/package/periqles">
+    <img alt="npm" src="https://img.shields.io/npm/v/periqles?color=%23C9E465&style=for-the-badge">
+  </a>
+  <a href="https://github.com/oslabs-beta/periqles/graphs/contributors">
+    <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/oslabs-beta/periqles?color=%23C9E465&style=for-the-badge">
+  <a href="https://github.com/oslabs-beta/periqles/blob/main/LICENSE">
+    <img alt="NPM" src="https://img.shields.io/npm/l/periqles?color=%23C9E465&style=for-the-badge">
+  </a>
 </p>
 
 <h1 align="center">periqles</h1>
@@ -19,8 +28,6 @@
 
 >*“Having knowledge but lacking the power to express it clearly is no better than never having any ideas at all.”  
 -- Pericles*
-
-<h2>🚧 periqles is not yet ready for deployment. Stay tuned! 🚧</h2>
 
 <details open="open">
   <summary>Table of Contents</summary>
@@ -296,7 +303,7 @@ Each element has two class names which follow this format:
 
 ## Contributing
 
-If you would like to contribute to periqles, please fork this repo. Commit your changes to a feature branch and open a pull request. We appreciate your contributions to this open-source project!
+If you would like to contribute to periqles, please [fork this repo](https://github.com/oslabs-beta/periqles). Commit your changes to a feature branch and open a pull request. We appreciate your contributions to this open-source project!
 
 
 ## License
