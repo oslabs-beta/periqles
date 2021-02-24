@@ -39,11 +39,10 @@
     "build": "npm run clean && tsc && tsc -m es6 --outDir lib-esm && webpack",
     "publish:local": "npm run build && npm pack && cp periqles-0.1.0.tgz ~",
     "lint": "eslint ./src ./types",
-    "test": "jest --verbose --testURL=http://localhost:3005",
+    "test": "jest --verbose --testURL=http://localhost:3005 --detectOpenHandles",
     "prepare": "npm run build",
     "test-async": "jest --verbose --detectOpenHandles",
     "test-serverRunning": "node ./__mocks__/mockServer.js & jest --verbose"
-
   },
   "devDependencies": {
     "@babel/core": "^7.13.1",
@@ -64,6 +63,7 @@
     "@typescript-eslint/parser": "^4.15.1",
     "babel-jest": "^26.6.3",
     "babel-loader": "^8.2.2",
+    "babel-plugin-relay": "^10.1.3",
     "css-loader": "^5.0.2",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^7.2.0",
@@ -76,6 +76,7 @@
     "jest": "^26.6.3",
     "prettier": "^2.2.1",
     "react-dom": "^17.0.1",
+    "relay-test-utils": "^10.1.3",
     "shx": "^0.3.3",
     "style-loader": "^2.0.0",
     "ts-loader": "^8.0.14",

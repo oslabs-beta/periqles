@@ -3,8 +3,8 @@ const expressGraphql = require('express-graphql');
 const path = require('path');
 const cors = require('cors');
 const {schema} = require('../__tests__/testSchema.js');
+const { render } = require('react-dom');
 const {graphqlHTTP} = expressGraphql;
-// console.log(schema);
 const app = express();
 
 app.use(express.json());
@@ -73,17 +73,56 @@ const mockResponse = {
         },
       },
       {
-        name: 'clientMutationId',
+        name: 'age',
+        type: {
+          name: 'Int',
+          kind: 'SCALAR',
+          ofType: null,
+        },
+      },
+      {
+        name: 'email',
         type: {
           name: 'String',
           kind: 'SCALAR',
           ofType: null,
         },
       },
+      {
+        name: 'username',
+        type: {
+          name: null,
+          kind: 'SCALAR',
+          ofType: null,
+        },
+      },
+      {
+        name: 'gender',
+        type: {
+          name: null,
+          kind: 'NON_NULL',
+          ofType: {
+            name: 'GenderEnum',
+            kind: 'ENUM',
+            enumValues: [
+              {
+                name: 'NON_BINARY',
+              },
+              {
+                name: 'FEMALE',
+              },
+              {
+                name: 'MALE',
+              },
+            ],
+          },
+        },
+      },
     ],
   }
 }
 };
+
 
 
 

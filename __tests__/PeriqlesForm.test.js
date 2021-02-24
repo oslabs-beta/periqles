@@ -15,60 +15,39 @@ import {
 } from '@testing-library/react';
 // import '../setupTnoests';
 import '@testing-library/jest-dom/extend-expect';
+import {createMockEnvironment, MockPayloadGenerator} from 'relay-test-utils'
+import {graphql} from 'react-relay';
+
 
 //const { introspect } = require('../../src/functions.tsx');
 
 //components to test
 import PeriqlesForm from '../src/PeriqlesForm.tsx';
-// import UserProfile from '../ts/components/UserProfile.tsx';
-import PeriqlesField from '../src/PeriqlesField.tsx'
+// // import UserProfile from '../ts/components/UserProfile.tsx';
+// import PeriqlesField from '../src/PeriqlesField.tsx'
 
 // //React Component Tests
+
 const props = {
-  environment: 'modernEnvironment',
+  environment: createMockEnvironment(),
   mutationName: 'AddUser',
-  mutationGQL: 'mutationGQL',
+  mutationGQL: "mutationGQL",
 };
 
-// specifications: ['specifications'],
-// args: 'args',
-// fields: [ {
-//   name: 'email',
-//   label: 'email',
-//   type: 'string'
-// },
-// {
-//   name: 'age',
-//   label: 'age',
-//   type: 'Int',
-// }],
-// callbacks: {
-//   onSuccess: () => {},
-//   onFailure: () => {},
-// },
-  // const className: 'PeriqlesForm',
-  // const handleSubmit: () => {},
-  // fieldNames: [],
-  // input: {},
-  // variables: {},
-  // handleChange: () => {},
-  // headerText: 'I am a header',
-  // loadingTest: 'Loading form...',
-  // fields: ['Fields'],
-  // PeriqlesField: {},
-  // renderFields: () => {},
-  // // className: 'periqles-submit',
-  // buttonText: 'Submit',
-  // fetch: () => {}
-// console.log('This is the App Component: ', App);
-// console.log('This is the PF Component: ', PeriqlesForm);
-// console.log('This is the UP Component: ', UserProfile);
-
-// describe('App', () => {
-//   test('renders App component', () => {
-//     render(<App />);
-//   });
-// });
+const specifications = {
+  header: 'Sign Up',
+  fields: {
+    gender: {
+      element: 'radio',
+      label: 'Gender',
+      options: [
+        {label: 'Non-binary', value: 'NON_BINARY'},
+        {label: 'Male', value: 'MALE'},
+        {label: 'Female', value: 'FEMALE'},
+      ],
+    },
+  },
+};
 
 //PeriqlesForm Tests
 describe('Periqles Test', () => {
@@ -76,47 +55,102 @@ describe('Periqles Test', () => {
     const {container} = render(<PeriqlesForm {...props} />);
     expect(container.querySelector('form')).toBeInTheDocument()
     expect(container.querySelector('form').getAttribute('class')).toBe('PeriqlesForm')
-
-    // screen.debug()
   });
 
-xit('Should return the correct PeriqlesField when renderFields is passed in a fields argument', () => {
-    const fields = [
-      {
-        name: 'email',
-        label: 'email',
-        type: 'string'
-      },
-      {
-        name: 'age',
-        label: 'age',
-        type: 'Int',
-      }
-    ]
-    // render(PeriqlesForm.renderFields(fields));
-    // console.log(PeriqlesForm.renderFields(fields));
-    // screen.debug()
+  xit('Should render "Loading form..." if introspection is pending/unsuccessful', async () => {
+    const {getByText} = render(<PeriqlesForm {...props}/>)
+     await waitFor(() => {
+       expect(getByText('Loading form...')).toBeInTheDocument()
+     })
   });
-
-  it('Should render form inputs if introspection is successful', async () => {
-    // let container;
+  
+  xit('Should render form inputs if introspection is successful', async () => {
     const {getByText, getByRole} = render(<PeriqlesForm {...props}/>)
      await waitFor(() => {
        expect(getByText('Pizza Topping')).toBeInTheDocument()
        expect(getByRole('combobox')).toBeInTheDocument()
-
-        // const {container} = render(<PeriqlesForm {...props}/>)
-        // expect(container.querySelector('select')).toBeInTheDocument()
-        // container = render(<PeriqlesForm {...props} />)    
      })
-    //  const {container} = render(<PeriqlesForm {...props}/>)
-    //  expect(container.querySelector('select')).toBeInTheDocument()
-     
-    // container = render(<PeriqlesForm {...props} />)    
   });
+ 
+  xit('Should render a form with a select tag and options if the passed in mutation has an ofType kind of Enum', async () => {
+    const {getByText, getByRole} = render(<PeriqlesForm {...props}/>)
+     await waitFor(() => {
+       expect(getByText('Pizza Topping')).toBeInTheDocument()
+       expect(getByRole('combobox')).toBeInTheDocument()
+       screen.debug()
+     })
+})
 
+  it('Should trigger a callback when the form is submitted ', async () => {
+    const mutationGQL = graphql`
+                              mutation UserProfile_AddUserMutation($input: AddUserInput!) {
+                                addUser(input: $input) {
+                                  userId
+                                  username
+                                  password
+                                  email
+                                  gender
+                                  pizzaTopping
+                                  age
+                                }
+                              }
+                              `
+
+  const submitProps = {
+    environment: createMockEnvironment(),
+    mutationName: 'AddUser',
+    mutationGQL: mutationGQL,
+  };
+  
+  const {getByText, getByRole, container} = render(<PeriqlesForm {...submitProps}/>)
+  const onSubmit = jest.fn()
+   await waitFor(() => {
+     expect(getByText('Pizza Topping')).toBeInTheDocument()
+     fireEvent.submit(container.querySelector('form'))
+     expect(onSubmit).toHaveBeenCalled()
+   })
+   
+})
+
+xit('Should render a form with a text input if mutation input has a Type of String', async () => {
+  const {getByRole} = render(<PeriqlesForm {...props}/>)
+   await waitFor(() => {
+     expect(getByRole('textbox')).toBeInTheDocument()
+   })
+})
+
+xit('Should render a form with a number input if mutation input has a Type of Int', async () => {
+  const {getByRole} = render(<PeriqlesForm {...props}/>)
+   await waitFor(() => {
+     expect(getByRole('spinbutton')).toBeInTheDocument()
+   })
+})
+
+xit('Should render a form with a string input if mutation input type is not handled', async () => {
+  const {getByRole} = render(<PeriqlesForm {...props}/>)
+   await waitFor(() => {
+     expect(getByRole('textbox')).toBeInTheDocument()
+   })
+})
+
+xit('Should render user provided header from specifications prop', async () => {
+  const {getByText} = render(<PeriqlesForm {...props} specifications={specifications}/>)
+   await waitFor(() => {
+     expect(getByText('Sign Up')).toBeInTheDocument()
+   })
+})
+
+it('Should render user provided inputs from specifications prop', async () => {
+  const {getByRole} = render(<PeriqlesForm {...props} specifications={specifications}/>)
+   await waitFor(() => {
+     expect(getByRole('radio')).toBeInTheDocument()
+   })
+})
   
 });
+
+
+
 
 //     // eslint-disable-next-line no-labels
 //     it('Should render a form tag with an onSubmit function', () => {
@@ -158,4 +192,45 @@ xit('Should return the correct PeriqlesField when renderFields is passed in a fi
 //     it('Should render a button with the text "Submit"', () => {});
 //   });
 // });
-// // PERIQLES FORM COMPONENT FOR REFERENCE
+
+
+// specifications: ['specifications'],
+// args: 'args',
+// fields: [ {
+//   name: 'email',
+//   label: 'email',
+//   type: 'string'
+// },
+// {
+//   name: 'age',
+//   label: 'age',
+//   type: 'Int',
+// }],
+// callbacks: {
+//   onSuccess: () => {},
+//   onFailure: () => {},
+// },
+  // const className: 'PeriqlesForm',
+  // const handleSubmit: () => {},
+  // fieldNames: [],
+  // input: {},
+  // variables: {},
+  // handleChange: () => {},
+  // headerText: 'I am a header',
+  // loadingTest: 'Loading form...',
+  // fields: ['Fields'],
+  // PeriqlesField: {},
+  // renderFields: () => {},
+  // // className: 'periqles-submit',
+  // buttonText: 'Submit',
+  // fetch: () => {}
+// console.log('This is the App Component: ', App);
+// console.log('This is the PF Component: ', PeriqlesForm);
+// console.log('This is the UP Component: ', UserProfile);
+
+// describe('App', () => {
+//   test('renders App component', () => {
+//     render(<App />);
+//   });
+// });
+// export default type
