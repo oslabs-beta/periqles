@@ -1,8 +1,6 @@
 <p align="center">
   <img src="/periqles-logo.png" alt="logo" width="300"/>
   <br />
-  <a href="https://github.com/oslabs-beta/periqles/graphs/contributors">
-    <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/oslabs-beta/periqles?color=%23C9E465&style=for-the-badge">
   </a>
   <a href="https://github.com/oslabs-beta/periqles/stargazers">
     <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/oslabs-beta/periqles?color=%23C9E465&style=for-the-badge">
@@ -10,6 +8,8 @@
   <a href="https://www.npmjs.com/package/periqles">
     <img alt="npm" src="https://img.shields.io/npm/v/periqles?color=%23C9E465&style=for-the-badge">
   </a>
+  <a href="https://github.com/oslabs-beta/periqles/graphs/contributors">
+    <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/oslabs-beta/periqles?color=%23C9E465&style=for-the-badge">
   <a href="https://github.com/oslabs-beta/periqles/blob/main/LICENSE">
     <img alt="NPM" src="https://img.shields.io/npm/l/periqles?color=%23C9E465&style=for-the-badge">
   </a>
