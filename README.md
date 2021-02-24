@@ -172,25 +172,31 @@ These are the props available to all clients. See below for more usage informati
 - `specifications`: object _(optional)_ — If you wish to control the HTML or state management of a particular field, provide the instructions here. Periqles will fall back to its default logic for any fields or details not specified here.
   - `header`: string _(optional)_ — If you wish to put a header on your form, e.g. "Sign up!", pass it here. 
   - `fields`: object _(optional)_ — Each key on `fields` should correspond to the name of an input field exactly as it appears on the schema. (E.g., based on the schema example above, 'pizzaTopping' is a valid key to use.) You can override defaults for as many or as few fields as you wish.
-    - `element`: string _(required)_ — The HTML element you wish to use for this field, e.g. 'textarea', 'radio', 'datetime', etc. 
-    - `label`: string or element _(required)_ — The text, HTML, or JSX you wish to appear as a label for this field.
+    - `element`: string _(optional)_ — The HTML element you wish to use for this field, e.g. 'textarea', 'radio', 'datetime', etc. 
+    - `label`: string or element _(optional)_ — The text, HTML, or JSX you wish to appear as a label for this field.
     - `options`: array _(optional)_ — Whether or not this field is listed as an enumerated type on the schema, you may constrain valid user input on the frontend by using 'select' or 'radio' for the `element` field and providing a list of options here. 
         - `option`: object _(optional)_ — Specifies an option for this dropdown or group of radio buttons.
           - `label`: string or element _(required)_ — The label you wish to appear for this option.
           - `value`: string or number _(required)_ — The value to be submitted to the API.
-    - `render`: function({formState, setFormState, handleChange}) _(optional)_ — If you wish to completely circumvent periqles' logic for rendering input fields, you may provide your own rendering function or functional component here. The component you specify will completely replace the field `<PeriqlesForm />` would have otherwise rendered. Parameters:
+    - `render`: function(params: {formState, setFormState, handleChange}) _(optional)_ — If you wish to completely circumvent periqles' logic for rendering input fields, you may provide your own functional component here. The component you specify will completely replace the field `<PeriqlesForm />` would have otherwise rendered. Parameters:
       - `formState`: object _(optional)_ — The name and current value of each input field as key-value pairs.
-      - `setFormState`: function(newFormState) _(optional)_ — A React setState [hook](https://reactjs.org/docs/hooks-reference.html#usestate).
-      - `handleChange`: function(event) _(optional)_ — Destructures the input field's name and value off event.target to pass them as arguments to setFormState.
+      - `setFormState`: function(newFormState) _(optional)_ — A React setState [hook](https://reactjs.org/docs/hooks-reference.html#usestate). Overwrites the entirety of formState with whatever is passed in.
+      - `handleChange`: function(Event) _(optional)_ — Destructures the input field's name and value off event.target to pass them as arguments to setFormState.
     - `src`: string _(optional)_ — When `element` is 'img', the URL to use for the `src` attribute.
     - `min`: number _(optional)_ — When `element` is 'range,' the number to use for the `min` attribute.
     - `max`: number _(optional)_ — When `element` is 'range,' the number to use for the `max` attribute.
 
-- `args`: object _(optional)_ — If there are any variables that you want to submit as input for the mutation but don't want to render as elements on the form, pass them here as key-value pairs. Example use cases include client-side authentication information or the `clientMutationId` in Relay. E.g.: `const args = {userId: '001', clientMutationId: ${mutationId++}}`. Fields included here will be excluded from the rendered form.  
+- `args`: object _(optional)_ — If there are any variables that you want to submit as input for the mutation but don't want to render as elements on the form, pass them here as key-value pairs. Example use cases include client-side authentication information or the `clientMutationId` in Relay. E.g.: `const args = {userId: '001', clientMutationId: ${mutationId++}}`. Fields listed here will be excluded from the rendered form but included on the mutation when the form is submitted.  
 
 - `callbacks`: object _(optional)_ — Developer-defined functions to be invoked when the form is submitted.  
     - `onSuccess`: function(response) _(optional)_ — Invoked if the mutation is successfully submitted to the API. In our demo ([Relay](https://github.com/oslabs-beta/periqles-demo/blob/main/ts/components/relay/UserProfile.tsx), [Apollo](https://github.com/oslabs-beta/periqles-demo/blob/main/ts/components/ApolloUserProfile.tsx)), we use onSuccess to trigger a very simple re-fetch and re-render of a component which displays `<PeriqlesForm />`'s output.
     - `onFailure`: function(error) _(optional)_ — Invoked if the mutation fails to fire or the API sends back an error message. Use this to display meaningful error messages to the user.
+
+### Validation
+
+Currently, periqles is able to validate input fields listed as non-null and of type `string` on the GraphQL schema. It will prevent the user from submitting the form if required text fields are left blank, including enumerated fields (represented by dropdowns or radio buttons) that are of type `string`. 
+
+This is high-priority area of improvement for us. If you have specific needs around validation, please open an [issue](https://github.com/oslabs-beta/periqles/issues) or submit a PR.
 
 ---
 
@@ -203,7 +209,7 @@ In addition to the optional and required props listed above, `<PeriqlesForm />` 
 
 `<PeriqlesForm />` uses the commitMutation function imported from Relay to fire off mutations when the form is submitted. If you pass an onSuccess and/or an onFailure callback on the `callbacks` prop, they will be invoked by commitMutation's onCompleted and onError callbacks, respectively. 
 
-CommitMutation takes additional callback parameters that are not currently included on `<PeriqlesForm />`'s `callbacks` prop, namely `updater`, `optimisticResponse`, `optimisticUpdater`, `configs`, and `cacheConfigs`. We plan to support these callbacks soon. If this is a high priority for your use case, please let us know by opening an issue, or submit a PR.
+CommitMutation takes additional callback parameters that are not currently included on `<PeriqlesForm />`'s `callbacks` prop, namely `updater`, `optimisticResponse`, `optimisticUpdater`, `configs`, and `cacheConfigs`. We plan to support these callbacks soon. If this is a high priority for your use case, please let us know by opening an [issue](https://github.com/oslabs-beta/periqles/issues), or submit a PR.
 
 Here is a basic example of how to use `<PeriqlesForm />` in Relay:
 
@@ -303,7 +309,7 @@ Each element has two class names which follow this format:
 
 ## Contributing
 
-If you would like to contribute to periqles, please [fork this repo](https://github.com/oslabs-beta/periqles). Commit your changes to a feature branch and open a pull request. We appreciate your contributions to this open-source project!
+If you would like to contribute to periqles, please [fork this repo](https://github.com/oslabs-beta/periqles). Commit your changes to a well-named feature branch then open a pull request. We appreciate your contributions to this open-source project!
 
 
 ## License

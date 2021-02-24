@@ -9,13 +9,13 @@ interface PeriqlesSpecifications {
 }
 
 interface PeriqlesFieldSpecs {
-  element: string;
-  label: string | JSX.Element;
+  element?: string;
+  label?: string;
   options?: PeriqlesOptionSpec[];
   render?: (params: {
-    formState?: FormState,
-    setFormState?: React.Dispatch<React.SetStateAction<FormState>>,
-    handleChange?: (e) => void,
+    formState: FormState,
+    setFormState: React.Dispatch<React.SetStateAction<FormState>>,
+    handleChange: (e) => void,
   }) => JSX.Element;
   src?: string;
   min?: number;
@@ -23,14 +23,14 @@ interface PeriqlesFieldSpecs {
 }
 
 interface PeriqlesOptionSpec {
-  label: string | JSX.Element;
+  label: string;
   value: number | string;
 }
 
 // objects returned by generateFieldsArray
 interface PeriqlesField {
   name: string;
-  label?: string | JSX.Element;
+  label?: string;
   type?: string;
   options?: PeriqlesFieldOption[];
   required?: boolean;
@@ -39,11 +39,10 @@ interface PeriqlesField {
 // options objects prepared for input fields represented by dropdowns/radios
 interface PeriqlesFieldOption {
   name: string;
-  label: string | JSX.Element;
+  label: string;
   value: number | string;
   type: string;
 }
-
 interface PeriqlesCallbacks {
   onSuccess?: (response: object) => any;
   onFailure?: (err: object) => any;
@@ -59,13 +58,12 @@ interface RelayEnvironment {
 
 interface PeriqlesFormProps {
   // eventually: this environment will accept RelayEnvironment | ApolloClient
-  environment?: RelayEnvironment;
+  environment: RelayEnvironment;
   mutationName: string;
-  mutationGQL?: string | object;
+  mutationGQL: string | object;
   specifications?: PeriqlesSpecifications;
   args?: PeriqlesMutationArgs;
   callbacks?: PeriqlesCallbacks;
-  useMutation?: any;
 }
 
 interface PeriqlesFieldProps {

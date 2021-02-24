@@ -170,8 +170,8 @@ export const generateSpecifiedElement: GenerateSpecifiedElement = ({
   }
   //If label isn't given, set it as field.name w/ spaces & 1st letter capitalized
   if (!specs.label) {
-    specs.label = field.name.replace(/([a-z])([A-Z])/g, '$1 $2');
-    specs.label = specs.label[0].toUpperCase() + specs.label.slice(1);
+    specs.label = field.name.replace(/([a-z])([A-Z])/g, '$1 $2'); // put spaces before capital letters
+    specs.label = specs.label[0].toUpperCase() + specs.label.slice(1);  // capitalize first letter
   }
 
   switch (specs.element) {
@@ -200,19 +200,28 @@ export const generateSpecifiedElement: GenerateSpecifiedElement = ({
             className={field.name + '-image periqles-image'}
             name={field.name}
             src={specs.src}
-            alt={field.name}
+            alt={specs.label}
             value={formState[field.name]}
             onChange={handleChange}
           />
         </label>
       );
-      break;
 
     case 'radio':
-      if (!field.options || !field.options.length) break;
+      if (!specs.options && !field.options) {
+        return (<label>
+            {specs.label}
+            <input
+              type="text"
+              className={`${field.name}-radio periqles-radio`}
+              name={field.name}
+              value={formState[field.name]}
+              onChange={handleChange}></input>
+          </label>);
+      }
 
       let radioOptions: Array<PeriqlesFieldOption> = [];
-      if (specs.options) {
+      if (specs.options && field.options) {
         specs.options.forEach((spec) => {
           field.options?.forEach((option) => {
             if (option.value === spec.value) {
@@ -226,7 +235,19 @@ export const generateSpecifiedElement: GenerateSpecifiedElement = ({
             }
           });
         });
+      } else if (specs.options && !field.options) {
+          // dev can constrain possible inputs on the frontend for fields that are not enumerated on the schema
+          specs.options.forEach((spec) => {
+            const newOption: PeriqlesFieldOption = {
+              name: spec.label,
+              label: spec.label,
+              value: spec.value,
+              type: typeof spec.value,
+            };
+            radioOptions.push(newOption);
+          });
       } else {
+        // specs didn't provide options
         radioOptions = field.options;
       }
 
@@ -256,11 +277,20 @@ export const generateSpecifiedElement: GenerateSpecifiedElement = ({
       );
 
     case 'select':
-      if (!field.options || !field.options.length) break;
+      if (!specs.options && !field.options) {
+        return (<label>
+            {specs.label}
+            <input
+              type="text"
+              className={`${field.name}-select periqles-select`}
+              name={field.name}
+              value={formState[field.name]}
+              onChange={handleChange}></input>
+          </label>);
+      }
 
       let selectOptions: Array<PeriqlesFieldOption> = [];
-      // if specified options exist for this dropdown, replace default option labels with specified labels. Only include in the dropdown options present in both the specs and the enumerated values introspected from the schema.
-      if (specs.options) {
+      if (specs.options && field.options) {
         specs.options.forEach((spec) => {
           field.options?.forEach((option) => {
             if (option.value === spec.value) {
@@ -274,9 +304,21 @@ export const generateSpecifiedElement: GenerateSpecifiedElement = ({
             }
           });
         });
-      } else {
-        selectOptions = field.options;
-      }
+      } else if (specs.options && !field.options) {
+        // dev can constrain possible inputs on the frontend for fields that are not enumerated on the schema
+        specs.options.forEach((spec) => {
+          const newOption: PeriqlesFieldOption = {
+            name: spec.label,
+            label: spec.label,
+            value: spec.value,
+            type: typeof spec.value,
+          };
+          selectOptions.push(newOption);
+        });
+    } else {
+      // specs didn't provide options
+      selectOptions = field.options;
+    }
 
       return (
         <label>
@@ -295,10 +337,10 @@ export const generateSpecifiedElement: GenerateSpecifiedElement = ({
                 }>
                 Choose one...
             </option>
-            {selectOptions.map((option) => {
+            {selectOptions.map((option, index) => {
               return (
                 <option
-                  key={`${field.name}select${option.name}option`}
+                  key={`${field.name}select${option.name}option${index}`}
                   value={option.value}
                   className={
                     field.name + '-select-option periqles-select-option'
@@ -325,15 +367,12 @@ export const generateSpecifiedElement: GenerateSpecifiedElement = ({
       );
 
     default:
-      // const elementType: string = specs.element || 'text';
-      const elementType = 'text';
-
       return (
         <label>
           {specs.label}
           <input
-            type={elementType}
-            className={`${field.name}-${elementType} periqles-${elementType}`}
+            type="text"
+            className={`${field.name}-text periqles-text`}
             name={field.name}
             value={formState[field.name]}
             onChange={handleChange}></input>
@@ -383,7 +422,18 @@ export const generateDefaultElement: GenerateDefaultElement = ({field, formState
       );
 
     case 'Enum':
-      if (!field.options || !field.options.length) break;
+      if (!field.options || !field.options.length) {
+        return (<label>
+            {field.label}
+            <input
+              type="text"
+              className={`${field.name}-select periqles-select`}
+              name={field.name}
+              value={formState[field.name]}
+              onChange={handleChange}></input>
+          </label>);
+      }
+
       const selectOptions: Array<PeriqlesFieldOption> = field.options;
 
       return (
@@ -403,10 +453,10 @@ export const generateDefaultElement: GenerateDefaultElement = ({field, formState
                 }>
                 Choose one...
               </option>
-              {selectOptions.map((option) => {
+              {selectOptions.map((option, index) => {
                 return (
                   <option
-                    key={`${field.name}select${option.name}option`}
+                    key={`${field.name}select${option.name}option${index}`}
                     value={option.value}
                     className={
                       field.name + '-select-option periqles-select-option'
