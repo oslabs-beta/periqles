@@ -77,11 +77,7 @@ To add a `<PeriqlesForm />` to your Apollo or Relay client, follow these steps.
     ```
     npm install periqles
     ```
-2. Optionally, for TypeScript projects, install @types/periqles.
-    ```
-    npm install @types/periqles
-    ```
-4. Import PeriqlesForm into your frontend.
+2. Import PeriqlesForm into your frontend.
     ```
     // MyReactComponent.jsx
     import PeriqlesForm from 'periqles';
