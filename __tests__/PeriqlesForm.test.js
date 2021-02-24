@@ -51,20 +51,20 @@ const specifications = {
 
 //PeriqlesForm Tests
 describe('Periqles Test', () => {
-  xit('Should render a Form with the class of PeriqlesForm', () => {
+  it('Should render a Form with the class of PeriqlesForm', () => {
     const {container} = render(<PeriqlesForm {...props} />);
     expect(container.querySelector('form')).toBeInTheDocument()
     expect(container.querySelector('form').getAttribute('class')).toBe('PeriqlesForm')
   });
 
-  xit('Should render "Loading form..." if introspection is pending/unsuccessful', async () => {
+  it('Should render "Loading form..." if introspection is pending/unsuccessful', async () => {
     const {getByText} = render(<PeriqlesForm {...props}/>)
      await waitFor(() => {
        expect(getByText('Loading form...')).toBeInTheDocument()
      })
   });
   
-  xit('Should render form inputs if introspection is successful', async () => {
+  it('Should render form inputs if introspection is successful', async () => {
     const {getByText, getByRole} = render(<PeriqlesForm {...props}/>)
      await waitFor(() => {
        expect(getByText('Pizza Topping')).toBeInTheDocument()
@@ -72,7 +72,7 @@ describe('Periqles Test', () => {
      })
   });
  
-  xit('Should render a form with a select tag and options if the passed in mutation has an ofType kind of Enum', async () => {
+  it('Should render a form with a select tag and options if the passed in mutation has an ofType kind of Enum', async () => {
     const {getByText, getByRole} = render(<PeriqlesForm {...props}/>)
      await waitFor(() => {
        expect(getByText('Pizza Topping')).toBeInTheDocument()
@@ -81,38 +81,39 @@ describe('Periqles Test', () => {
      })
 })
 
-  it('Should trigger a callback when the form is submitted ', async () => {
-    const mutationGQL = graphql`
-                              mutation UserProfile_AddUserMutation($input: AddUserInput!) {
-                                addUser(input: $input) {
-                                  userId
-                                  username
-                                  password
-                                  email
-                                  gender
-                                  pizzaTopping
-                                  age
-                                }
-                              }
-                              `
+//   it('Should trigger a callback when the form is submitted ', async () => {
 
-  const submitProps = {
-    environment: createMockEnvironment(),
-    mutationName: 'AddUser',
-    mutationGQL: mutationGQL,
-  };
+//     const mutationGQL = graphql`
+//                         mutation UserProfile_AddUserMutation($input: AddUserInput!) {
+//                                   addUser(input: $input) {
+//                                   userId
+//                                   username
+//                                   password
+//                                   email
+//                                   gender
+//                                   pizzaTopping
+//                                   age
+//                                 }
+//                               }
+//                               `
+
+//   const submitProps = {
+//     environment: createMockEnvironment(),
+//     mutationName: 'AddUser',
+//     mutationGQL: mutationGQL,
+//   };
   
-  const {getByText, getByRole, container} = render(<PeriqlesForm {...submitProps}/>)
-  const onSubmit = jest.fn()
-   await waitFor(() => {
-     expect(getByText('Pizza Topping')).toBeInTheDocument()
-     fireEvent.submit(container.querySelector('form'))
-     expect(onSubmit).toHaveBeenCalled()
-   })
+//   const {getByText, getByRole, container} = render(<PeriqlesForm {...submitProps}/>)
+//   const onSubmit = jest.fn()
+//    await waitFor(() => {
+//      expect(getByText('Pizza Topping')).toBeInTheDocument()
+//      fireEvent.submit(container.querySelector('form'))
+//      expect(onSubmit).toHaveBeenCalled()
+//    })
    
-})
+// })
 
-xit('Should render a form with a text input if mutation input has a Type of String', async () => {
+it('Should render a form with a text input if mutation input has a Type of String', async () => {
   const {getByRole} = render(<PeriqlesForm {...props}/>)
    await waitFor(() => {
      expect(getByRole('textbox')).toBeInTheDocument()
@@ -126,7 +127,7 @@ xit('Should render a form with a number input if mutation input has a Type of In
    })
 })
 
-xit('Should render a form with a string input if mutation input type is not handled', async () => {
+it('Should render a form with a string input if mutation input type is not handled', async () => {
   const {getByRole} = render(<PeriqlesForm {...props}/>)
    await waitFor(() => {
      expect(getByRole('textbox')).toBeInTheDocument()
