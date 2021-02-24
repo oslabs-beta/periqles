@@ -8,7 +8,7 @@ import {
   fireEvent,
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { generateSpecifiedElement, generateDefaultElement, PeriqlesField} from '../src/PeriqlesField.tsx'
+import { generateSpecifiedElement, generateDefaultElement} from '../src/PeriqlesField.tsx'
 import ReactDOMServer from 'react-dom/server';
 
 describe('PeriqlesField Test', () => {
@@ -23,7 +23,7 @@ describe('PeriqlesField Test', () => {
   describe('Calls the right function', () => {
   it('It calls the appropriate function between generateSpecifiedElement and generateDefaultElement', () => {
     //checks if specs was passed in as a prop to PeriqlesField
-    render(<PeriqlesField {...props} />)
+    // render(<PeriqlesField {...props} />)
     screen.debug()
   })
   })

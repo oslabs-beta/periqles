@@ -3,6 +3,7 @@ import PeriqlesField from './PeriqlesField';
 import {introspect} from './functions';
 import {commitMutation} from 'react-relay';
 import '../periqles.css'
+import { render } from 'react-dom';
 
 const {useState, useEffect} = React;
 
@@ -96,13 +97,13 @@ const PeriqlesForm = ({
       );
     });
   };
-
+  
   return (
     <form
       className="PeriqlesForm"
       aria-labelledby="form"
       onSubmit={(e) => handleSubmit(e, fields)}>
-        {specifications.header && <h2>{specifications.header}</h2>}
+      {specifications && specifications.header && <h2>{specifications.header}</h2>}
       {fields.length ? renderFields(fields) : <p>Loading form...</p>}
       <button
         className="periqles-submit"

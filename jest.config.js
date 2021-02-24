@@ -33,7 +33,7 @@ module.exports = {
     // Resolve .css and similar files to identity-obj-proxy instead.
     '\\.(css|less)$': "identity-obj-proxy" ,
     // Resolve .jpg and similar files to __mocks__/file-mock.js
-    '.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': `./__tests__/mockFile.js`,
+    '.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': `./__mocks__/mockFile.js`,
   },
   // Tells Jest what folders to ignore for tests
   testPathIgnorePatterns: [`node_modules`, `\\.cache`],

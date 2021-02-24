@@ -5,8 +5,12 @@ const cors = require('cors');
 const {schema} = require('../__tests__/testSchema.js');
 const {graphqlHTTP} = expressGraphql;
 // console.log(schema);
-
 const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded());
+
+
 // var corsOptions = {
 //   origin: 'http://localhost:8080', // TODO
 // };
@@ -16,7 +20,7 @@ app.use(cors());
 
 // console.log('checking environment variables', process.env.NODE_ENV);
 app.use('*', (req, res, next) => {
-  console.log('Incoming request:', req.method);
+  console.log('Incoming request body:', req.body);
   return next();
 });
 
@@ -31,24 +35,85 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === undefined)
   app.use('/dist/', express.static(path.join(__dirname, 'dist')));
 }
 
+//MOCK INTROSPECTION RESPONSE
+const mockResponse = {
+  data: {
+  __type: {
+    name: 'AddUserInput',
+    inputFields: [
+      {
+        name: 'pizzaTopping',
+        type: {
+          name: null,
+          kind: 'NON_NULL',
+          ofType: {
+            name: 'PizzaToppingEnum',
+            kind: 'ENUM',
+            enumValues: [
+              {
+                name: 'BUFFALO_CHICKEN',
+              },
+              {
+                name: 'PEPPERONI',
+              },
+              {
+                name: 'MEATLOVERS',
+              },
+              {
+                name: 'EGGPLANT_PARM',
+              },
+              {
+                name: 'OLIVES',
+              },
+              {
+                name: 'HAWAIIAN',
+              },
+            ],
+          },
+        },
+      },
+      {
+        name: 'clientMutationId',
+        type: {
+          name: 'String',
+          kind: 'SCALAR',
+          ofType: null,
+        },
+      },
+    ],
+  }
+}
+};
+
+
+
+
+
 // Set up GraphQL endpoint for POSTs
-app.post(
-  '/graphql',
-  graphqlHTTP({
-    schema: schema,
-    pretty: true,
-  }),
+// app.post(
+//   '/graphql',
+//   graphqlHTTP({
+//     schema: schema,
+//     pretty: true,
+//   }),
+// );
+
+//Mocking the server response 
+app.use(
+  '/graphql', (req, res) => {
+    res.status(200).send(mockResponse)
+  }
 );
 
 // Send a GET to /graphql to use GraphiQL
-app.get(
-  '/graphql',
-  graphqlHTTP({
-    schema: schema,
-    pretty: true,
-    graphiql: true,
-  }),
-);
+// app.get(
+//   '/graphql',
+//   graphqlHTTP({
+//     schema: schema,
+//     pretty: true,
+//     graphiql: true,
+//   }),
+// );
 
 app.use(express.json());
 
@@ -70,6 +135,6 @@ app.use((err, req, res, next) => {
 
 const PORT = 3005;
 app.listen(PORT, () => {
-  console.log(`Backend server listening on port: ${PORT}`);
+  console.log(`Backend mock server listening on port: ${PORT}`);
 });
 module.exports = app;

@@ -1,15 +1,22 @@
 /* eslint-disable no-lone-blocks */
 import * as React from 'react';
 import ReactDOMServer from 'react-dom/server';
+import app from '../__mocks__/mockServer'
 import {
   render,
   screen,
   fireEvent,
   waitForElement,
+  waitFor,
+  findByRole,
+  getByRole,
+  getByText,
+  getByLabelText,
 } from '@testing-library/react';
-// import '../setupTests';
+// import '../setupTnoests';
 import '@testing-library/jest-dom/extend-expect';
 
+//const { introspect } = require('../../src/functions.tsx');
 
 //components to test
 import PeriqlesForm from '../src/PeriqlesForm.tsx';
@@ -21,14 +28,24 @@ const props = {
   environment: 'modernEnvironment',
   mutationName: 'AddUser',
   mutationGQL: 'mutationGQL',
-  specifications: ['specifications'],
-  args: 'args',
-  callbacks: {
-    onSuccess: () => {},
-    onFailure: () => {},
-  },
 };
 
+// specifications: ['specifications'],
+// args: 'args',
+// fields: [ {
+//   name: 'email',
+//   label: 'email',
+//   type: 'string'
+// },
+// {
+//   name: 'age',
+//   label: 'age',
+//   type: 'Int',
+// }],
+// callbacks: {
+//   onSuccess: () => {},
+//   onFailure: () => {},
+// },
   // const className: 'PeriqlesForm',
   // const handleSubmit: () => {},
   // fieldNames: [],
@@ -55,7 +72,7 @@ const props = {
 
 //PeriqlesForm Tests
 describe('Periqles Test', () => {
-  it('Should render a Form with the class of PeriqlesForm', () => {
+  xit('Should render a Form with the class of PeriqlesForm', () => {
     const {container} = render(<PeriqlesForm {...props} />);
     expect(container.querySelector('form')).toBeInTheDocument()
     expect(container.querySelector('form').getAttribute('class')).toBe('PeriqlesForm')
@@ -63,7 +80,7 @@ describe('Periqles Test', () => {
     // screen.debug()
   });
 
-  it('Should return the correct PeriqlesField when renderFields is passed in a fields argument', () => {
+xit('Should return the correct PeriqlesField when renderFields is passed in a fields argument', () => {
     const fields = [
       {
         name: 'email',
@@ -76,9 +93,29 @@ describe('Periqles Test', () => {
         type: 'Int',
       }
     ]
-    render(<PeriqlesForm {...props} />);
-    screen.debug()
+    // render(PeriqlesForm.renderFields(fields));
+    // console.log(PeriqlesForm.renderFields(fields));
+    // screen.debug()
   });
+
+  it('Should render form inputs if introspection is successful', async () => {
+    // let container;
+    const {getByText, getByRole} = render(<PeriqlesForm {...props}/>)
+     await waitFor(() => {
+       expect(getByText('Pizza Topping')).toBeInTheDocument()
+       expect(getByRole('combobox')).toBeInTheDocument()
+
+        // const {container} = render(<PeriqlesForm {...props}/>)
+        // expect(container.querySelector('select')).toBeInTheDocument()
+        // container = render(<PeriqlesForm {...props} />)    
+     })
+    //  const {container} = render(<PeriqlesForm {...props}/>)
+    //  expect(container.querySelector('select')).toBeInTheDocument()
+     
+    // container = render(<PeriqlesForm {...props} />)    
+  });
+
+  
 });
 
 //     // eslint-disable-next-line no-labels
@@ -97,8 +134,6 @@ describe('Periqles Test', () => {
 //     it('Should be passed a props called field that is an array of input tags', () => {
 //       // expect(wrapper.find());
 //     });
-
-//     it('Should be passed a props called renderFields that is a function that takes a single argument', () => {});
 
 //     it('Should call the renderFields function if the field prop has a length > 0', () => {});
 
