@@ -281,7 +281,7 @@ const MyComponent = () => {
 
 ## Styles
 
-Periqles comes with its own basic [stylesheet](https://github.com/oslabs-beta/periqles/blob/main/periqles.css), but it also attaches class names to each of its HTML elements that you can target in CSS for addtional styling. We've tried to keep our default styles in that sweet spot between "enough to be presentable" and "adaptable to any design scheme." If you think we should provide more or less CSS, give us a shout in the [issues](https://github.com/oslabs-beta/periqles/issues).
+Periqles comes with its own basic [stylesheet](https://github.com/oslabs-beta/periqles/blob/main/periqles.css), but it also attaches class names to each of its HTML elements that you can target in CSS for additional styling. We've tried to keep our default styles in that sweet spot between "enough to be presentable" and "adaptable to any design scheme." If you think we should provide more or less CSS, give us a shout in the [issues](https://github.com/oslabs-beta/periqles/issues).
 
 Each element has two class names which follow this format:
 
