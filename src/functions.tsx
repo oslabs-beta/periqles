@@ -49,7 +49,7 @@ export const introspect = (mutationName, setFields, args) => {
       }
       const typeSchema = data.__type;
       // intuit fields off the schema
-      const fieldsArr: PeriqlesField[] = fieldsArrayGenerator(typeSchema, args);
+      const fieldsArr: PeriqlesFieldInfo[] = fieldsArrayGenerator(typeSchema, args);
       setFields(fieldsArr);
     })
     .catch((err) => {
@@ -57,22 +57,19 @@ export const introspect = (mutationName, setFields, args) => {
     });
 };
 
-export const fieldsArrayGenerator = (
-  inputType: InputType,
-  args: PeriqlesMutationArgs = {},
-): PeriqlesField[] => {
+export const fieldsArrayGenerator: FieldsArrayGenerator = (inputType, args = {}) => {
   if (!inputType || !inputType.inputFields) {
     console.error('ERROR at PeriqlesForm: mutation input type is undefined.');
     return [];
   }
 
-  const fieldsArray: Array<PeriqlesField> = [];
+  const fieldsArray: Array<PeriqlesFieldInfo> = [];
 
   inputType.inputFields.forEach((field) => {
     // exclude from the form any inputs accounted for by args
     if (args[field.name]) return;
 
-    const fieldObj: PeriqlesField = {
+    const fieldObj: PeriqlesFieldInfo = {
       name: field.name,
     };
 

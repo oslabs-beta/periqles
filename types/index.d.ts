@@ -1,11 +1,34 @@
-type Scalar = number | boolean | string;
-type FormState = Record<string, number | string>;
+// Type definitions for periqles v2.x
 
+// Externally available types
+type PeriqlesForm = (props: PeriqlesFormProps) => JSX.Element;
 
-// PROPS FOR PERIQLES COMPONENTS
+interface PeriqlesFormProps {
+  mutationName: string;
+  environment?: RelayEnvironment;
+  mutationGQL?: string | object;
+  useMutation?: any,
+  specifications?: PeriqlesSpecifications;
+  args?: PeriqlesMutationArgs;
+  callbacks?: PeriqlesCallbacks;
+}
+
+interface RelayEnvironment {
+  store: any;
+  networkLayer: any;
+  handlerProvider?: any;
+}
+
 interface PeriqlesSpecifications {
   header?: string;
   fields?: Record<string, PeriqlesFieldSpecs>;
+}
+
+type PeriqlesMutationArgs = Record<string, number | boolean | string>;
+
+interface PeriqlesCallbacks {
+  onSuccess?: (response: object) => any;
+  onFailure?: (err: object) => any;
 }
 
 interface PeriqlesFieldSpecs {
@@ -27,8 +50,24 @@ interface PeriqlesOptionSpec {
   value: number | string;
 }
 
-// objects returned by generateFieldsArray
-interface PeriqlesField {
+type FormState = Record<string, number | string>;
+
+
+// Types used internally by PeriqlesForm
+
+type PeriqlesField = (props: PeriqlesFieldProps) => JSX.Element;
+
+interface PeriqlesFieldProps {
+  field: PeriqlesFieldInfo;
+  formState: FormState;
+  handleChange: (e) => void;
+  specs?: PeriqlesFieldSpecs;
+  setFormState: React.Dispatch<React.SetStateAction<FormState>>;
+}
+
+// input field info introspected from schema
+// used to build HTML for each PeriqlesField component 
+interface PeriqlesFieldInfo {
   name: string;
   label?: string;
   type?: string;
@@ -36,60 +75,38 @@ interface PeriqlesField {
   required?: boolean;
 }
 
-// options objects prepared for input fields represented by dropdowns/radios
+// options prepared for dropdowns/radio buttons
 interface PeriqlesFieldOption {
   name: string;
   label: string;
   value: number | string;
   type: string;
 }
-interface PeriqlesCallbacks {
-  onSuccess?: (response: object) => any;
-  onFailure?: (err: object) => any;
-}
 
-type PeriqlesMutationArgs = Record<string, Scalar>;
 
-interface RelayEnvironment {
-  store: any;
-  networkLayer: any;
-  handlerProvider?: any;
-}
+// helper functions
 
-interface PeriqlesFormProps {
-  // eventually: this environment will accept RelayEnvironment | ApolloClient
-  environment: RelayEnvironment;
-  mutationName: string;
-  mutationGQL: string | object;
-  specifications?: PeriqlesSpecifications;
-  args?: PeriqlesMutationArgs;
-  callbacks?: PeriqlesCallbacks;
-}
+type FieldsArrayGenerator = (
+  inputType: InputType,
+  args: PeriqlesMutationArgs,
+) => PeriqlesFieldInfo[];
 
-interface PeriqlesFieldProps {
-  field: PeriqlesField;
-  formState: FormState;
-  handleChange: (e) => void;
-  specs?: PeriqlesFieldSpecs;
-  setFormState: React.Dispatch<React.SetStateAction<FormState>>;
-}
-
-// PERIQLES HELPER FUNCTIONS
 type GenerateDefaultElement = (params: {
-  field: PeriqlesField,
+  field: PeriqlesFieldInfo,
   formState: FormState,
   handleChange: (e) => void,
 }) => JSX.Element;
 
 type GenerateSpecifiedElement = (params: {
-  field: PeriqlesField,
+  field: PeriqlesFieldInfo,
   specs: PeriqlesFieldSpecs,
   formState: FormState,
   handleChange: (e) => void,
   setFormState: React.Dispatch<React.SetStateAction<FormState>>,
 }) => JSX.Element;
 
-// RESULT OF INTROSPECTION QUERY
+
+// data expected from introspection query
 
 interface InputType {
   name: string;
@@ -121,6 +138,7 @@ interface EnumValue {
 
 // commitMutation parameters
 type Input = Record<string, string | boolean | number>;
+
 interface Variables {
   input: Input;
 }
