@@ -6,26 +6,17 @@ import '../periqles.css'
 
 const {useState, useEffect} = React;
 
-/**
- * Functional component that performs an introspection query then renders PeriqlesField components based on the mutation's defined input type.
- * @param {Object} environment (REQUIRED) The RelayEnvironment instance shared by this application's components, containing the network layer and store.
- * @param {String} mutationName (REQUIRED) The name of a mutation exactly as written on the schema.
- * @param {String|Function} mutationGQL (REQUIRED) A GraphQL mutation string or (if using Relay) a tagged template literal using the graphql`` tag imported from react-relay.
- * @param {Object} specifications Optional parameters to specify the form's appearance and behavior.
- * @param {Object} args Optional arguments to be passed to the mutation as input variables, represented as key-value pairs. Fields represented here will be excluded from the form.
- */
-
 const PeriqlesForm = ({
   environment,
   mutationName,
   mutationGQL,
+  useMutation,
   specifications,
   args = {},
   callbacks,
-  useMutation
 }: PeriqlesFormProps): JSX.Element => {
   const [formState, setFormState] = useState<FormState>({});
-  const [fields, setFields] = useState<PeriqlesField[]>([]);
+  const [fields, setFields] = useState<PeriqlesFieldInfo[]>([]);
 
   useEffect(() => {
     introspect(mutationName, setFields, args);
@@ -95,8 +86,8 @@ const PeriqlesForm = ({
     setFormState(newState);
   };
 
-  const renderFields = (fields: PeriqlesField[]) => {
-    return fields.map((field: PeriqlesField, index: number) => {
+  const renderFields = (fields: PeriqlesFieldInfo[]) => {
+    return fields.map((field: PeriqlesFieldInfo, index: number) => {
       const specs = specifications
         ? specifications.fields[field.name]
         : undefined;
