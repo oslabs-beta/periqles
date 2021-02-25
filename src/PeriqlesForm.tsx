@@ -7,25 +7,17 @@ import { render } from 'react-dom';
 
 const {useState, useEffect} = React;
 
-/**
- * Functional component that performs an introspection query then renders PeriqlesField components based on the mutation's defined input type.
- * @param {Object} environment (REQUIRED) The RelayEnvironment instance shared by this application's components, containing the network layer and store.
- * @param {String} mutationName (REQUIRED) The name of a mutation exactly as written on the schema.
- * @param {String|Function} mutationGQL (REQUIRED) A GraphQL mutation string or (if using Relay) a tagged template literal using the graphql`` tag imported from react-relay.
- * @param {Object} specifications Optional parameters to specify the form's appearance and behavior.
- * @param {Object} args Optional arguments to be passed to the mutation as input variables, represented as key-value pairs. Fields represented here will be excluded from the form.
- */
-
 const PeriqlesForm = ({
   environment,
   mutationName,
   mutationGQL,
+  useMutation,
   specifications,
   args = {},
   callbacks,
 }: PeriqlesFormProps): JSX.Element => {
   const [formState, setFormState] = useState<FormState>({});
-  const [fields, setFields] = useState<PeriqlesField[]>([]);
+  const [fields, setFields] = useState<PeriqlesFieldInfo[]>([]);
 
   useEffect(() => {
     introspect(mutationName, setFields, args);
@@ -39,12 +31,11 @@ const PeriqlesForm = ({
 
     // validate non-null text fields
     const fieldNames = Object.keys(formState);
-    console.log('fieldNames', fieldNames);
     for (let i = 0; i < fieldNames.length; i += 1) {
       const fieldObj = fields.filter(
         (fieldObj) => fieldObj.name === fieldNames[i],
       )[0];
-      console.log('this fieldObj:', fieldObj);
+
       if (fieldObj.required && formState[fieldNames[i]] === '') {
         window.alert(`The following field is required: ${fieldObj.label}`);
         return;
@@ -55,33 +46,49 @@ const PeriqlesForm = ({
     const variables: Variables = {
       input,
     };
-    commitMutation(environment, {
-      mutation: mutationGQL,
-      variables,
-      onCompleted: (response, errors): void => {
-        if (callbacks?.onSuccess) callbacks.onSuccess(response);
+
+    if (environment) {
+      // relay commit method
+      commitMutation(environment, {
+        mutation: mutationGQL,
+        variables,
+        onCompleted: (response, errors): void => {
+          if (callbacks?.onSuccess) callbacks.onSuccess(response);
+          setFormState({});
+        },
+        onError: (err): void => {
+          if (callbacks?.onFailure) callbacks.onFailure(err);
+        },
+      });
+    } else {
+      // apollo commit method
+      // actual invocation of addUser useMutation mutate function; if passing variables must be passed inside of an object
+      useMutation({ variables })
+      .then(response => {
+        if (callbacks?.onSuccess) callbacks.onSuccess(response); // useMutation mutate function returns a promise of mutation result
         setFormState({});
-      },
-      onError: (err): void => {
-        if (callbacks?.onFailure) callbacks.onFailure(err);
-      },
-    });
+      })
+      .catch(err => {
+        if (callbacks?.onFailure) callbacks.onFailure(err); // if onFailure callback provided, invoke on useMutation mutate function promise error
+      })
+    }
   };
 
   const handleChange = (e): void => {
-    console.log('Handling change');
     const {name, value, type} = e.target;
     let useValue = value;
     // type-coerce values from number input elements before storing in state
-    if (type === 'number') {
+    if (type === 'number' && typeof value !== 'number') {
       useValue -= 0;
     }
 
-    setFormState({...formState, [name]: useValue});
+    const newState = Object.assign({}, formState);
+    newState[name] = useValue;
+    setFormState(newState);
   };
 
-  const renderFields = (fields: PeriqlesField[]) => {
-    return fields.map((field: PeriqlesField, index: number) => {
+  const renderFields = (fields: PeriqlesFieldInfo[]) => {
+    return fields.map((field: PeriqlesFieldInfo, index: number) => {
       const specs = specifications
         ? specifications.fields[field.name]
         : undefined;

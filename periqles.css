@@ -8,6 +8,7 @@
 
 .PeriqlesForm, .PeriqlesForm * {
   box-sizing: border-box;
+  outline: none;
 }
 
 .PeriqlesForm label, .periqles-radio {
@@ -43,11 +44,6 @@
   width: 100%;
 }
 
-.periqles-select-option, .periqles-radio-option {
-  /* TODO: research ways to style options (if desired) */
-}
-
-
 .periqles-radio:hover, .periqles-select:hover {
   cursor: pointer;
 }
@@ -77,13 +73,11 @@
 
 .periqles-submit {
   display:inline-block;
-  width: 30%;
-  
+  width: fit-content;
   box-sizing: border-box;
   text-decoration:none;
   font-family: inherit;
   font-weight: bold;
-  
   text-align:center;
   cursor: pointer;
   align-self:flex-end;

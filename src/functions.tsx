@@ -49,7 +49,7 @@ export const introspect = (mutationName, setFields, args) => {
       }
       const typeSchema = data.__type;
       // intuit fields off the schema
-      const fieldsArr: PeriqlesField[] = fieldsArrayGenerator(typeSchema, args);
+      const fieldsArr: PeriqlesFieldInfo[] = fieldsArrayGenerator(typeSchema, args);
       setFields(fieldsArr);
     })
     .catch((err) => {
@@ -57,22 +57,19 @@ export const introspect = (mutationName, setFields, args) => {
     });
 };
 
-export const fieldsArrayGenerator = (
-  inputType: InputType,
-  args: PeriqlesMutationArgs = {},
-): PeriqlesField[] => {
+export const fieldsArrayGenerator: FieldsArrayGenerator = (inputType, args = {}) => {
   if (!inputType || !inputType.inputFields) {
     console.error('ERROR at PeriqlesForm: mutation input type is undefined.');
     return [];
   }
 
-  const fieldsArray: Array<PeriqlesField> = [];
+  const fieldsArray: Array<PeriqlesFieldInfo> = [];
 
   inputType.inputFields.forEach((field) => {
     // exclude from the form any inputs accounted for by args
     if (args[field.name]) return;
 
-    const fieldObj: PeriqlesField = {
+    const fieldObj: PeriqlesFieldInfo = {
       name: field.name,
     };
 
@@ -166,7 +163,7 @@ export const generateSpecifiedElement: GenerateSpecifiedElement = ({
   setFormState,
 }) => {
   if (specs.render) {
-    return specs.render(formState, setFormState, handleChange);
+    return specs.render({formState, setFormState, handleChange});
   }
   //If label isn't given, set it as field.name w/ spaces & 1st letter capitalized
   if (!specs.label) {
@@ -424,7 +421,7 @@ export const generateDefaultElement: GenerateDefaultElement = ({field, formState
     case 'Enum':
       if (!field.options || !field.options.length) {
         return (<label>
-            {specs.label}
+            {field.label}
             <input
               type="text"
               className={`${field.name}-select periqles-select`}

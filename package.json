@@ -1,8 +1,9 @@
 {
   "name": "periqles",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "description": "React form library for GraphQL APIs using Apollo or Relay client",
   "main": "index.js",
+  "types": "./types/index.d.ts",
   "engines": {
     "node": "*"
   },
@@ -37,7 +38,7 @@
     "tsc": "tsc",
     "clean": "shx rm -rf _bundles lib lib-esm",
     "build": "npm run clean && tsc && tsc -m es6 --outDir lib-esm && webpack",
-    "publish:local": "npm run build && npm pack && cp periqles-0.1.0.tgz ~",
+    "publish:local": "npm run build && npm pack && cp periqles-2.0.0.tgz ~",
     "lint": "eslint ./src ./types",
     "test": "jest --verbose --testURL=http://localhost:3005 --detectOpenHandles",
     "prepare": "npm run build",

@@ -2,8 +2,6 @@ const express = require('express');
 const expressGraphql = require('express-graphql');
 const path = require('path');
 const cors = require('cors');
-const {schema} = require('../__tests__/testSchema.js');
-const { render } = require('react-dom');
 const {graphqlHTTP} = expressGraphql;
 const app = express();
 

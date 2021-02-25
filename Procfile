@@ -1,0 +1,1 @@
+web: cd ./demo && npm run start:prod

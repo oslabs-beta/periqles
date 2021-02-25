@@ -2,7 +2,6 @@
   "compilerOptions": {
     "outDir": "./lib/", // path to output directory
     "sourceMap": true, // allow sourcemap support
-    // "strictNullChecks": true, // enable strict null checks as a best practice
     "module": "es6", // syntax for generated modules
     "jsx": "react", // use typescript to transpile jsx to js
     "target": "es5", // specify ECMAScript target version
@@ -10,22 +9,19 @@
     "allowJs": true, // infer types from .js files
     "moduleResolution": "node", // search under node_modules to resolve non-relative imports
     "allowSyntheticDefaultImports": true,
-    // Ensure that .d.ts files are created by tsc, but not .js files
-    // "declaration": true,  // generate .d.ts automatically from types found throughout project
-    // "emitDeclarationOnly": true, // only generate .d.ts, not .js
     // Ensure that Babel can safely transpile files in the TypeScript project
     "isolatedModules": true,
     // Import non-ES modules as default imports.
     "esModuleInterop": true,
     // specify where to look for .d.ts files
     "typeRoots": [
-      "./types",
-      "./types/index.d.ts",
+      "types",
+      "types/index.d.ts",
       "node_modules/@types"
     ]
   },
   "files": [
-    "./types/index.d.ts",
+    "types/index.d.ts",
     "./src/functions.tsx",
     "./src/PeriqlesField.tsx",
     "src/PeriqlesForm.jsx",
