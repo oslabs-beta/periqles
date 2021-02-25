@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { render } from 'react-dom';
 import PeriqlesField from './PeriqlesField';
 import {introspect} from './functions';
 import {commitMutation} from 'react-relay';
@@ -52,7 +53,7 @@ const PeriqlesForm = ({
     if (e.key === 'Enter' || e.type === 'click') {
       e.preventDefault(); // prevent page refesh
     }
-    console.log('Checking for null fields');
+
     // validate non-null fields
     const missing: Array<string> = [];
     for (const key in formState) {
@@ -90,7 +91,6 @@ const PeriqlesForm = ({
         },
       });
     } else {
-      console.log('committing apollo mutation');
       // apollo commit method
       useMutation({ variables })
       .then(response => {

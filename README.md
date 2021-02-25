@@ -29,34 +29,44 @@
 >*“Having knowledge but lacking the power to express it clearly is no better than never having any ideas at all.”  
 -- Pericles*
 
-<details open="open">
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-        <li><a href="#installation">Server</a></li>
-        <li><a href="#installation">Schema</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#usage">Usage</a>
-      <ul>
-        <li><a href="#periqlesform-props">PeriqlesForm Props</a></li>
-        <li><a href="#relay">Relay</a></li>
-        <li><a href="#apollo">Apollo</a></li>
-        <li><a href="#styles">Styles</a></li>
-      </ul>
-    </li>
-<!--     <li><a href="#roadmap">Roadmap</a></li> -->
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#maintainers">Maintainers</a></li>
-    <li><a href="#built-with">Built with:</a></li>
-  </ol>
-</details>
+<table align="center">
+  <tr>
+    <td>
+<!--       <details open="open"> -->
+<!--         <summary>Table of Contents</summary> -->
+      <b>Table of Contents</b>
+        <ol>
+          <li>
+            <a href="#getting-started">Getting Started</a>
+            <ul>
+              <li><a href="#prerequisites">Prerequisites</a></li>
+              <li><a href="#installation">Installation</a></li>
+              <li><a href="#installation">Server</a></li>
+              <li><a href="#installation">Schema</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#usage">Usage</a>
+            <ul>
+              <li><a href="#periqlesform-props">PeriqlesForm Props</a></li>
+              <li><a href="#relay">Relay</a></li>
+              <li><a href="#apollo">Apollo</a></li>
+              <li><a href="#styles">Styles</a></li>
+            </ul>
+          </li>
+      <!--     <li><a href="#roadmap">Roadmap</a></li> -->
+          <li><a href="#contributing">Contributing</a></li>
+          <li><a href="#license">License</a></li>
+          <li><a href="#maintainers">Maintainers</a></li>
+          <li><a href="#built-with">Built with:</a></li>
+        </ol>
+<!--       </details> -->
+    </td>
+    <td>
+      <img src="/v2.0.0.png" alt="screenshot of periqles form">
+    </td>
+  </tr>
+</table>
 
 ---
 

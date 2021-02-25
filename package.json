@@ -40,22 +40,32 @@
     "build": "npm run clean && tsc && tsc -m es6 --outDir lib-esm && webpack",
     "publish:local": "npm run build && npm pack && cp periqles-2.0.0.tgz ~",
     "lint": "eslint ./src ./types",
-    "test": "jest --verbose",
-    "prepare": "npm run build"
+    "test": "jest --verbose --testURL=http://localhost:3005 --detectOpenHandles",
+    "prepare": "npm run build",
+    "test-async": "jest --verbose --detectOpenHandles",
+    "test-serverRunning": "node ./__mocks__/mockServer.js & jest --verbose"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9",
+    "@babel/core": "^7.13.1",
     "@babel/eslint-parser": "^7.12.17",
     "@babel/plugin-proposal-class-properties": "^7.12.13",
     "@babel/plugin-proposal-object-rest-spread": "^7.12.13",
     "@babel/plugin-transform-runtime": "^7.12.17",
-    "@babel/preset-env": "^7.12.7",
+    "@babel/plugin-transform-typescript": "^7.12.17",
+    "@babel/preset-env": "^7.13.5",
     "@babel/preset-react": "^7.12.7",
+    "@babel/preset-typescript": "^7.12.17",
+    "@testing-library/dom": "^7.29.6",
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/react": "^11.2.5",
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.1",
     "@typescript-eslint/eslint-plugin": "^4.15.1",
     "@typescript-eslint/parser": "^4.15.1",
+    "babel-jest": "^26.6.3",
     "babel-loader": "^8.2.2",
+    "babel-plugin-relay": "^10.1.3",
+    "cors": "^2.8.5",
     "css-loader": "^5.0.2",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^7.2.0",
@@ -63,14 +73,24 @@
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "jest": "^23.6.0",
+    "express": "^4.17.1",
+    "express-graphql": "^0.12.0",
+    "graphql": "^15.5.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^26.6.3",
+    "path": "^0.12.7",
     "prettier": "^2.2.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "relay-test-utils": "^10.1.3",
     "shx": "^0.3.3",
     "style-loader": "^2.0.0",
     "ts-loader": "^8.0.14",
     "typescript": "^4.1.3",
     "webpack": "^5.0.0",
-    "webpack-cli": "^4.5.0"
+    "webpack-cli": "^4.5.0",
+    "whatwg-fetch": "^3.6.1",
+    "supertest": "^6.1.3"
   },
   "dependencies": {
     "react-relay": "^10.1.0"
@@ -86,6 +106,10 @@
   },
   "jest": {
     "globalSetup": "./__tests__/jest-setup.js",
-    "globalTeardown": "./__tests__/jest-teardown.js"
+    "globalTeardown": "./__tests__/jest-teardown.js",
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
+    }
   }
 }
