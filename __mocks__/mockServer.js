@@ -8,7 +8,6 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded());
 
-
 // var corsOptions = {
 //   origin: 'http://localhost:8080', // TODO
 // };
@@ -16,14 +15,12 @@ app.use(express.urlencoded());
 // app.use(cors(corsOptions));
 app.use(cors());
 
-// console.log('checking environment variables', process.env.NODE_ENV);
+// console.log server requests
 // app.use('*', (req, res, next) => {
 //   console.log('Incoming request body:', req.body);
 //   return next();
 // });
 
-
-// console.log('assets path', __dirname + path.resolve('/', 'public', '/', 'assets'));
 // Serve static assets
 app.use(express.static(path.resolve(__dirname, '/', 'public')));
 
@@ -120,11 +117,6 @@ const mockResponse = {
   }
 }
 };
-
-
-
-
-
 
 // Set up GraphQL endpoint for POSTs
 // app.post(
