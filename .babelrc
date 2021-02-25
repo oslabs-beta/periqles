@@ -2,9 +2,12 @@
   "plugins": [
     "@babel/plugin-transform-runtime",
     "@babel/plugin-proposal-class-properties",
-    "@babel/proposal-object-rest-spread"
+    "@babel/proposal-object-rest-spread",
+    "@babel/plugin-transform-react-jsx",
+    "relay"
+    // "@babel/plugin-transform-typescript"
   ],
-  "presets": ["@babel/preset-react", "@babel/preset-env"]
+  "presets": ["@babel/preset-react", "@babel/preset-env", "@babel/preset-typescript"]
 }
 
 // optional alternative to ts-loader: "@babel/preset-typescript"
