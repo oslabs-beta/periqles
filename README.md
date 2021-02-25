@@ -237,8 +237,6 @@ const ADD_USER =  graphql`
     }
   }`;
 
-const [addUserMutation, response] = useMutation(ADD_USER);
-
 const MyComponent = ({relay}) => {
   return (<div>
      <h1>Sign Up</h1>
@@ -266,23 +264,25 @@ Here is a basic example of how to use `<PeriqlesForm />` in Apollo:
 ```
 // MyComponent.jsx
 
-import React, {useState} from 'react';
+import React from 'react';
 import { gql, useMutation } from '@apollo/client';
 import PeriqlesForm from 'periqles';
 
-const ADD_USER = gql`
-  mutation AddUser($input: AddUserInput!){
-    addUser(input: $input){
-        username
-        password
-        email
-        gender
-        pizzaTopping
-        age
-      }
-  }`;
+const Signup = () => {
+  const ADD_USER = gql`
+    mutation AddUser($input: AddUserInput!){
+      addUser(input: $input){
+          username
+          password
+          email
+          gender
+          pizzaTopping
+          age
+        }
+    }`;
 
-const MyComponent = () => {
+  const [addUser, response] = useMutation(ADD_USER);
+
   return (<div>
      <h1>Sign Up</h1>
      <PeriqlesForm
