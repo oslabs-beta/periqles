@@ -47,10 +47,10 @@ interface PeriqlesFieldSpecs {
 
 interface PeriqlesOptionSpec {
   label: string;
-  value: number | string;
+  value: number | string | boolean;
 }
 
-type FormState = Record<string, number | string>;
+type FormState = Record<string, number | string | boolean>;
 
 
 // Types used internally by PeriqlesForm
@@ -79,7 +79,7 @@ interface PeriqlesFieldInfo {
 interface PeriqlesFieldOption {
   name: string;
   label: string;
-  value: number | string;
+  value: number | string | boolean;
   type: string;
 }
 
@@ -133,11 +133,11 @@ interface GraphQLOfType {
 
 // Although EnumValue's one propety is called "name", it actuallly holds a value.
 interface EnumValue {
-  name: number | string;
+  name: number | string | boolean;
 }
 
 // commitMutation parameters
-type Input = Record<string, string | boolean | number>;
+type Input = Record<string, number | string | boolean>;
 
 interface Variables {
   input: Input;

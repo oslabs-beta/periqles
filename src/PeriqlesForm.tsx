@@ -18,27 +18,57 @@ const PeriqlesForm = ({
   const [formState, setFormState] = useState<FormState>({});
   const [fields, setFields] = useState<PeriqlesFieldInfo[]>([]);
 
+  // introspect this project's GraphQL schema on initial render
   useEffect(() => {
     introspect(mutationName, setFields, args);
   }, [mutationName]);
 
   // HANDLERS
+  const initializeForm = (fields: PeriqlesFieldInfo[]) => {
+    const initialValues = {};
+    fields.forEach((field: PeriqlesFieldInfo) => {
+      let initialValue;
+      switch (field.type) {
+        case 'Enum':
+        case 'String':
+          initialValue = '';
+          break;
+        case 'Int':
+          initialValue = 0;
+          break;
+        case 'Boolean':
+          initialValue = false;
+          break;
+        default:
+          initialValue = '';
+      }
+      initialValues[field.name] = initialValue;
+    });
+
+    setFormState(initialValues);
+  };
+
   const handleSubmit = (e, fields): void => {
     if (e.key === 'Enter' || e.type === 'click') {
       e.preventDefault(); // prevent page refesh
     }
-
-    // validate non-null text fields
-    const fieldNames = Object.keys(formState);
-    for (let i = 0; i < fieldNames.length; i += 1) {
-      const fieldObj = fields.filter(
-        (fieldObj) => fieldObj.name === fieldNames[i],
+    console.log('Checking for null fields');
+    // validate non-null fields
+    const missing: Array<string> = [];
+    for (const key in formState) {
+      const fieldInfo = fields.filter(
+        (field) => field.name === key,
       )[0];
 
-      if (fieldObj.required && formState[fieldNames[i]] === '') {
-        window.alert(`The following field is required: ${fieldObj.label}`);
-        return;
+      if (fieldInfo.required && formState[key] === '' 
+            || fieldInfo.required && formState[key] === undefined) {
+        missing.push(fieldInfo.label);
       }
+    }
+
+    if (missing.length) {
+      window.alert(`The following fields are required: ${missing.join(', ')}`);
+      return;
     }
 
     const input: Input = {...formState, ...args};
@@ -53,22 +83,22 @@ const PeriqlesForm = ({
         variables,
         onCompleted: (response, errors): void => {
           if (callbacks?.onSuccess) callbacks.onSuccess(response);
-          setFormState({});
+          initializeForm(fields);
         },
         onError: (err): void => {
           if (callbacks?.onFailure) callbacks.onFailure(err);
         },
       });
     } else {
+      console.log('committing apollo mutation');
       // apollo commit method
-      // actual invocation of addUser useMutation mutate function; if passing variables must be passed inside of an object
       useMutation({ variables })
       .then(response => {
-        if (callbacks?.onSuccess) callbacks.onSuccess(response); // useMutation mutate function returns a promise of mutation result
-        setFormState({});
+        if (callbacks?.onSuccess) callbacks.onSuccess(response);
+        initializeForm(fields);
       })
       .catch(err => {
-        if (callbacks?.onFailure) callbacks.onFailure(err); // if onFailure callback provided, invoke on useMutation mutate function promise error
+        if (callbacks?.onFailure) callbacks.onFailure(err);
       })
     }
   };
@@ -86,23 +116,7 @@ const PeriqlesForm = ({
     setFormState(newState);
   };
 
-  const renderFields = (fields: PeriqlesFieldInfo[]) => {
-    return fields.map((field: PeriqlesFieldInfo, index: number) => {
-      const specs = specifications
-        ? specifications.fields[field.name]
-        : undefined;
-      return (
-        <PeriqlesField
-          key={`Periqles${mutationName}Field${index}`}
-          field={field}
-          specs={specs}
-          formState={formState}
-          setFormState={setFormState}
-          handleChange={handleChange}
-        />
-      );
-    });
-  };
+  useEffect(() => initializeForm(fields), [fields.length, setFormState]);
 
   return (
     <form
@@ -110,12 +124,29 @@ const PeriqlesForm = ({
       aria-labelledby="form"
       onSubmit={(e) => handleSubmit(e, fields)}>
         {specifications && specifications.header && <h2>{specifications.header}</h2>}
-      {fields.length ? renderFields(fields) : <p>Loading form...</p>}
-      <button
-        className="periqles-submit"
-        onClick={(e) => handleSubmit(e, fields)}>
-        Submit
-      </button>
+        {fields.length 
+          ? (fields.map((field: PeriqlesFieldInfo, index: number) => {
+            const specs = specifications
+              ? specifications.fields[field.name]
+              : undefined;
+            return (
+              <PeriqlesField
+                key={`Periqles${mutationName}Field${index}`}
+                field={field}
+                specs={specs}
+                formState={formState}
+                setFormState={setFormState}
+                handleChange={handleChange}
+              />
+            );
+          }))
+          : <p>Loading form...</p>
+        }
+        <button
+          className="periqles-submit"
+          onClick={(e) => handleSubmit(e, fields)}>
+          Submit
+        </button>
     </form>
   );
 };
