@@ -97,7 +97,6 @@
   /* border-radius: 1em;
   border: 1px solid black; */
   padding: 5px 8px;
-  outline: none;
   white-space: nowrap;
   -webkit-user-select: none;
   font-family: inherit;
@@ -127,7 +126,6 @@
   background: linear-gradient(top, #f9f9f9, #e3e3e3);
   border: 1px solid #999;
   padding: 5px 8px;
-  outline: none;
   white-space: nowrap;
   -webkit-user-select: none;
   cursor: pointer;
