@@ -22,51 +22,50 @@
     <a href="">Demo →</a>
 </p>
 
+<table>
+  <tr>
+    <td width="60%">
 <p>Periqles is a React component library for Relay and Apollo that makes it easy to collect user input.</p>
 
 <p>Periqles abstracts away the dirty work of form creation — with override switches built in for the design-conscious developer — so you can be free to focus on business logic. Given the name of a GraphQL mutation, periqles introspects the project's schema and intuits a form to match it. No need to waste time debugging React state management or fussing with flexbox — just drop in a <PeriqlesForm /> tag and go on with your life.</p>
 
 >*“Having knowledge but lacking the power to express it clearly is no better than never having any ideas at all.”  
 -- Pericles*
-
-<table align="center">
-  <tr>
-    <td>
-<!--       <details open="open"> -->
-<!--         <summary>Table of Contents</summary> -->
-      <b>Table of Contents</b>
-        <ol>
-          <li>
-            <a href="#getting-started">Getting Started</a>
-            <ul>
-              <li><a href="#prerequisites">Prerequisites</a></li>
-              <li><a href="#installation">Installation</a></li>
-              <li><a href="#installation">Server</a></li>
-              <li><a href="#installation">Schema</a></li>
-            </ul>
-          </li>
-          <li>
-            <a href="#usage">Usage</a>
-            <ul>
-              <li><a href="#periqlesform-props">PeriqlesForm Props</a></li>
-              <li><a href="#relay">Relay</a></li>
-              <li><a href="#apollo">Apollo</a></li>
-              <li><a href="#styles">Styles</a></li>
-            </ul>
-          </li>
-      <!--     <li><a href="#roadmap">Roadmap</a></li> -->
-          <li><a href="#contributing">Contributing</a></li>
-          <li><a href="#license">License</a></li>
-          <li><a href="#maintainers">Maintainers</a></li>
-          <li><a href="#built-with">Built with:</a></li>
-        </ol>
-<!--       </details> -->
     </td>
     <td>
-      <img src="/v2.0.0.png" alt="screenshot of periqles form">
+      <img src="/v2.0.0.png" alt="screenshot of periqles form" width="300">
     </td>
   </tr>
 </table>
+
+<details open="open">
+  <summary>Table of Contents</summary>
+    <ol>
+      <li>
+        <a href="#getting-started">Getting Started</a>
+        <ul>
+          <li><a href="#prerequisites">Prerequisites</a></li>
+          <li><a href="#installation">Installation</a></li>
+          <li><a href="#installation">Server</a></li>
+          <li><a href="#installation">Schema</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#usage">Usage</a>
+        <ul>
+          <li><a href="#periqlesform-props">PeriqlesForm Props</a></li>
+          <li><a href="#relay">Relay</a></li>
+          <li><a href="#apollo">Apollo</a></li>
+          <li><a href="#styles">Styles</a></li>
+        </ul>
+      </li>
+  <!--     <li><a href="#roadmap">Roadmap</a></li> -->
+      <li><a href="#contributing">Contributing</a></li>
+      <li><a href="#license">License</a></li>
+      <li><a href="#maintainers">Maintainers</a></li>
+      <li><a href="#built-with">Built with:</a></li>
+    </ol>
+</details>
 
 ---
 
