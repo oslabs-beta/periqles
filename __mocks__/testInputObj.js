@@ -1,4 +1,4 @@
-module.exports = { schema: {
+module.exports = {
   name: 'AddUserInput',
   inputFields: [
     {
@@ -41,4 +41,4 @@ module.exports = { schema: {
       },
     },
   ],
-}};
+};

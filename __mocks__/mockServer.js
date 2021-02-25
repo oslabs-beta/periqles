@@ -17,10 +17,10 @@ app.use(express.urlencoded());
 app.use(cors());
 
 // console.log('checking environment variables', process.env.NODE_ENV);
-app.use('*', (req, res, next) => {
-  console.log('Incoming request body:', req.body);
-  return next();
-});
+// app.use('*', (req, res, next) => {
+//   console.log('Incoming request body:', req.body);
+//   return next();
+// });
 
 
 // console.log('assets path', __dirname + path.resolve('/', 'public', '/', 'assets'));
