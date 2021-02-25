@@ -65,6 +65,7 @@
     "babel-jest": "^26.6.3",
     "babel-loader": "^8.2.2",
     "babel-plugin-relay": "^10.1.3",
+    "cors": "^2.8.5",
     "css-loader": "^5.0.2",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^7.2.0",
@@ -72,10 +73,14 @@
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "express": "^4.17.1",
+    "express-graphql": "^0.12.0",
     "graphql": "^15.5.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^26.6.3",
+    "path": "^0.12.7",
     "prettier": "^2.2.1",
+    "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "relay-test-utils": "^10.1.3",
     "shx": "^0.3.3",
@@ -84,16 +89,11 @@
     "typescript": "^4.1.3",
     "webpack": "^5.0.0",
     "webpack-cli": "^4.5.0",
-    "whatwg-fetch": "^3.6.1"
+    "whatwg-fetch": "^3.6.1",
+    "supertest": "^6.1.3"
   },
   "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "express-graphql": "^0.12.0",
-    "path": "^0.12.7",
-    "react": "^17.0.1",
-    "react-relay": "^10.1.0",
-    "supertest": "^6.1.3"
+    "react-relay": "^10.1.0"
   },
   "peerDependencies": {
     "react": ">=16.8.0"
