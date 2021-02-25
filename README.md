@@ -19,7 +19,7 @@
 <p align="center">
   Painless forms for GraphQL.
   <br />
-    <a href="periqles.info">Demo →</a>
+    <a href="https://periqles.info">Demo →</a>
 </p>
 
 <table>
